@@ -1,0 +1,54 @@
+﻿@using TalismanSqlForum.Models
+@model LoginViewModel
+
+@{
+    ViewBag.Title = "Вход";
+}
+<div class="row">
+    <div class="panel bg-white">
+        <div class="panel-header gradient_header fg-white">
+            <h4 class="fg-white">
+                <i class="icon-enter"></i>
+                Вход
+            </h4>
+        </div>
+        <section id="loginForm" class="row reg_form" style="margin-top:0;">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "span4 bg-white" }))
+            {
+                <div class="margin10">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <fieldset>
+                        <legend></legend>
+                        @Html.LabelFor(m => m.Email)
+                        <div class="input-control text">
+                            @Html.TextBoxFor(m => m.Email)
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                        @Html.LabelFor(m => m.Password)
+                        <div class="input-control password">
+                            @Html.PasswordFor(m => m.Password)
+                            <button class="btn-reveal"></button>
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                        @Html.LabelFor(m => m.RememberMe)
+                        <div class="input-control">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                        </div>
+                        <button class="element button_reg gradient_header fg-white" type="submit" style="margin-top:10px; border-radius:7px;">
+                            <i class="icon-enter on-left"></i>
+                            Вход
+                        </button>
+
+                    </fieldset>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+<div class="row">
+    @Html.ActionLink("Регистрация нового пользователя", "Register")
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

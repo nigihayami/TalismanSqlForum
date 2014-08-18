@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.ReturnUrl = Url.Action("Index", "ForumThemes", new { id = ViewData["tForumList_id"] });
+}
+@if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("user") || User.IsInRole("moderator")))
+{
+    <div class="row">
+
+        <small>
+            <a href="@Url.Action("Create", "ForumThemes", new { id = ViewData["tForumList_id"] })"
+               class="element button success" style="border-radius:7px">
+                <span class="icon-plus-2 on-left"></span>
+                Создать тему
+            </a>
+        </small>
+
+    </div>
+}
+<div class="row">
+    <div class="panel">
+        <div class="panel-header gradient_header fg-white">
+            <h4 class="fg-white">
+                <i class="icon-grid-view"></i>
+                @ViewBag.Title
+            </h4>
+        </div>
+        <div class="panel-content bg-white">
+            <div class="listview-outlook">
+                @foreach (var item in (IEnumerable<TalismanSqlForum.Models.Forum.tForumThemes>)ViewData["tForumThemes_top"])
+                {
+                    <a href="@Url.Action("Index", "ForumMessages", new {id = item.Id})" class="list">
+                        <div class="list-content">
+                            <div class="tile half bg-white">
+                                <div class="tile-content icon">
+                                    @{
+                    var t = 0;
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        t = TalismanSqlForum.Code.Stat.count_mess(username: User.Identity.Name, id: item.Id);
+                    }
+                    if (User.Identity.IsAuthenticated && t > 0)
+                    {
+                        <i class="icon-attachment fg-orange"></i>
+                    }
+                    else
+                    {
+                        <i class="icon-attachment fg-gray"></i>
+                    }
+                                    }
+                                </div>
+                                <div class="tile-status">
+                                    <span class="name center-block fg-gray">@item.tForumMessages.Count</span>
+                                </div>
+                            </div>
+                            <h5>
+                                @if (item.tForumThemes_close)
+                                {
+                                    <span class="icon-locked-2"></span>
+                                }
+                                @item.tForumThemes_name
+                            </h5>
+                            <hr style="border: 1px hidden;margin-bottom: 1px;">
+                            <div class="button bg-transparent fg-gray place-left">
+                                Автор
+                            </div>
+                            <div class="button bg-transparent fg-gray place-left">
+                                <i class="icon-user on-left"></i>
+                                @item.tUsers.NickName
+                            </div>
+                            <div class="button bg-transparent fg-gray  place-left">
+                                <i class="icon-calendar on-left"></i>
+                                @item.tForumThemes_datetime
+                            </div>
+                            @if (item.tForumMessages.Count > 0)
+                            {
+                                <div class="button bg-transparent fg-lightBlue place-right">
+                                    <i class="icon-calendar on-left"></i>
+                                    @item.tForumMessages.OrderByDescending(a => a.tForumMessages_datetime).First().tForumMessages_datetime
+                                </div>
+                                <div class="button bg-transparent fg-lightBlue place-right">
+                                    <i class="icon-user on-left"></i>
+                                    @item.tForumMessages.OrderByDescending(a => a.tForumMessages_datetime).First().tUsers.NickName
+                                </div>
+                                <div class="button bg-transparent fg-lightBlue place-right">
+                                    Последнее сообщение
+                                </div>
+
+                            }
+                        </div>
+                    </a>
+                }
+            </div>
+            <div class="listview-outlook">
+                @foreach (var item in (IEnumerable<TalismanSqlForum.Models.Forum.tForumThemes>)ViewData["tForumThemes"])
+                {
+                    <a href="@Url.Action("Index", "ForumMessages", new {id = item.Id})" class="list">
+                        <div class="list-content">
+                            <div class="tile half bg-white">
+                                <div class="tile-content icon">
+                                    @{
+                    var t = 0;
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        t = TalismanSqlForum.Code.Stat.count_mess(username: User.Identity.Name, id: item.Id);
+                    }
+                    if (User.Identity.IsAuthenticated && t > 0)
+                    {
+                        <i class="icon-mail fg-orange"></i>
+                    }
+                    else
+                    {
+                        <i class="icon-mail fg-gray"></i>
+                    }
+                                    }
+                                </div>
+                                <div class="tile-status">
+                                    <span class="name center-block fg-gray">@item.tForumMessages.Count</span>
+                                </div>
+                            </div>
+
+                            <h5>@item.tForumThemes_name</h5>
+                            <hr style="border: 1px hidden;margin-bottom: 1px;">
+                            <div class="button bg-transparent fg-gray place-left">
+                                Автор
+                            </div>
+                            <div class="button bg-transparent fg-gray place-left">
+                                <i class="icon-user on-left"></i>
+                                @item.tUsers.NickName
+                            </div>
+                            <div class="button bg-transparent fg-gray  place-left">
+                                <i class="icon-calendar on-left"></i>
+                                @item.tForumThemes_datetime
+                            </div>
+                            @if (item.tForumMessages.Count > 0)
+                            {
+                                <div class="button bg-transparent fg-lightBlue place-right">
+                                    <i class="icon-calendar on-left"></i>
+                                    @item.tForumMessages.OrderByDescending(a => a.tForumMessages_datetime).First().tForumMessages_datetime
+                                </div>
+                                <div class="button bg-transparent fg-lightBlue place-right">
+                                    <i class="icon-user on-left"></i>
+                                    @item.tForumMessages.OrderByDescending(a => a.tForumMessages_datetime).First().tUsers.NickName
+                                </div>
+                                <div class="button bg-transparent fg-lightBlue place-right">
+                                    Последнее сообщение
+                                </div>
+                            }
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

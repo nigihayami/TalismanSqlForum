@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Результат поиска";
+}
+<div class="panel" data-role="panel">
+    <div class="panel-header">
+        Поиск в названиях тем
+    </div>
+    <div class="panel-content bg-white">
+        @Html.Partial("tForumThemes", ViewData["tForumThemes"])
+    </div>
+</div>
+<div class="panel" data-role="panel">
+    <div class="panel-header">
+        Поиск в описании тем
+    </div>
+    <div class="panel-content bg-white">
+        @Html.Partial("tForumThemes_desc", ViewData["tForumThemes_desc"])
+    </div>
+</div>
+<div class="panel" data-role="panel">
+    <div class="panel-header">
+        Поиск в сообщениях
+    </div>
+    <div class="panel-content bg-white">
+        @Html.Partial("tForumMessages", ViewData["tForumMessages"])
+    </div>
+</div>

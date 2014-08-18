@@ -1,0 +1,140 @@
+﻿body {
+    background-image: url("little_pluses.png");
+    background-repeat: repeat;
+}
+
+.metro .grid .row {
+    margin-top: 5px;
+}
+.metro .tile {
+    margin: 0 10px 0px 0;
+}
+.metro .panel .panel-content {
+    padding: 0px;
+    border-top-width: 0px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.metro .navigation-bar .navigation-bar-content .element, .metro .navbar .navigation-bar-content .element, .metro .navigation-bar .navbar-content .element, .metro .navbar .navbar-content .element {
+    background-color: green;
+    border-radius: 5px;
+    color: white;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 25px;
+    padding: 5px;
+}
+
+.metro .navigation-bar .navigation-bar-content .element:hover, .metro .navbar .navigation-bar-content .element:hover, .metro .navigation-bar .navbar-content .element:hover, .metro .navbar .navbar-content .element:hover {
+    background-color: darkGreen;
+}
+
+.metro [data-role=panel] .panel-header {
+    cursor: pointer;
+    border-radius: 0;
+    border: 2px solid gray;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.metro .panel [data-role=panel] :last-of-type .panel-content
+{
+    border-bottom-right-radius:5px;
+    border-bottom-left-radius:5px;
+    border-bottom-color:gray;
+    border-bottom-style:solid;
+    border-bottom-width:2px;
+}
+.metro .panel {
+    border: 0;
+}
+.metro .panel .panel-header {
+    padding: 1px 0px 1px 15px;
+}
+
+.metro .listview-outlook .list .list-content .icon {
+    display: block;
+    width: 45px;
+    height: 45px;
+    font-size: 40px;
+    float: left;
+    margin-right: 10px;
+}
+/*Tile Half*/
+.metro .tile .brand, .metro .tile .tile-status {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    min-height: 18px;
+    margin: -2px;
+}
+.metro .tile {
+    overflow: visible;
+}
+.metro .half.tile {
+    width: 45px;
+    height: 45px;
+}
+.metro h5 {
+    color: #000;
+}
+.metro h4{
+    margin:5px 0;
+}
+.metro legend
+{
+    border-bottom:none;
+}
+
+
+
+
+
+
+
+
+.panel-header{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.panel-content {
+    border: 2px solid gray;
+    border-radius: 5px;
+}
+
+
+.gradient_header {
+    background: rgb(83,137,83);
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMTAwJSIgeDI9IjEwMCUiIHkyPSIwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNTM4OTUzIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzUzODk1MyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+    background: -moz-linear-gradient(45deg, rgba(83,137,83,1) 0%, rgba(83,137,83,1) 100%);
+    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(83,137,83,1)), color-stop(100%,rgba(83,137,83,1)));
+    background: -webkit-linear-gradient(45deg, rgba(83,137,83,1) 0%,rgba(83,137,83,1) 100%);
+    background: -o-linear-gradient(45deg, rgba(83,137,83,1) 0%,rgba(83,137,83,1) 100%);
+    background: -ms-linear-gradient(45deg, rgba(83,137,83,1) 0%,rgba(83,137,83,1) 100%);
+    background: linear-gradient(45deg, rgba(83,137,83,1) 0%,rgba(83,137,83,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#538953', endColorstr='#538953',GradientType=1 );
+}
+
+.button_reg
+{
+    margin-top: 10px;
+    border-radius: 7px;
+    height: 40px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.reg_form{
+    margin-top: 0px;
+    border: 2px solid gray;
+    border-top-width: 0px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.label_req:before
+{
+    color:red;
+    content:'*';
+    font-size:initial;
+    display:inline-block;
+}

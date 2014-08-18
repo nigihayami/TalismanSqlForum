@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Пользователь " + ViewData["username"].ToString();
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+<div class="panel">
+    <div class="panel-header">
+        @ViewData["username"]
+    </div>
+    <div class="panel-content">
+        <div class="input-control switch" data-role="input-control">
+            @{
+                var item = (TalismanSqlForum.Models.Admin.ViewRole)ViewData["userrole"];
+                <label class="inline-block" style="margin-right: 20px;" id="admin">
+                    Admin
+                    @if (item.is_admin)
+                    {<input id="admin" type="checkbox" checked="" value="@ViewData["username"]">}
+                    else
+                    {<input id="admin" type="checkbox" value="@ViewData["username"]">}
+                    <span class="check"></span>
+                </label>
+                <label class="inline-block" style="margin-right: 20px;" id="moderator">
+                    Moderator
+                   @if (item.is_moderator)
+                   {<input id="moderator" type="checkbox" checked="" value="@ViewData["username"]">}
+                   else
+                   {<input id="moderator" type="checkbox" value="@ViewData["username"]">}
+                    <span class="check"></span>
+                </label>
+                <label class="inline-block" style="margin-right: 20px;" id="user">
+                    User
+                    @if (item.is_user)
+                    {<input id="user" type="checkbox" checked="" value="@ViewData["username"]">}
+                    else
+                    {<input id="user" type="checkbox" value="@ViewData["username"]">}
+                    <span class="check"></span>
+                </label>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    $("input[type=checkbox]").change(function () {
+        $.getJSON("@Url.Action("set_UsersRoles","admin")", { UserId: $(this).attr('value'), RoleName: $(this).attr('id') }, function (data) { });
+    }
+    );
+</script>

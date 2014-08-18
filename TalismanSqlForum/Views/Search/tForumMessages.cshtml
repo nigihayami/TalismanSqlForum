@@ -1,0 +1,16 @@
+﻿@model IEnumerable<TalismanSqlForum.Models.Forum.tForumMessages>
+<div class="listview-outlook">
+    @foreach (var item in Model)
+    {
+        <a class="list" href="@Url.Action("Index", "ForumMessages", new {id = item.tForumThemes.Id, id_fl = item.tForumThemes.tForumList.Id })">
+            <div class="list-content">
+                <h4 class="list-group-item-heading">
+                    @item.tForumThemes.tForumThemes_name
+                </h4>
+                <p class="list-group-item-text">
+                    @Html.Raw(item.tForumMessages_messages)
+                </p>
+            </div>
+        </a>
+    }
+</div>

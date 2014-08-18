@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<div class="panel">
+    <div class="panel-header gradient_header fg-white">
+        <h4 class="fg-white">
+            @ViewData["ForumThemes_Name"]
+            @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator")))
+            {
+                <a href="@Url.Action("Top", "ForumThemes", new { id = ViewData["ForumThemes_Id"] })" class="place-right fg-white">
+                    @if ((bool)ViewData["tForumThemes_top"])
+                    {
+                        <i class="icon-link-2"
+                           data-hint="Открепить"
+                           data-hint-position="top">
+                        </i>
+                    }
+                    else
+                    {
+                        <i class="icon-link"
+                           data-hint="Закрепить"
+                           data-hint-position="top"></i>
+                    }
+                </a>
+            }
+            @if ((bool)ViewData["tForumThemes_top"])
+            {
+                <i class="icon-attachment"></i>
+            }
+        </h4>
+    </div>
+    <div class="panel-content bg-white" style="margin-top:-5px;">
+        <div class="row bg-white" style="
+                                border-bottom-color: gray;
+                                border-bottom-width: 1px;
+                                border-bottom-style: solid;
+                                    ">
+            <div class="button bg-transparent fg-gray place-right">
+                <i class="icon-calendar on-left"></i>
+                @ViewData["ForumThemes_DateTime"]
+            </div>
+            <div style="margin-left:10px;">
+                @ViewData["tUsers_Org"]
+            </div>
+        </div>
+        <div class="tile half" style="margin:10px;">
+            <div class="tile-content icon">
+                @{
+                    foreach (var r in (IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>)ViewData["roles"])
+                    {
+                        var u = (TalismanSqlForum.Models.ApplicationUser)ViewData["tUsers"];
+                        if (u.Roles.Where(a => a.RoleId == r.Id).Count() > 0)
+                        {
+                            switch (r.Name)
+                            {
+                                case "admin":
+                                    <i class="icon-user fg-darkRed"></i>
+                                    break;
+                                case "moderator":
+                                <i class="icon-user fg-darkGreen"></i>
+                                    break;
+                                default:
+                                <i class="icon-user fg-gray"></i>
+                                    break;
+
+                            }
+                        }
+                    }
+                }
+            </div>
+            <span class="tile-status" style="margin:0px 10px -10px 0;">
+                @ViewData["tUsers_NickName"]
+            </span>
+        </div>
+        <div class="row bg-white offset1" style="margin-left:65px;">
+            @Html.Raw(ViewData["ForumThemes_Desc"])
+        </div>
+    </div>
+</div>
+@foreach (var item in (IEnumerable<TalismanSqlForum.Models.Forum.tForumMessages>)ViewData["tForumMessages"])
+{
+    <div class="panel-content bg-white" style="margin-top:10px">
+
+        <div class="row" style="
+                                border-bottom-color: gray;
+                                border-bottom-width: 1px;
+                                border-bottom-style: solid;
+                                    ">
+            <div class="button bg-transparent fg-gray  place-right">
+                <i class="icon-calendar on-left"></i>
+                @item.tForumMessages_datetime
+            </div>
+            <div style="margin-left:10px;">
+                @item.tUsers.Name_Org
+            </div>
+        </div>
+
+        <div class="tile half" style="margin:10px;">
+            <div class="tile-content icon">
+                @{
+    foreach (var r in (IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>)ViewData["roles"])
+    {
+        if (item.tUsers.Roles.Where(a => a.RoleId == r.Id).Count() > 0)
+        {
+            switch (r.Name)
+            {
+                case "admin":
+                    <i class="icon-user fg-darkRed"></i>
+                    break;
+                case "moderator":
+                <i class="icon-user fg-darkGreen"></i>
+                    break;
+                default:
+                <i class="icon-user fg-gray"></i>
+                    break;
+
+            }
+        }
+    }
+                }
+            </div>
+            <span class="tile-status" style="margin:0px 10px -10px 0;">
+                @item.tUsers.NickName
+            </span>
+        </div>
+
+        <div class="row offset1" style="margin-left:65px;">
+            @Html.Raw(item.tForumMessages_messages)
+        </div>
+
+        @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator")))
+        {
+            <div class="row bg-white">
+                <a href="@Url.Action("CreateOffer", "Moderator", new { id = item.Id})"
+                   class="button bg-transparent fg-gray  place-left">
+                    <i class="icon-plus on-left"></i>
+                    Замечание
+                </a>
+            </div>
+        }
+    </div>
+}
+<hr />
+@if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator") || User.IsInRole("user")))
+{
+    @section CKE{
+        <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    }
+    <div class="panel">
+        <div class="panel-header gradient_header fg-black">
+            <h4 class="fg-white">Быстрое сообщение</h4>
+        </div>
+        <div class="panel-content">
+            @using (Html.BeginForm("Create", "ForumMessages", new { id = ViewData["ForumThemes_Id"] }, FormMethod.Post, new { @class = "bg-white" }))
+            {
+                <div class="padding10">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <fieldset>
+                        <legend></legend>
+                        <div class="input-control textarea">
+                            <textarea id="tForumMessages_messages" name="tForumMessages_messages" class="ckeditor"></textarea>
+                        </div>
+                        <button class="element button_reg gradient_header fg-white" type="submit" style="margin-top:10px; border-radius:7px;">
+                            Создать
+                        </button>
+                    </fieldset>
+                </div>
+            }
+        </div>
+    </div>
+}

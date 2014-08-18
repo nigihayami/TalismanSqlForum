@@ -1,0 +1,42 @@
+﻿@model TalismanSqlForum.Models.Forum.tForumThemes
+
+@{
+    ViewBag.Title = "Создать новую тему";
+}
+@section CKE{
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+}
+<div class="panel">
+    <div class="panel-header gradient_header fg-white">
+        <h4 class="fg-white">
+            <i class="icon-plus-2"></i>
+            @ViewBag.Title
+        </h4>
+    </div>
+    @using (Html.BeginForm("Create", "ForumThemes", new { id = ViewData["tForumList_id"] }, FormMethod.Post, new { @class = "panel-content bg-white" }))
+    {
+        <div class="padding10">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <fieldset>
+                <legend></legend>
+                @Html.LabelFor(m => m.tForumThemes_name)
+                <div class="input-control text">
+                    @Html.TextBoxFor(m => m.tForumThemes_name)
+                    @Html.ValidationMessageFor(model => model.tForumThemes_name, "", new { @class = "fg-red" })
+                </div>
+                @Html.LabelFor(m => m.tForumThemes_desc)
+                <div class="input-control textarea">
+                    @Html.TextAreaFor(m => m.tForumThemes_desc, new { @class = "ckeditor", @id = "tForumThemes_desc" })
+                </div>
+                <button class="element button_reg gradient_header fg-white" type="submit" style="margin-top:10px; border-radius:7px;">
+                    Создать
+                </button>      
+            </fieldset>
+        </div>
+    }
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

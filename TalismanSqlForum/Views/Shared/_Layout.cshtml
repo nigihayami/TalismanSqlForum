@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="product" content="TalismanSqlForum">
+    <meta name="description" content="Форум Talisman-Sql">
+    <meta name="author" content="Talisman-Sql">
+    <title>@ViewBag.Title – Talisman-Sql.Forum</title>
+
+    <link href="~/Content/metro-ui/css/metro-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/metro-ui/css/metro-bootstrap-responsive.min.css" rel="stylesheet" />
+    <link href="~/Content/metro-ui/css/iconFont.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <script src="~/Scripts/metro-ui/jquery.ui.widget.js"></script>
+    <script src="~/Scripts/metro-ui/metro.min.js"></script>
+    @RenderSection("CKE", required: false)
+    @RenderSection("scripts", required: false)
+</head>
+<body class="metro">
+    <div class="row">
+        <nav class="navigation-bar bg-transparent">
+            <nav class="navigation-bar-content container fg-black">
+                <a class="element gradient_header FontCourier" href="http://Talisman-sql.ru">
+                    Talisman-Sql.ru
+                </a>
+                <span class="element-divider"></span>
+                <a class="element1 pull-menu" href="#"></a>
+                <div class="element-menu">
+                    <a class="element gradient_header FontCourier" href="@Url.Action("Index","ForumList")">
+                        Форум
+                    </a>
+                    @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "element input-element bg-transparent" }))
+                    {
+                        <div class="input-control text">
+                            <input id="val" name="val" type="text" placeholder="Поиск..." style="border-radius:7px;">
+                            <button class="btn-search"></button>
+                        </div>
+                    }
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </nav>
+        </nav>
+    </div>
+    <div class="grid">
+        <div class="row container">
+            <img src="~/Content/logo.png" />
+        </div>
+        <div class="row">
+            <div class="container">
+                <nav class="breadcrumbs">
+                    @Html.MvcSiteMap().SiteMapPath()
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container">
+                @RenderBody()
+            </div>
+        </div>
+
+    </div>
+    <div class="clearfix">
+        <hr />
+    </div>
+    <div class="row">
+        <footer>
+            <nav class="navigation-bar bg-white fixed-bottom">
+                <div class="navigation-bar-content container">
+                    <img style="width: 35px; height: 35px; float: left;" src="~/Content/l_.png">
+                    <span class="element-divider"></span>
+                    <a class="element bg-transparent fg-dark image-button image-left" href="http://talisman-sql.ru/#i201">
+                        ООО "Центр автоматизации" 2014
+                    </a><span class="element-divider"></span>
+                    <a class="element place-right bg-transparent fg-dark image-button image-left" href="/Information/Rules">
+                        Правила форума
+                    </a>
+                </div>
+            </nav>
+        </footer>
+    </div>
+</body>
+</html>

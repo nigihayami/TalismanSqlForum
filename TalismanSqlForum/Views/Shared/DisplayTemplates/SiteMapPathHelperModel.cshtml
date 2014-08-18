@@ -1,0 +1,11 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.SiteMapPathHelperModel
+@using System.Web.Mvc.Html
+@using System.Linq
+@using MvcSiteMapProvider.Web.Html.Models
+
+<ul>
+    @foreach (var node in Model)
+    {
+        @Html.DisplayFor(m => node);
+    }
+</ul>

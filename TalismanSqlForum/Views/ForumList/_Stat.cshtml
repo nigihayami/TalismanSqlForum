@@ -1,0 +1,25 @@
+﻿<div class="panel">
+    <div class="panel-header gradient_header">
+        <h4 class="fg-white">Статистика форума</h4>
+    </div>
+    <div class="panel-content bg-white" style="padding:10px;">
+        @{
+            var t = TalismanSqlForum.Code.Stat.get_stat();
+            <p>
+                <small>На этом форуме создано тем:&nbsp</small>@t.tForumThemes_Count
+            </p>
+            <p>
+                <small>Всего сообщений:&nbsp</small>@t.tForumMessages_Count
+            </p>
+            <p>
+                <small>Зарегистрированных пользователей:&nbsp</small>@t.ApplicationUser_Count
+            </p>
+            <p>
+                <small>Последний зарегестрированный пользователь:&nbsp</small>@t.LastUser
+            </p>
+            <p>
+                <small>Рекор посещаемости форума:&nbsp</small>@t.Max_User_login_count <small>Зарегистрирован</small>@t.Date_User_login_count
+            </p>
+        }
+    </div>
+</div>

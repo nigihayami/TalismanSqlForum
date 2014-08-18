@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Список форумов";
+    ViewBag.ReturnUrl = Url.Action("Index", "ForumList");
+}
+<div class="panel">
+    <div class="panel-header gradient_header">
+        <h4 class="fg-white">
+            <i class="icon-grid-view"></i>
+            Список форумов
+        </h4>
+    </div>
+    <div class="panel-content bg-white">
+        <div class="listview-outlook">
+            @foreach (var item in (IEnumerable<TalismanSqlForum.Models.Forum.tForumList>)ViewData["tForumList"])
+            {
+                <a href="@Url.Action("Index", "ForumThemes", new {id = item.Id})" class="list">
+                    <div class="list-content">
+                        <div class="tile half bg-white">
+                            <div class="tile-content icon">
+                                @{
+                                    var t = 0;
+                                    if (User.Identity.IsAuthenticated)
+                                    {
+                                        t = TalismanSqlForum.Code.Stat.count_theme(username: User.Identity.Name, id: item.Id);
+                                    }
+                                    if (User.Identity.IsAuthenticated && t > 0)
+                                    {
+                                        <i class="icon-mail fg-orange"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="icon-mail fg-gray"></i>
+                                    }
+}
+                            </div>
+                            <div class="tile-status">
+                                <span class="name center-block fg-gray">@item.tForumThemes.Count</span>
+                            </div>
+                        </div>
+                        <h5 style="margin-bottom:0; margin-top:0;">@item.tForumList_name</h5>
+                        <small>@item.tForumList_description</small>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</div>
+<div class="row" style="bottom:20px">
+    <div class="container">
+        @Html.Partial("_Stat")
+    </div>
+</div>

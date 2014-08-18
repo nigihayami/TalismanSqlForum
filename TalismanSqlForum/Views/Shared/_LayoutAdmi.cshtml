@@ -1,0 +1,59 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="product" content="TalismanSqlForum">
+    <meta name="description" content="Форум Talisman-Sql">
+    <meta name="author" content="Talisman-Sql">
+    <title>@ViewBag.Title – Talisman-Sql.Forum</title>
+
+    <link href="~/Content/metro-ui/css/metro-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/metro-ui/css/metro-bootstrap-responsive.min.css" rel="stylesheet" />
+    <link href="~/Content/metro-ui/css/iconFont.min.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <script src="~/Scripts/metro-ui/jquery.ui.widget.js"></script>
+    <script src="~/Scripts/metro-ui/metro.min.js"></script>
+    @RenderSection("CKE", required: false)
+    @RenderSection("scripts", required: false)
+</head>
+<body class="metro">
+    <div class="grid">
+        <div class="span3" style="
+                                    position: absolute;
+                                    top: 0;
+                                    bottom: 0px;">
+            <nav class="sidebar dark">
+                <ul>
+                    <li class="active">
+                        <a href="@Url.Action("Index","ForumList")">
+                            <i class="icon-home"></i>
+                            Форум
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Users","Admin")">
+                            <i class="icon-user"></i>
+                            Пользователи
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Forum","Admin")">
+                            <i class="icon-list"></i>
+                            список форумов
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="container" style="margin-left:220px !important">
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>

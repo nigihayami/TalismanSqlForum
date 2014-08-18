@@ -1,0 +1,117 @@
+﻿@model TalismanSqlForum.Models.ViewModel.CreateOffer
+@using TalismanSqlForum.Models.ViewModel;
+
+@{
+    ViewBag.Title = "Создать замечание";
+    List<val> l = new List<val> { };
+    foreach (var i in rep.get("BRANCH", 0, User.Identity.Name))
+    {
+        l.Add(i);
+    }
+    SelectList s_branch = new SelectList(l, "id", "name");
+
+    List<val> l_projects = new List<val> { };
+    foreach (var i in rep.get("PROJECTS", 0, User.Identity.Name))
+    {
+        l_projects.Add(i);
+    }
+    SelectList s_projects = new SelectList(l_projects, "id", "name");
+}
+<div class="panel">
+    <div class="panel-header gradient_header fg-white">
+        <h4 class="fg-white">
+            <i class="icon-plus-2"></i>
+            @ViewBag.Title
+        </h4>
+    </div>
+    @using (Html.BeginForm("CreateOffer", "Moderator", null, FormMethod.Post, new { @class = "panel-content bg-white" }))
+    {
+        <div class="padding20">
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model._message.tForumThemes.Id)
+            @Html.HiddenFor(model => model._message.tForumThemes.tForumThemes_name)
+            @Html.HiddenFor(model => model._message.tForumMessages_messages)
+            @Html.HiddenFor(model => model._message.Id)
+            <fieldset>
+                <legend></legend>
+                <div class="listview-outlook">
+                    @Html.Raw(Model._message.tForumMessages_messages)
+                </div>
+                <div class="input-control switch" data-role="input-control">
+                    <label class="inline-block" style="margin-right: 20px;">
+                        @Html.LabelFor(model => model._iserror)
+                        @Html.CheckBoxFor(model => model._iserror)
+                        <span class="check"></span>
+                    </label>
+                </div>
+                @Html.LabelFor(model => model._location)
+                <div class="input-control text">
+                    @Html.TextBoxFor(model => model._location)
+                </div>
+                @Html.LabelFor(model => model.id_branch)
+                <div class="input-control select">
+                    @Html.DropDownListFor(model => model.id_branch, s_branch)
+                </div>
+                @Html.LabelFor(model => model.id_projects)
+                <div class="input-control select">
+                    @Html.DropDownListFor(model => model.id_projects, s_projects)
+                </div>
+                @Html.LabelFor(model => model.id_release_projects)
+                <div class="input-control select">
+                    <select id="id_release_projects" name="id_release_projects"></select>
+                </div>                
+                @Html.LabelFor(model => model.id_release_projects_exec)
+                <div class="input-control select">
+                    <select id="id_release_projects_exec" name="id_release_projects_exec" class="form-control"></select>
+                </div>
+                @Html.LabelFor(model => model.id_subsystem)
+                <div class="input-control select">
+                    <select id="id_subsystem" name="id_subsystem" class="form-control">
+                        <option>1</option>
+                    </select>
+                </div>
+                <button class="element button_reg gradient_header fg-white" type="submit" style="margin-top:10px; border-radius:7px;">
+                    Создать
+                </button>
+            </fieldset>
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("#id_projects").change(function () {
+            loadData(2, $("#id_projects option:selected").val());
+        });
+        $("#id_projects :first").attr("selected", "selected");
+        loadData(2, $("#id_projects option:selected").val());
+    }
+    );
+    function loadData(level, id) {
+        switch (level) {
+            case 2:
+                $("#id_release_projects").children().remove();
+                $("#id_release_projects_exec").children().remove();
+                $("#id_subsystem").children().remove();
+                $.getJSON("@Url.Action("get_release_projects","Moderator")", { 'id': id, '_table': 'RELEASE_PROJECTS' }, function (data) {
+                    $.each(data, function (i, value) {
+                        $("#id_release_projects").append($("<option></option>").attr("value", value.id).text(value.name));
+                    });
+                });
+                $.getJSON("@Url.Action("get_release_projects","Moderator")", { 'id': id, '_table': 'RELEASE_PROJECTS' }, function (data) {
+                    $.each(data, function (i, value) {
+                        $("#id_release_projects_exec").append($("<option></option>").attr("value", value.id).text(value.name));
+                    });
+                });
+                $.getJSON("@Url.Action("get_release_projects","Moderator")", { 'id': id, '_table': 'SUBSYSTEMS' }, function (data) {
+                    $.each(data, function (i, value) {
+                        $("#id_subsystem").append($("<option></option>").attr("value", value.id).text(value.name));
+                    });
+                });
+                break;
+        }
+    }
+</script>
+
+
+
