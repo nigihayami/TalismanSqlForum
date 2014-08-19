@@ -14,6 +14,7 @@ namespace TalismanSqlForum.Controllers
         // GET: Search
         public ActionResult Index(string val)
         {
+            ViewData["val"] = val;
             ViewData["tForumThemes"] = db.tForumThemes.Where(a => a.tForumThemes_name.Contains(val));
             ViewData["tForumThemes_desc"] = db.tForumThemes.Where(a => a.tForumThemes_desc.Contains(val));
             ViewData["tForumMessages"] = db.tForumMessages.Where(a => a.tForumMessages_messages.Contains(val));

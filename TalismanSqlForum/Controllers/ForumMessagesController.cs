@@ -34,10 +34,6 @@ namespace TalismanSqlForum.Controllers
             ViewBag.ReturnUrl = Url.Action("Index", "ForumMessages", new { id = id });
             return View();
         }
-
-        // POST: ForumMessages/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "tForumMessages_messages")] int? id , tForumMessages tForumMessages)

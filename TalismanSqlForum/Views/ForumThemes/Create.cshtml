@@ -31,11 +31,16 @@
                 </div>
                 <button class="element button_reg gradient_header fg-white" type="submit" style="margin-top:10px; border-radius:7px;">
                     Создать
-                </button>      
+                </button>
             </fieldset>
         </div>
     }
 </div>
+<script type="text/javascript">
+    CKEDITOR.replace('tForumThemes_desc', {
+        filebrowserImageUploadUrl: '@Url.Action("UploadImage","Upload")'
+    });
+</script>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

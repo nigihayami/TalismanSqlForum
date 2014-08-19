@@ -17,6 +17,7 @@ namespace TalismanSqlForum.Models.Forum
         public int Id { get; set; }
         [Required]
         [Display(Name = "Название темы")]
+        [MaxLength(100)]
         public string tForumThemes_name { get; set; }
 
         public System.DateTime tForumThemes_datetime { get; set; }

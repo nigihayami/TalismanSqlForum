@@ -8,12 +8,14 @@
         <i class="icon-exit"></i>
         Выйти
     </a>
+    <span class="element-divider place-right"></span>
     <a href="@Url.Action("Manage","Account")" class="element gradient_header place-right">
         <i class="icon-pencil"></i>
         Профиль(@User.Identity.GetUserName())
     </a>
         if (User.IsInRole("admin"))
         {
+            <span class="element-divider place-right"></span>
             <a href="@Url.Action("Index","Admin")" class="element gradient_header place-right">
                 <i class="icon-wrench"></i>
             </a>

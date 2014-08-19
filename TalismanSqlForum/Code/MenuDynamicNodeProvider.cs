@@ -43,7 +43,14 @@ namespace TalismanSqlForum.Code
                             node2.RouteValues.Add("id_fl", item2.tForumList.Id);
                             node2.Action = "Index";
                             node2.Controller = "ForumMessages";
-                            node2.Title = item2.tForumThemes_name;
+                            if (item2.tForumThemes_name.Length > 30)
+                            {
+                                node2.Title = item2.tForumThemes_name.Substring(0,30)+"...";
+                            }
+                            else
+                            {
+                                node2.Title = item2.tForumThemes_name;
+                            }
                             nodes.Add(node2);
                         }
                     }

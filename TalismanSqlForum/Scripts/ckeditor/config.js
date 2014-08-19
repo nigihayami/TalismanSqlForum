@@ -3,12 +3,12 @@
  * For licensing, see LICENSE.html or http://ckeditor.com/license
  */
 
-CKEDITOR.editorConfig = function( config ) {
-	// Define changes to default configuration here.
-	// For complete reference see:
-	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
+CKEDITOR.editorConfig = function (config) {
+    // Define changes to default configuration here.
+    // For complete reference see:
+    // http://docs.ckeditor.com/#!/api/CKEDITOR.config
 
-	// The toolbar groups arrangement, optimized for two toolbar rows.
+    // The toolbar groups arrangement, optimized for two toolbar rows.
     config.toolbarGroups = [
         { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
 		{ name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
@@ -16,15 +16,17 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'others' },
         { name: 'insert' },
 		{ name: 'about' }
-	];
+    ];
 
-	// Remove some buttons provided by the standard plugins, which are
-	// not needed in the Standard(s) toolbar.
-	config.removeButtons = 'Subscript,Superscript';
+    // Remove some buttons provided by the standard plugins, which are
+    // not needed in the Standard(s) toolbar.
+    config.removeButtons = 'Subscript,Superscript';
 
-	// Set the most common block elements.
-	config.format_tags = 'p;h1;h2;h3;pre';
+    // Set the most common block elements.
+    config.format_tags = 'p;h1;h2;h3;pre';
 
-	// Simplify the dialog windows.
-	config.removeDialogTabs = 'image:advanced;link:advanced';
+    // Simplify the dialog windows.
+    config.removeDialogTabs = 'image:advanced;link:advanced';
+
+    config.filebrowserImageUploadUrl = '/Upload/UploadImage';
 };
