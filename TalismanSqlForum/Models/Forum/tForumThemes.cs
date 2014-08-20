@@ -23,8 +23,6 @@ namespace TalismanSqlForum.Models.Forum
         public System.DateTime tForumThemes_datetime { get; set; }
 
         [AllowHtml]
-        [Column(TypeName = "ntext")]
-        [MaxLength]
         [Display(Name="Краткое описание")]
         public string tForumThemes_desc { get; set; }
 

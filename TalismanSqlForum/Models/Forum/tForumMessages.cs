@@ -14,8 +14,6 @@ namespace TalismanSqlForum.Models.Forum
         [Required]
         [Display(Name = "Сообщение")]
         [AllowHtml]
-        [Column(TypeName = "ntext")]
-        [MaxLength]
         public string tForumMessages_messages { get; set; }
         [Required]
         public System.DateTime tForumMessages_datetime { get; set; }
