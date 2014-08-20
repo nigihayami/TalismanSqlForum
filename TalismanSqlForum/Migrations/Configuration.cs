@@ -65,7 +65,8 @@ namespace TalismanSqlForum.Migrations
                     Inn = "0000000000",
                     Adres = "Краснодар, Садовая 166/1",
                     NickName = "admin",
-                    LastIn = System.DateTime.Now
+                    LastIn = System.DateTime.Now,
+                    DateReg = System.DateTime.Now
                 };
 
                 manager.Create(user, "qvantologiya!");
