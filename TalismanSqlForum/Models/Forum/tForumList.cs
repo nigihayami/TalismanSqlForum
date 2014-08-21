@@ -18,6 +18,8 @@ namespace TalismanSqlForum.Models.Forum
         public string tForumList_name { get; set; }
         [Display(Name = "Краткое описание")]
         public string tForumList_description { get; set; }
+        [Display(Name = "Скрытый")]
+        public bool tForumList_hide { get; set; }
 
         public virtual ICollection<tForumThemes> tForumThemes { get; set; }
     }

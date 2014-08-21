@@ -18,7 +18,7 @@ namespace TalismanSqlForum.Controllers
         // GET: ForumList
         public ActionResult Index()
         {
-            ViewData["tForumList"] = db.tForumLists.OrderBy(a => a.tForumList_name).ToList();
+            ViewData["tForumList"] = db.tForumLists.Where(a=> !a.tForumList_hide).OrderBy(a => a.tForumList_name).ToList();
             return View();
         }
         protected override void Dispose(bool disposing)

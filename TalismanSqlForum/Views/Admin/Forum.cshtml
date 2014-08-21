@@ -7,25 +7,56 @@
     <table class="table striped bordered hovered">
         <thead>
             <tr>
-                <th class="text-left">Действия</th>
+                <th class="text-left"></th>
+                <th class="text-left">Скрыт</th>
                 <th class="text-left">Название</th>
                 <th class="text-left">Описание</th>
             </tr>
         </thead>
         <tbody>
-            @foreach(var item in t)
+            @foreach (var item in t)
             {
                 <tr>
                     <td>
                         <a href="@Url.Action("Edit","AdminForum")" class="icon-pencil"></a>
-                        <a href="@Url.Action("Hide","AdminForum")" class="icon-blocked"></a>
+                    </td>
+                    <td>
+                        <div class="input-control switch" data-role="input-control">
+                            <label class="inline-block" style="margin-right: 20px;">
+                                @switch (item.tForumList_hide)
+                                {
+                                    case true:
+                                        <input type="checkbox" checked="" data-url="@Url.Action("Hide", "AdminForum", new {id = item.Id })">
+                                        break;
+                                    default:
+                                    <input type="checkbox" data-url="@Url.Action("Hide", "AdminForum", new {id = item.Id })">
+                                        break;
+                                }
+                                <span class="check"></span>
+                            </label>
+                        </div>
                     </td>
                     <td>@item.tForumList_name</td>
                     <td>@item.tForumList_description</td>
                 </tr>
-            }            
+            }
         </tbody>
     </table>
 }
+<script>
+    $(function () {
+        $('input:checkbox').change(function () {
+            var data = {};
+            data[$(this).attr('name')] = $(this).is(':checked');
 
-
+            $.ajax({
+                url: $(this).data('url'),
+                type: 'POST',
+                data: data,
+                success: function (result) {
+                    // TODO: do something with the result    
+                }
+            });
+        });
+    });
+</script>

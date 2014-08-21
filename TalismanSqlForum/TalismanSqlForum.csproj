@@ -189,6 +189,7 @@
     <Compile Include="Code\Stat.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Admin\AdminController.cs" />
+    <Compile Include="Controllers\Admin\AdminForumController.cs" />
     <Compile Include="Controllers\ForumListController.cs" />
     <Compile Include="Controllers\ForumMessagesController.cs" />
     <Compile Include="Controllers\ForumThemesController.cs" />
@@ -612,6 +613,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\" />
+    <Folder Include="Views\AdminForum\" />
     <Folder Include="Views\Upload\" />
   </ItemGroup>
   <ItemGroup>
