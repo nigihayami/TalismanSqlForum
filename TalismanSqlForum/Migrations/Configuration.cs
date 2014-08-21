@@ -19,14 +19,14 @@ namespace TalismanSqlForum.Migrations
         protected override void Seed(TalismanSqlForum.Models.ApplicationDbContext context)
         {
             context.tForumLists.AddOrUpdate(a => a.tForumList_name,
-               new tForumList { tForumList_name = "ФЭО", tForumList_description = "Обсуждение модуля \"ФЭО\" ПК Талисман-SQL", tForumList_hide = false },
-               new tForumList { tForumList_name = "Администрирование", tForumList_description = "Обсуждение модуля \"Администрирование\" ПК Талисман-SQL", tForumList_hide = false },
-               new tForumList { tForumList_name = "Репликация", tForumList_description = "Обсуждение модуля \"Репликация\" ПК Талисман-SQL", tForumList_hide = false },
-               new tForumList { tForumList_name = "Бухгалтерия", tForumList_description = "Обсуждение модуля \"Бухгалтерия\" ПК Талисман-SQL", tForumList_hide = false },
-               new tForumList { tForumList_name = "Зарплата", tForumList_description = "Обсуждение модуля \"Зарплата\" ПК Талисман-SQL", tForumList_hide = false },
-               new tForumList { tForumList_name = "Кадры", tForumList_description = "Обсуждение модуля \"Кадры\" ПК Талисман-SQL", tForumList_hide = false },
-               new tForumList { tForumList_name = "Общие вопросы", tForumList_description = "Ваши вопросы и пожелания", tForumList_hide = false },
-               new tForumList { tForumList_name = "Система учета замечаний", tForumList_description = "Обсуждение модуля \"Система учета замечаний\" ПК Талисман-SQL", tForumList_hide = false }
+               new tForumList { tForumList_name = "ФЭО", tForumList_description = "Обсуждение модуля \"ФЭО\" ПК Талисман-SQL", tForumList_hide = false, tForumList_icon = "icon-libreoffice" },
+               new tForumList { tForumList_name = "Администрирование", tForumList_description = "Обсуждение модуля \"Администрирование\" ПК Талисман-SQL", tForumList_hide = false, tForumList_icon = "icon-tools" },
+               new tForumList { tForumList_name = "Репликация", tForumList_description = "Обсуждение модуля \"Репликация\" ПК Талисман-SQL", tForumList_hide = false, tForumList_icon = "icon-copy" },
+               new tForumList { tForumList_name = "Бухгалтерия", tForumList_description = "Обсуждение модуля \"Бухгалтерия\" ПК Талисман-SQL", tForumList_hide = false, tForumList_icon = "icon-calculate" },
+               new tForumList { tForumList_name = "Зарплата", tForumList_description = "Обсуждение модуля \"Зарплата\" ПК Талисман-SQL", tForumList_hide = false, tForumList_icon = "icon-dollar-2" },
+               new tForumList { tForumList_name = "Кадры", tForumList_description = "Обсуждение модуля \"Кадры\" ПК Талисман-SQL", tForumList_hide = false, tForumList_icon = "icon-user-3" },
+               new tForumList { tForumList_name = "Общие вопросы", tForumList_description = "Ваши вопросы и пожелания", tForumList_hide = false, tForumList_icon = "icon-support" },
+               new tForumList { tForumList_name = "Система учета замечаний", tForumList_description = "Обсуждение модуля \"Система учета замечаний\" ПК Талисман-SQL", tForumList_hide = false, tForumList_icon = "icon-wrench" }
                );
             if (!context.Roles.Any(r => r.Name == "admin"))
             {

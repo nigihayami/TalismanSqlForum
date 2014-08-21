@@ -26,6 +26,7 @@ namespace TalismanSqlForum.Controllers
             }
             ViewBag.Title = t.tForumList_name;
             ViewData["tForumList_id"] = t.Id;
+            ViewData["tForumList_icon"] = t.tForumList_icon;
             ViewData["tForumThemes_top"] = t.tForumThemes.Where(a => a.tForumThemes_top == true).OrderByDescending(a => a.tForumThemes_datetime).ToList();
             ViewData["tForumThemes"] = t.tForumThemes.Where(a => a.tForumThemes_top == false).OrderByDescending(a => a.tForumThemes_datetime).ToList();
             return View();

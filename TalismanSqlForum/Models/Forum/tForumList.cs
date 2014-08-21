@@ -21,6 +21,8 @@ namespace TalismanSqlForum.Models.Forum
         [Display(Name = "Скрытый")]
         public bool tForumList_hide { get; set; }
 
+        [Display(Name = "Иконка форума ")]
+        public string tForumList_icon { get; set; }
         public virtual ICollection<tForumThemes> tForumThemes { get; set; }
     }
 }

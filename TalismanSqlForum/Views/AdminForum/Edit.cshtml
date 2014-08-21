@@ -1,0 +1,48 @@
+﻿@model  TalismanSqlForum.Models.Forum.tForumList
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+@using (Html.BeginForm("Edit", "AdminForum", FormMethod.Post, new { @class = "padding20 bg-white" }))
+{
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Редактирование форума</legend>
+        @Html.HiddenFor(model => model.Id)
+
+        @Html.LabelFor(model => model.tForumList_name)
+        <div class="input-control text" data-role="input-control">
+            @Html.EditorFor(model => model.tForumList_name)
+            @Html.ValidationMessageFor(model => model.tForumList_name, "", new { @class = "text-danger" })
+        </div>
+        @Html.LabelFor(model => model.tForumList_description)
+        <div class="input-control text" data-role="input-control">
+            @Html.EditorFor(model => model.tForumList_description)
+            @Html.ValidationMessageFor(model => model.tForumList_description, "", new { @class = "text-danger" })
+        </div>
+        @Html.LabelFor(model => model.tForumList_icon)
+        <label><a href="http://metroui.org.ua/icons.html">Примеры стилей - писать именно класс</a></label>
+        <div class="input-control text" data-role="input-control">
+            @Html.EditorFor(model => model.tForumList_icon)
+            @Html.ValidationMessageFor(model => model.tForumList_icon, "", new { @class = "text-danger" })
+        </div>
+        <div class="input-control switch" data-role="input-control">
+            <label class="inline-block" style="margin-right: 20px;">
+                @Html.LabelFor(model => model.tForumList_hide)
+                @Html.CheckBoxFor(model => model.tForumList_hide)
+                <span class="check"></span>
+            </label>
+        </div>
+        <input type="submit" value="Сохранить">
+        <div style="margin-top: 20px;">
+        </div>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -2,6 +2,9 @@
     ViewBag.Title = "Список форумов";
     Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
 }
+<div class="row">
+    @Html.ActionLink("Сооздать", "Create", "AdminForum", null, new {@class ="button icon-plus-2" })
+</div>
 @{
     var t = (IEnumerable<TalismanSqlForum.Models.Forum.tForumList>)ViewData["tForumList"];
     <table class="table striped bordered hovered">
@@ -9,6 +12,7 @@
             <tr>
                 <th class="text-left"></th>
                 <th class="text-left">Скрыт</th>
+                <th class="text-left"></th>
                 <th class="text-left">Название</th>
                 <th class="text-left">Описание</th>
             </tr>
@@ -18,7 +22,7 @@
             {
                 <tr>
                     <td>
-                        <a href="@Url.Action("Edit","AdminForum")" class="icon-pencil"></a>
+                        <a href="@Url.Action("Edit", "AdminForum", new { id = item.Id})" class="icon-pencil"></a>
                     </td>
                     <td>
                         <div class="input-control switch" data-role="input-control">
@@ -36,6 +40,7 @@
                             </label>
                         </div>
                     </td>
+                    <td><i class="@item.tForumList_icon"></i></td>
                     <td>@item.tForumList_name</td>
                     <td>@item.tForumList_description</td>
                 </tr>
