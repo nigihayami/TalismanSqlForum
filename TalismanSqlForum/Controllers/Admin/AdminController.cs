@@ -35,12 +35,6 @@ namespace TalismanSqlForum.Controllers.Admin
             {
                 switch (item.Name)
                 {
-                    case "admin":
-                        if (t.Roles.Where(a => a.RoleId == item.Id).Count() > 0)
-                        {
-                            r.is_admin = true;
-                        }
-                        break;
                     case "moderator":
                         if (t.Roles.Where(a => a.RoleId == item.Id).Count() > 0)
                         {

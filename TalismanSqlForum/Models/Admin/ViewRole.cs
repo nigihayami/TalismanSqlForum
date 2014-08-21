@@ -7,7 +7,6 @@ namespace TalismanSqlForum.Models.Admin
 {
     public class ViewRole
     {
-        public bool is_admin { get; set; }
         public bool is_moderator { get; set; }
         public bool is_user { get; set; }
     }
