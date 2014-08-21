@@ -52,6 +52,13 @@ namespace TalismanSqlForum.Controllers.Admin
             ViewData["userrole"] = r;
             return View();
         }
+
+        public ActionResult Forum()
+        {
+            ViewData["tForumList"] = db.tForumLists.OrderBy(a => a.tForumList_name).ToList();
+            return View();
+        }
+
         public JsonResult set_UsersRoles(string UserId, string RoleName)
         {
             var context = new TalismanSqlForum.Models.ApplicationDbContext();

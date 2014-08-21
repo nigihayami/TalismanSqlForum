@@ -4,33 +4,33 @@
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
-    <a href="javascript:document.getElementById('logoutForm').submit()" class="element gradient_header place-right">
+    <a href="javascript:document.getElementById('logoutForm').submit()" class="element bg-transparent place-right">
         <i class="icon-exit"></i>
         Выйти
     </a>
     <span class="element-divider place-right"></span>
-    <a href="@Url.Action("Manage","Account")" class="element gradient_header place-right">
+    <a href="@Url.Action("Manage","Account")" class="element bg-transparent place-right">
         <i class="icon-pencil"></i>
         Профиль(@User.Identity.GetUserName())
     </a>
         if (User.IsInRole("admin"))
         {
             <span class="element-divider place-right"></span>
-            <a href="@Url.Action("Index","Admin")" class="element gradient_header place-right">
-                <i class="icon-wrench"></i>
-            </a>
+    <a href="@Url.Action("Index","Admin")" class="element bg-transparent place-right">
+        <i class="icon-wrench"></i>
+    </a>
         }
     }
 }
 else
 {
 
-    <a href="@Url.Action("Register","Account")" id="registerLink" class="element gradient_header place-right">
+    <a href="@Url.Action("Register","Account")" id="registerLink" class="element bg-transparent place-right">
         <i class="icon-accessibility"></i>
         Регистрация
     </a>
     <span class="element-divider gradient_header place-right"></span>
-    <a href="@Url.Action("Login", "Account", new { returnurl = ViewBag.ReturnUrl })" id="loginLink" class="element gradient_header place-right">
+    <a href="@Url.Action("Login", "Account", new { returnurl = ViewBag.ReturnUrl })" id="loginLink" class="element bg-transparent place-right">
         <i class="icon-enter"></i>
         Вход
     </a>

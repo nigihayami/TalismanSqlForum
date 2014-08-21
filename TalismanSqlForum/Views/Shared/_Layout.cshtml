@@ -22,14 +22,14 @@
 <body class="metro">
     <div class="row">
         <nav class="navigation-bar bg-transparent">
-            <nav class="navigation-bar-content container fg-black">
-                <a class="element gradient_header FontCourier" href="http://Talisman-sql.ru">
+            <nav class="navigation-bar-content container gradient_header">
+                <a class="element bg-transparent" href="http://Talisman-sql.ru">
                     Talisman-Sql.ru
                 </a>
                 <span class="element-divider"></span>
                 <a class="element1 pull-menu" href="#"></a>
                 <div class="element-menu">
-                    <a class="element gradient_header FontCourier" href="@Url.Action("Index","ForumList")">
+                    <a class="element bg-transparent" href="@Url.Action("Index","ForumList")">
                         Форум
                     </a>
                     @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "element input-element bg-transparent" }))
@@ -69,7 +69,7 @@
         <footer>
             <nav class="navigation-bar bg-white fixed-bottom" style="border-top: 3px darkgray ridge;">
                 <div class=" navigation-bar-content container">
-                    <img style="width: 35px; height: 35px; float: left;" src="~/Content/l_.png">
+                    <img style="width: 25px; height: 25px; float: left;" src="~/Content/l_.png">
                     <span class="element-divider"></span>
                     <a class="element bg-transparent fg-dark image-button image-left" href="http://talisman-sql.ru/#i201">
                         ООО "Талисман" 2014

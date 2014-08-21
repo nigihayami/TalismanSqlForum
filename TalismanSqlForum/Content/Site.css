@@ -16,18 +16,23 @@
     border-top-right-radius: 0px;
 }
 
+.metro .navigation-bar .navigation-bar-content .element, .metro .navbar .navigation-bar-content .element, .metro .navigation-bar .navbar-content .element, .metro .navbar .navbar-content .element, .metro .navigation-bar .navigation-bar-content .element-divider, .metro .navbar .navigation-bar-content .element-divider, .metro .navigation-bar .navbar-content .element-divider, .metro .navbar .navbar-content .element-divider {
+    font-family: "Trebuchet MS",Helvetica,Arial,sans-serif;
+}
+.metro .navigation-bar .navigation-bar-content .element, .metro .navbar .navigation-bar-content .element, .metro .navigation-bar .navbar-content .element, .metro .navbar .navbar-content .element, .metro .navigation-bar .navigation-bar-content .element-divider, .metro .navbar .navigation-bar-content .element-divider, .metro .navigation-bar .navbar-content .element-divider, .metro .navbar .navbar-content .element-divider {
+    height: 35px;
+}
 .metro .navigation-bar .navigation-bar-content .element, .metro .navbar .navigation-bar-content .element, .metro .navigation-bar .navbar-content .element, .metro .navbar .navbar-content .element {
-    background-color: green;
+    padding: 10px;
+    font-family: "Trebuchet MS","Open Sans Light",Verdana,Arial,Helvetica,sans-serif;
+}
+.metro .navigation-bar .navigation-bar-content, .metro .navbar .navigation-bar-content, .metro .navigation-bar .navbar-content, .metro .navbar .navbar-content {
     border-radius: 5px;
-    color: white;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    height: 25px;
-    padding: 5px;
 }
 
-.metro .navigation-bar .navigation-bar-content .element:hover, .metro .navbar .navigation-bar-content .element:hover, .metro .navigation-bar .navbar-content .element:hover, .metro .navbar .navbar-content .element:hover {
-    background-color: darkGreen;
-}
+
+
+
 
 .metro [data-role=panel] .panel-header {
     cursor: pointer;
@@ -87,6 +92,19 @@
 {
     border-bottom:none;
 }
+.metro h1,.metro h2 ,
+.metro h3,.metro h4 ,
+.metro h5,.metro h6  {
+    font-family: "Trebuchet MS","Segoe UI Semibold_","Open Sans Bold",Verdana,Arial,Helvetica,sans-serif;
+}
+.metro .listview-outlook .list .list-content {
+    font-family: Arial,Helvetica,sans-serif;
+}
+.metro p {
+    font-family: Arial,Helvetica,sans-serif;
+}
+
+
 
 
 
