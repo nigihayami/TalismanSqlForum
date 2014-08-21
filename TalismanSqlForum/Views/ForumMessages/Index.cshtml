@@ -21,11 +21,33 @@
                            data-hint="Закрепить"
                            data-hint-position="top"></i>
                     }
+                </a>                
+            }
+            @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator") || User.Identity.Name.Equals(ViewData["tUsers_NickName"])))
+            {
+                <a href="@Url.Action("Close", "ForumThemes", new { id = ViewData["ForumThemes_Id"] })" class="place-right fg-white">
+                    @if ((bool)ViewData["tForumThemes_close"])
+                    {
+                        <i class="icon-unlocked"
+                           data-hint="Открыть тему"
+                           data-hint-position="top">
+                        </i>
+                    }
+                    else
+                    {
+                        <i class="icon-locked-2"
+                           data-hint="Закрыть"
+                           data-hint-position="top"></i>
+                    }
                 </a>
             }
             @if ((bool)ViewData["tForumThemes_top"])
             {
-                <i class="icon-attachment"></i>
+                <i class="icon-attachment" data-hint="Тема закреплена" data-hint-position="top"></i>
+            }
+            @if ((bool)ViewData["tForumThemes_close"])
+            {
+                <i class="icon-locked-2" data-hint="Тема закрыта" data-hint-position="top"></i>
             }
         </h4>
     </div>
@@ -141,7 +163,7 @@
     </div>
 }
 <hr />
-@if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator") || User.IsInRole("user")))
+@if (!(bool)ViewData["tForumThemes_close"] && User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator") || User.IsInRole("user")))
 {
     @section CKE{
         <script src="~/Scripts/ckeditor/ckeditor.js"></script>

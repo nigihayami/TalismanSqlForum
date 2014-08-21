@@ -26,6 +26,7 @@ namespace TalismanSqlForum.Controllers
             ViewData["ForumThemes_Desc"] = t.tForumThemes_desc;
             ViewData["ForumThemes_Id"] = t.Id;
             ViewData["tForumThemes_top"] = t.tForumThemes_top;
+            ViewData["tForumThemes_close"] = t.tForumThemes_close;
             ViewData["tForumMessages"] = t.tForumMessages;
             ViewData["tUsers"] = t.tUsers;
             ViewData["tUsers_NickName"] = t.tUsers.NickName;

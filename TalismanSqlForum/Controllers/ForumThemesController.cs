@@ -81,6 +81,18 @@ namespace TalismanSqlForum.Controllers
             }
             return HttpNotFound();
         }
+        public ActionResult Close(int? id)
+        {
+            var t = db.tForumThemes.Find(id);
+            if (t != null)
+            {
+                t.tForumThemes_close = !t.tForumThemes_close;
+                db.Entry(t).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", "ForumMessages", new { id = id });
+            }
+            return HttpNotFound();
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
