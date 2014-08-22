@@ -20,33 +20,31 @@
     @RenderSection("scripts", required: false)
 </head>
 <body class="metro">
-    <div class="row">
-        <nav class="navigation-bar bg-transparent">
-            <nav class="navigation-bar-content container gradient_header">
-                <a class="element bg-transparent" href="http://Talisman-sql.ru">
-                    Talisman-Sql.ru
-                </a>
-                <span class="element-divider"></span>
-                <a class="element1 pull-menu" href="#"></a>
-                <div class="element-menu">
-                    <a class="element bg-transparent" href="@Url.Action("Index","ForumList")">
-                        Форум
-                    </a>
-                    @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "element input-element bg-transparent" }))
-                    {
-                        <div class="input-control text">
-                            <input id="val" name="val" type="text" placeholder="Поиск..." style="border-radius:7px;">
-                            <button class="btn-search"></button>
-                        </div>
-                    }
-                    @Html.Partial("_LoginPartial")
-                </div>
-            </nav>
-        </nav>
-    </div>
     <div class="grid">
         <div class="row container">
-            <img src="~/Content/logo.png" />
+            <img src="~/Content/logo.png" style="padding-top:20px;"/>
+            <nav class="sidebar bg-transparent place-right" style="width: 165px !important;">
+                <div class="margin10">
+                    <a class="place-left fg-black" href="http://Talisman-sql.ru">
+                        Сайт
+                    </a>
+                    <a class="place-right fg-black" href="@Url.Action("Index","ForumList")">
+                        Форум
+                    </a>
+                </div>
+                <ul style="padding-top: 20px; font-family:'Trebuchet MS'">
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </nav>
+            <div class="row">
+            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "element input-element bg-transparent no-margin" }))
+            {
+                <div class="input-control text" style="width: 387px !important;">
+                    <input id="val" name="val" type="text" placeholder="Поиск..." style="border-radius:7px;">
+                    <button class="btn-search"></button>
+                </div>
+            }
+            </div>
         </div>
         <div class="row">
             <div class="container">
