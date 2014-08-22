@@ -20,10 +20,10 @@
     font-family: "Trebuchet MS",Helvetica,Arial,sans-serif;
 }
 .metro .navigation-bar .navigation-bar-content .element, .metro .navbar .navigation-bar-content .element, .metro .navigation-bar .navbar-content .element, .metro .navbar .navbar-content .element, .metro .navigation-bar .navigation-bar-content .element-divider, .metro .navbar .navigation-bar-content .element-divider, .metro .navigation-bar .navbar-content .element-divider, .metro .navbar .navbar-content .element-divider {
-    height: 35px;
+    height: 30px;
 }
 .metro .navigation-bar .navigation-bar-content .element, .metro .navbar .navigation-bar-content .element, .metro .navigation-bar .navbar-content .element, .metro .navbar .navbar-content .element {
-    padding: 10px;
+    padding: 7px;
     font-family: "Trebuchet MS","Open Sans Light",Verdana,Arial,Helvetica,sans-serif;
 }
 .metro .navigation-bar .navigation-bar-content, .metro .navbar .navigation-bar-content, .metro .navigation-bar .navbar-content, .metro .navbar .navbar-content {
