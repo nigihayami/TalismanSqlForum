@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using TalismanSqlForum.Models.Forum;
 using TalismanSqlForum.Models.Moderator;
+using TalismanSqlForum.Models.Users;
 
 namespace TalismanSqlForum.Models
 {
@@ -24,6 +25,7 @@ namespace TalismanSqlForum.Models
             this.tForumThemes = new HashSet<tForumThemes>();
             this.tForumMessages = new HashSet<tForumMessages>();
             this.tModerator = new HashSet<tModerator>();
+            this.tUserNewThemes = new HashSet<tUserNewThemes>();
         }
         [Required]
         [Display(Name = "Полное наименование учреждения")]
@@ -53,6 +55,7 @@ namespace TalismanSqlForum.Models
         public virtual ICollection<tForumThemes> tForumThemes { get; set; }
         public virtual ICollection<tForumMessages> tForumMessages { get; set; }
         public virtual ICollection<tModerator> tModerator { get; set; }
+        public virtual ICollection<tUserNewThemes> tUserNewThemes { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -72,6 +75,10 @@ namespace TalismanSqlForum.Models
                 .HasMany(a => a.tForumMessages)
                 .WithRequired(b => b.tForumThemes)
                 .WillCascadeOnDelete(true);
+            modelBuilder.Entity<tForumThemes>()
+                .HasMany(a => a.tUserNewForumThemes)
+                .WithRequired(b => b.tForumThemes)
+                .WillCascadeOnDelete(true);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -88,5 +95,7 @@ namespace TalismanSqlForum.Models
         public System.Data.Entity.DbSet<TalismanSqlForum.Models.Moderator.tModerator> tModerator { get; set; }
 
         public System.Data.Entity.DbSet<IdentityUserRole> IdentityUserRole { get; set; }
+
+        public System.Data.Entity.DbSet<tUserNewThemes> tUserNewThemes { get; set; }
     }
 }

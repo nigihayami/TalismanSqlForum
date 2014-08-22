@@ -209,6 +209,7 @@
     <Compile Include="Models\Forum\tForumThemes.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Moderator\tModerator.cs" />
+    <Compile Include="Models\Users\UserNewThemes.cs" />
     <Compile Include="Models\ViewModel\CreateOffer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -616,6 +617,7 @@
   <ItemGroup>
     <Folder Include="Content\Images\" />
     <Folder Include="Views\tForumLists\" />
+    <Folder Include="Views\tUserNewThemes\" />
     <Folder Include="Views\Upload\" />
   </ItemGroup>
   <ItemGroup>

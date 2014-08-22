@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using TalismanSqlForum.Models;
 using TalismanSqlForum.Models.Forum;
+using TalismanSqlForum.Models.Users;
 
 namespace TalismanSqlForum.Controllers
 {
@@ -65,6 +66,24 @@ namespace TalismanSqlForum.Controllers
                 }
                 db.tForumThemes.Add(tForumThemes);
                 db.SaveChanges();
+                /*для всех авторизованных пользователей добавляем пометку - что появилась новая тема*/
+                var r = db.Roles.ToList();
+                foreach (var item in r)
+                {
+                    //по ролям
+                    foreach (var item2 in db.Users.Where(a => a.Roles.Where(b => b.RoleId == item.Id).Count() > 0))
+                    {
+                        //по пользователям в роли
+                        if (db.tUserNewThemes.Where(a=> a.tUsers.Id == item2.Id).Where(b => b.tForumThemes.Id == tForumThemes.Id).Count() == 0)
+                        {
+                            var n = new tUserNewThemes();
+                            n.tForumThemes = tForumThemes;
+                            n.tUsers = item2;
+                            db.tUserNewThemes.Add(n);
+                            db.SaveChanges();
+                        }
+                    }
+                }
                 return RedirectToAction("Index","ForumMessages", new { id = tForumThemes.Id });
             }
 

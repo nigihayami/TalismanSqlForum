@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TalismanSqlForum.Models.Users;
 
 namespace TalismanSqlForum.Models.Forum
 {
@@ -34,5 +35,7 @@ namespace TalismanSqlForum.Models.Forum
         public virtual tForumList tForumList { get; set; }
         public virtual ApplicationUser tUsers { get; set; }
         public virtual ICollection<tForumMessages> tForumMessages { get; set; }
+
+        public virtual ICollection<tUserNewThemes> tUserNewForumThemes { get; set; }
     }
 }

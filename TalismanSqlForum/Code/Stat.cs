@@ -13,17 +13,15 @@ namespace TalismanSqlForum.Code
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var d = db.Users.Where(a => a.UserName == username).First().LastIn;
-                var t = db.tForumMessages.Where(b => b.tForumThemes.tForumList.Id == id).Where(a => a.tForumMessages_datetime >= d).Count();
+                var t = db.tUserNewThemes.Where(a => a.tUsers.UserName == username).Where(b => b.tForumThemes.tForumList.Id == id).Count();
                 return t;
             }
         }
         public static int count_mess(string username, int id)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                var d = db.Users.Where(a => a.UserName == username).First().LastIn;
-                var t = db.tForumMessages.Where(b => b.tForumThemes.Id == id).Where(a => a.tForumMessages_datetime >= d).Count();
+            {                
+                var t = db.tUserNewThemes.Where(a => a.tUsers.UserName == username).Where(b => b.tForumThemes.Id == id).Count();
                 return t;
             }
         }

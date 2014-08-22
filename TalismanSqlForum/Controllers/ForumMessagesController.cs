@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using TalismanSqlForum.Models;
 using TalismanSqlForum.Models.Forum;
+using TalismanSqlForum.Models.Users;
 
 namespace TalismanSqlForum.Controllers
 {
@@ -33,6 +34,15 @@ namespace TalismanSqlForum.Controllers
             ViewData["tUsers_Org"] = t.tUsers.Name_Org;
             ViewData["roles"] = db.Roles.ToList();
             ViewBag.ReturnUrl = Url.Action("Index", "ForumMessages", new { id = id });
+            if (User.Identity.IsAuthenticated)
+            {
+                foreach (var tUserNewThemes in db.tUserNewThemes.Where(a => a.tUsers.UserName == User.Identity.Name).Where(b => b.tForumThemes.Id == id))
+                {
+                    //Удаляем из новых сообщений
+                    db.tUserNewThemes.Remove(tUserNewThemes);
+                    db.SaveChanges();
+                }
+            }
             return View();
         }
         [HttpPost]
@@ -50,6 +60,24 @@ namespace TalismanSqlForum.Controllers
             {
                 db.tForumMessages.Add(tForumMessages);
                 db.SaveChanges();
+                /*для всех авторизованных пользователей добавляем пометку - что появилась новая тема*/
+                var r = db.Roles.ToList();
+                foreach (var item in r)
+                {
+                    //по ролям
+                    foreach (var item2 in db.Users.Where(a => a.Roles.Where(b => b.RoleId == item.Id).Count() > 0))
+                    {
+                        //по пользователям в роли
+                        if (db.tUserNewThemes.Where(a => a.tUsers.Id == item2.Id).Where(b => b.tForumThemes.Id == tForumMessages.tForumThemes.Id).Count() == 0)
+                        {
+                            var n = new tUserNewThemes();
+                            n.tForumThemes = tForumMessages.tForumThemes;
+                            n.tUsers = item2;
+                            db.tUserNewThemes.Add(n);
+                            db.SaveChanges();
+                        }
+                    }
+                }
                 return RedirectToAction("Index", new { id = id, id_fl = tForumMessages.tForumThemes.tForumList.Id });
             }
 
