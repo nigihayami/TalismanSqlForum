@@ -20,15 +20,22 @@
     font-family: "Trebuchet MS",Helvetica,Arial,sans-serif;
 }
 .metro .navigation-bar .navigation-bar-content .element, .metro .navbar .navigation-bar-content .element, .metro .navigation-bar .navbar-content .element, .metro .navbar .navbar-content .element, .metro .navigation-bar .navigation-bar-content .element-divider, .metro .navbar .navigation-bar-content .element-divider, .metro .navigation-bar .navbar-content .element-divider, .metro .navbar .navbar-content .element-divider {
-    height: 30px;
+    height: 25px;
 }
 .metro .navigation-bar .navigation-bar-content .element, .metro .navbar .navigation-bar-content .element, .metro .navigation-bar .navbar-content .element, .metro .navbar .navbar-content .element {
-    padding: 7px;
+    padding: 5px;
     font-family: "Trebuchet MS","Open Sans Light",Verdana,Arial,Helvetica,sans-serif;
 }
 .metro .navigation-bar .navigation-bar-content, .metro .navbar .navigation-bar-content, .metro .navigation-bar .navbar-content, .metro .navbar .navbar-content {
     border-radius: 5px;
 }
+
+.metro .sidebar > ul li a:hover {
+    background-color: green !important;
+    color: #fff;
+    background-image: none;
+}
+
 
 
 
@@ -101,7 +108,7 @@
     font-family: Arial,Helvetica,sans-serif;
 }
 .metro p {
-    font-family: Arial,Helvetica,sans-serif;
+    font-family: Tahoma,Arial,Helvetica,sans-serif;
 }
 
 

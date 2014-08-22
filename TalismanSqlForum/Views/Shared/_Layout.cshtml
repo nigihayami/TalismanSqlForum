@@ -23,23 +23,23 @@
     <div class="grid">
         <div class="row container">
             <img src="~/Content/logo.png" style="padding-top:20px;"/>
-            <nav class="sidebar bg-transparent place-right" style="width: 165px !important;">
-                <div class="margin10">
-                    <a class="place-left fg-black" href="http://Talisman-sql.ru">
+            <nav class="sidebar bg-transparent place-right" style="width: 180px !important;">
+                <div class="margin10" style="padding:1px;">
+                    <a class="place-left fg-black" href="http://Talisman-sql.ru" style="text-decoration: underline;">
                         Сайт
                     </a>
-                    <a class="place-right fg-black" href="@Url.Action("Index","ForumList")">
+                    <a class="place-right fg-black" href="@Url.Action("Index","ForumList")" style="text-decoration: underline;">
                         Форум
                     </a>
                 </div>
-                <ul style="padding-top: 20px; font-family:'Trebuchet MS'">
+                <ul style="padding-top: 20px; font-family:'Trebuchet MS'">                    
                     @Html.Partial("_LoginPartial")
                 </ul>
             </nav>
             <div class="row">
             @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "element input-element bg-transparent no-margin" }))
             {
-                <div class="input-control text" style="width: 387px !important;">
+                <div class="input-control text bg-transparent" style="width: 270px !important;">
                     <input id="val" name="val" type="text" placeholder="Поиск..." style="border-radius:7px;">
                     <button class="btn-search"></button>
                 </div>
@@ -68,7 +68,7 @@
             <nav class="navigation-bar bg-white fixed-bottom" style="border-top: 3px darkgray ridge;">
                 <div class=" navigation-bar-content container">
                     <a class="element bg-transparent fg-dark image-button image-left" href="http://talisman-sql.ru/#i201">
-                        <em>ООО "Талисман" 2014</em>
+                        <em>Талисман, 2014</em>
                     </a>
                     <a class="element place-right bg-transparent fg-dark image-button image-left" href="@Url.Action("Rules","Information")">
                         <em>Правила форума</em>
