@@ -156,3 +156,14 @@
     font-size:initial;
     display:inline-block;
 }
+
+.metro .breadcrumbs ul a:hover::after {
+    border-left-color: darkgray;
+}
+.metro .breadcrumbs ul a:hover::before {
+    border-color: darkgray darkgray darkgray transparent;
+}
+.metro .breadcrumbs ul a:hover {
+    background: darkgray;
+    color: #fff;
+}
