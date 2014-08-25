@@ -1,0 +1,12 @@
+﻿@model TalismanSqlForum.Models.Admin.tRules
+<div class="panel">
+    <div class="panel-header gradient_header">
+        <h4 class="fg-white">Правила форума</h4>
+    </div>
+    <div class="panel-content bg-white">
+        <div class="clearfix"></div>
+        <div class="padding20">
+            @Html.Raw(Model.tRules_rules)
+        </div>
+    </div>
+</div>

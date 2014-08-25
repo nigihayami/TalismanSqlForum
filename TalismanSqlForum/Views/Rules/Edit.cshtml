@@ -1,0 +1,27 @@
+﻿@model TalismanSqlForum.Models.Admin.tRules
+
+@{
+    ViewBag.Title = "Rules";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+@section CKE{
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+}
+@using (Html.BeginForm("Edit", "Rules", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend></legend>
+        @Html.HiddenFor(model => model.Id)
+        @Html.LabelFor(m => m.tRules_rules)
+        <div class="input-control textarea">
+            @Html.TextAreaFor(m => m.tRules_rules, new { @class = "ckeditor", @id = "tRules_rules" })
+        </div>
+        <button class="button" type="submit">
+            Сохранить
+        </button>
+    </fieldset>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

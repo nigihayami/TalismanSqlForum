@@ -190,11 +190,11 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Admin\AdminController.cs" />
     <Compile Include="Controllers\Admin\AdminForumController.cs" />
+    <Compile Include="Controllers\Admin\RulesController.cs" />
     <Compile Include="Controllers\ForumListController.cs" />
     <Compile Include="Controllers\ForumMessagesController.cs" />
     <Compile Include="Controllers\ForumThemesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\InformationController.cs" />
     <Compile Include="Controllers\Moderator\ModeratorController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
@@ -203,6 +203,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Admin\tRules.cs" />
     <Compile Include="Models\Admin\ViewRole.cs" />
     <Compile Include="Models\Forum\tForumList.cs" />
     <Compile Include="Models\Forum\tForumMessages.cs" />
@@ -537,7 +538,6 @@
     <Content Include="Views\Search\tForumMessages.cshtml" />
     <Content Include="Views\Search\tForumThemes.cshtml" />
     <Content Include="Views\Search\tForumThemes_desc.cshtml" />
-    <Content Include="Views\Information\Rules.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmi.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\Users.cshtml" />
@@ -549,6 +549,8 @@
     <Content Include="Views\Admin\View.cshtml" />
     <Content Include="Views\AdminForum\Edit.cshtml" />
     <Content Include="Views\AdminForum\Create.cshtml" />
+    <Content Include="Views\Rules\Rules.cshtml" />
+    <Content Include="Views\Rules\Edit.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

@@ -9,6 +9,7 @@
     <mvcSiteMapNode title ="Регистрация" controller="Account" action="Register"/>
     <mvcSiteMapNode title ="Учетная запись" controller="Account" action="Manage"/>
     <mvcSiteMapNode title ="Поиск" controller="Search" action="Index"/>
+    <mvcSiteMapNode title ="Правила форума" controller="Rules" action="Rules"/>
   </mvcSiteMapNode>
 </mvcSiteMap>
 

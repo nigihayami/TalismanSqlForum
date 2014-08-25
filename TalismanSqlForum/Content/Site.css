@@ -9,6 +9,10 @@
 .metro .tile {
     margin: 0 10px 0px 0;
 }
+.metro .tile .brand .name, .metro .tile .tile-status .name, .metro .tile .brand .label, .metro .tile .tile-status .label, .metro .tile .brand .text, .metro .tile .tile-status .text {
+    margin: 5px 20px -5px 5px;
+}
+
 .metro .panel .panel-content {
     padding: 0px;
     border-top-width: 0px;

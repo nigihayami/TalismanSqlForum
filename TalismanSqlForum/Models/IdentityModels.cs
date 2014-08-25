@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using TalismanSqlForum.Models.Forum;
 using TalismanSqlForum.Models.Moderator;
 using TalismanSqlForum.Models.Users;
+using TalismanSqlForum.Models.Admin;
 
 namespace TalismanSqlForum.Models
 {
@@ -97,5 +98,7 @@ namespace TalismanSqlForum.Models
         public System.Data.Entity.DbSet<IdentityUserRole> IdentityUserRole { get; set; }
 
         public System.Data.Entity.DbSet<tUserNewThemes> tUserNewThemes { get; set; }
+
+        public System.Data.Entity.DbSet<tRules> tRules { get; set; }
     }
 }
