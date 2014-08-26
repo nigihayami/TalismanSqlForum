@@ -21,7 +21,7 @@
                            data-hint="Закрепить"
                            data-hint-position="top"></i>
                     }
-                </a>                
+                </a>
             }
             @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator") || User.Identity.Name.Equals(ViewData["tUsers_NickName"])))
             {
@@ -162,9 +162,10 @@
         }
     </div>
 }
-<hr />
+
 @if (!(bool)ViewData["tForumThemes_close"] && User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator") || User.IsInRole("user")))
 {
+    <hr />
     @section CKE{
         <script src="~/Scripts/ckeditor/ckeditor.js"></script>
     }
@@ -197,3 +198,9 @@
         });
     </script>
 }
+</hr>
+<div class="row" style="bottom:20px">
+    <div class="container">
+        @Html.Partial("_Stat")
+    </div>
+</div>
