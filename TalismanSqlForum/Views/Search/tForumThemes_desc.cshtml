@@ -7,8 +7,13 @@
                 <h4 class="list-group-item-heading">
                     @item.tForumThemes_name
                 </h4>
+                <style>
+                    .search {
+                        background-color: yellow;
+                    }
+                </style>
                 <p class="list-group-item-text">
-                    @Html.Raw(item.tForumThemes_desc)
+                    @Html.Raw(item.tForumThemes_desc.Replace((string)ViewData["val"], "<em class =\"search\">" + (string)ViewData["val"] + "</em>"))
                 </p>
             </div>
         </a>

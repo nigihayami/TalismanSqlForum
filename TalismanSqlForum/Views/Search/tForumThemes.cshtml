@@ -4,8 +4,13 @@
     {
         <a class="list" href="@Url.Action("Index", "ForumMessages", new {id = item.Id, id_fl = item.tForumList.Id })">
             <div class="list-content">
+                <style>
+                    .search {
+                        background-color: yellow;
+                    }
+                </style>
                 <h4 class="list-group-item-heading">
-                    @item.tForumThemes_name
+                    @Html.Raw(item.tForumThemes_name.Replace((string)ViewData["val"], "<em class =\"search\">" + (string)ViewData["val"] + "</em>"))
                 </h4>
             </div>
         </a>

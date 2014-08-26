@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "Результат поиска";
 }
-<div class="panel">
+<div class="panel bg-white">
     <div class="panel-header gradient_header">
         <h4 class="fg-white">
             <i class="icon-search"></i>
@@ -9,38 +9,86 @@
         </h4>
     </div>
     <div class="panel" data-role="panel">
-        <div class="panel-header">
+        <div class="panel-header bg-grayLight">
             Параметры поиска
         </div>
-        <div class="panel-content">
-
+        <div class="panel-content" style="display:none;">
+            @using(@Html.BeginForm("Index", "Search", null, FormMethod.Get, new { @class = "bg-white padding10" }))
+            {
+            <fieldset>
+                <legend></legend>
+                <label>Ключевое слово</label>
+                <div class="input-control text" data-role="input-control">
+                    <input name="_searchVal" type="text" placeholder="Ключевое слово" value="@ViewData["val"]">
+                    <button tabindex="-1" class="btn-clear" type="button"></button>
+                </div>
+                <label>Пользователь</label>
+                <div class="input-control text" data-role="input-control">
+                    <input name="_searchUser" type="text" placeholder="Пользователь" value="@ViewData["user"]">
+                    <button tabindex="-1" class="btn-clear" type="button"></button>
+                </div>
+                <button type="submit">
+                    Искать
+                </button>
+            </fieldset>
+            }
         </div>
     </div>
-    
-    <div class="panel-content bg-white">
-        <div class="panel" data-role="panel">
-            <div class=" panel-header no-border">
-                Поиск в названиях тем
+    @{
+        var t1 = (IEnumerable<TalismanSqlForum.Models.Forum.tForumThemes>)ViewData["tForumThemes"];
+        var t2 = (IEnumerable<TalismanSqlForum.Models.Forum.tForumThemes>)ViewData["tForumThemes_desc"];
+        var t3 = (IEnumerable<TalismanSqlForum.Models.Forum.tForumMessages>)ViewData["tForumMessages"];
+        if (t1.Count() != 0 || t2.Count() != 0 || t3.Count() != 0)
+        {
+            <div class="tab-control panel-content" data-role="tab-control">
+                <ul class="tabs">
+                    <li class="active">
+                        <a href="#_page_1">
+                            Названия тем
+                            @if (t1.Count() > 0)
+                            {
+                                <em class="fg-orange">@t1.Count()</em>
+                            }
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#_page_2">
+                            Описание тем
+                            @if (t2.Count() > 0)
+                            {
+                                <em class="fg-orange">@t2.Count()</em>
+                            }
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#_page_3">
+                            Сообщения
+                            @if (t3.Count() > 0)
+                            {
+                                <em class="fg-orange">@t3.Count()</em>
+                            }
+                        </a>
+                    </li>
+                </ul>
+                <div class="frames">
+                    <div class="frame" id="_page_1">
+                        @Html.Partial("tForumThemes", ViewData["tForumThemes"])
+                    </div>
+                    <div class="frame" id="_page_2">
+                        @Html.Partial("tForumThemes_desc", ViewData["tForumThemes_desc"])
+                    </div>
+                    <div class="frame" id="_page_3">
+                        @Html.Partial("tForumMessages", ViewData["tForumMessages"])
+                    </div>
+                </div>
             </div>
-            <div class="panel-content bg-white no-border">
-                @Html.Partial("tForumThemes", ViewData["tForumThemes"])
+        }
+        else
+        {
+            <div class="panel-content bg-white no-border" style="text-align:center; padding:20px">
+                <h4 class="fg-grayDark">Ничего не найдено</h4>
             </div>
-        </div>
-        <div class="panel" data-role="panel">
-            <div class="panel-header no-border">
-                Поиск в описании тем
-            </div>
-            <div class="panel-content bg-white no-border">
-                @Html.Partial("tForumThemes_desc", ViewData["tForumThemes_desc"])
-            </div>
-        </div>
-        <div class="panel" data-role="panel">
-            <div class="panel-header no-border">
-                Поиск в сообщениях
-            </div>
-            <div class="panel-content bg-white no-border">
-                @Html.Partial("tForumMessages", ViewData["tForumMessages"])
-            </div>
-        </div>
-    </div>
+        }
+    }
 </div>
+
