@@ -6,15 +6,13 @@
         @{
             var t = TalismanSqlForum.Code.Stat.Stat_ForumList((int)ViewData["tForumList_id"]);
             <div class="row">
-                <div class="place-left">
-                    <p>Всего тем: @t.count_ForumThemes</p>
-                    <p>Открыто тем сегодня: @t.count_NewForumThemes</p>
-                    <p>Создано сообщений сегодня: @t.count_NewForumMessages</p>
-                    <p>Открыто тем вчера: @t.count_OldForumThemes</p>
-                    <p>Создано сообщений вчера: @t.count_OldForumMessages</p>
-                    <p>Всего просмотров: @t.count_View</p>
-                    <p>Всего пользователей на форуме @t.count_Users</p>
-                </div>
+                <p>Всего тем: @t.count_ForumThemes</p>
+                <p>Открыто тем сегодня: @t.count_NewForumThemes</p>
+                <p>Создано сообщений сегодня: @t.count_NewForumMessages</p>
+                <p>Открыто тем вчера: @t.count_OldForumThemes</p>
+                <p>Создано сообщений вчера: @t.count_OldForumMessages</p>
+                <p>Всего просмотров: @t.count_View</p>
+                <p>Всего пользователей на форуме @t.count_Users</p>
             </div>
             <div class="row">
                 <i class="icon-mail fg-grayDark"></i> На форуме нет новых сообщений

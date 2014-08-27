@@ -58,6 +58,10 @@ namespace TalismanSqlForum.Code
                 var i = 0;
                 foreach (var item in db.tForumMessages.GroupBy(a => a.tUsers).OrderByDescending(a => a.Count()))
                 {
+                    if (t.mega_User != "" && t.mega_User != null)
+                    {
+                        t.mega_User += ", ";
+                    }
                     t.mega_User += item.First().tUsers.UserName;
                     i++;
                     if (i == 3)
