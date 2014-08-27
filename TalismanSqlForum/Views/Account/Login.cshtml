@@ -13,7 +13,7 @@
             </h4>
         </div>
         <section id="loginForm" class="row reg_form" style="margin-top:0;">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "span4 bg-white" }))
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "span4 bg-white", @style ="margin-top:-10px;" }))
             {
                 <div class="margin10">
                     @Html.AntiForgeryToken()

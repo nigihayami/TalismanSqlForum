@@ -45,8 +45,11 @@
         </div>
     </div>
 </div>
-<div class="row" style="bottom:20px">
-    <div class="container">
-        @Html.Partial("_Stat")
+@if(!Request.Browser.IsMobileDevice)
+{ 
+    <div class="row" style="bottom:20px">
+        <div class="container">
+            @Html.Partial("_Stat")
+        </div>
     </div>
-</div>
+}

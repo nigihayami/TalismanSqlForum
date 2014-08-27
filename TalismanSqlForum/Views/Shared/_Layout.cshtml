@@ -8,7 +8,6 @@
     <meta name="description" content="Форум Talisman-Sql">
     <meta name="author" content="Talisman-Sql">
     <title>@ViewBag.Title – Talisman-Sql.Forum</title>
-
     <link href="~/Content/metro-ui/css/metro-bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/metro-ui/css/metro-bootstrap-responsive.min.css" rel="stylesheet" />
     <link href="~/Content/metro-ui/css/iconFont.min.css" rel="stylesheet" />
@@ -20,45 +19,74 @@
     @RenderSection("scripts", required: false)
 </head>
 <body class="metro">
-    <div class="grid">
-        <div class="row container">
-            <img src="~/Content/logo.png" style="padding-top:20px;"/>
-            <nav class="sidebar bg-transparent place-right" style="width: 180px !important;">
-                <div class="margin10" style="padding:1px;">
-                    <a class="place-left fg-black" href="http://Talisman-sql.ru" style="text-decoration: underline;">
-                        Сайт
-                    </a>
-                    <a class="place-right fg-black" href="@Url.Action("Index","ForumList")" style="text-decoration: underline;">
-                        Форум
-                    </a>
-                </div>
-                <ul style="padding-top: 20px; font-family:'Trebuchet MS'">                    
-                    @Html.Partial("_LoginPartial")
-                </ul>
-            </nav>
-            <div class="row">
-            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "element input-element bg-transparent no-margin" }))
-            {
-                <div class="input-control text bg-transparent" style="width: 270px !important;">
-                    <input id="_searchVal" name="_searchVal" type="text" placeholder="Поиск..." style="border-radius:7px;">
-                    <button class="btn-search"></button>
-                </div>
-            }
-            </div>
-        </div>
+    @if (Request.Browser.IsMobileDevice)
+    {
         <div class="row">
-            <div class="container">
-                <nav class="breadcrumbs">
-                    @Html.MvcSiteMap().SiteMapPath()
+            <nav class="navigation-bar bg-transparent">
+                <nav class="navigation-bar-content container fg-white">
+                    <a class="element gradient_header" href="http://Talisman-sql.ru">
+                        Talisman-Sql.ru
+                    </a>
+                    <span class="element-divider"></span>
+                    <a class="element1 pull-menu" href="#"></a>
+                    <div class="element-menu">
+                        <a class="element gradient_header" href="@Url.Action("Index","ForumList")">
+                            Форум
+                        </a>
+                        @using (Html.BeginForm("Search", "Search", FormMethod.Post, new { @class = "element input-element bg-transparent" }))
+                        {
+                            <div class="input-control text">
+                                <input id="_searchVal" name="_searchVal" type="text" placeholder="Поиск..." style="border-radius:7px;">
+                                <button class="btn-search"></button>
+                            </div>
+                        }
+                        @Html.Partial("_LoginPartial")
+                    </div>
                 </nav>
+            </nav>
+        </div>
+    }
+    else
+    {
+        <div class="grid">
+            <div class="row container">
+                <img src="~/Content/logo.png" style="padding-top:20px;" />
+                <nav class="sidebar bg-transparent place-right" style="width: 180px !important;">
+                    <div class="margin10" style="padding:1px;">
+                        <a class="place-left fg-black" href="http://Talisman-sql.ru" style="text-decoration: underline;">
+                            Сайт
+                        </a>
+                        <a class="place-right fg-black" href="@Url.Action("Index","ForumList")" style="text-decoration: underline;">
+                            Форум
+                        </a>
+                    </div>
+                    <ul style="padding-top: 20px; font-family:'Trebuchet MS'">
+                        @Html.Partial("_LoginPartial")
+                    </ul>
+                </nav>
+                <div class="row">
+                    @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "element input-element bg-transparent no-margin" }))
+                    {
+                        <div class="input-control text bg-transparent" style="width: 270px !important;">
+                            <input id="_searchVal" name="_searchVal" type="text" placeholder="Поиск..." style="border-radius:7px;">
+                            <button class="btn-search"></button>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="container">
-                @RenderBody()
-            </div>
+    }
+    <div class="row">
+        <div class="container">
+            <nav class="breadcrumbs">
+                @Html.MvcSiteMap().SiteMapPath()
+            </nav>
         </div>
-
+    </div>
+    <div class="row">
+        <div class="container">
+            @RenderBody()
+        </div>
     </div>
     <div class="clearfix">
         <hr />
