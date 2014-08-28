@@ -17,11 +17,8 @@
             <fieldset>
                 <legend></legend>
                 @Html.HiddenFor(model => model.Id)
-                @Html.LabelFor(model => model.tModerator_database, new { @class = "col-lg-2 control-label" })
-                <div class="input-control text">
-                    @Html.TextBoxFor(model => model.tModerator_database, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.tModerator_database)
-                </div>
+                @Html.HiddenFor(model => model.tModerator_database)
+
                 @Html.LabelFor(model => model.tModerator_userId, new { @class = "col-lg-2 control-label" })
                 <div class="input-control text">
                     @Html.TextBoxFor(model => model.tModerator_userId, new { @class = "form-control" })

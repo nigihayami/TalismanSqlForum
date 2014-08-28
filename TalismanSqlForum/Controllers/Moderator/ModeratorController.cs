@@ -41,10 +41,16 @@ namespace TalismanSqlForum.Controllers.Moderator
         [HttpPost]
         public ActionResult Settings([Bind(Include = "Id,tModerator_database,tModerator_userId,tModerator_password")] tModerator tt)
         {
+            tt.tModerator_database = @"85.175.98.196:bt";
             if (ModelState.IsValid)
             {
+                
                 db.Entry(tt).State = EntityState.Modified;
                 db.SaveChanges();
+                if (!TryConnect(tt.Id))
+                {
+                    return View(tt);
+                }
             }
             else
             {

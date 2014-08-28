@@ -89,6 +89,7 @@ namespace TalismanSqlForum.Controllers
 
             return View(tForumThemes);
         }
+        [Authorize(Roles = "admin,moderator")]
         public ActionResult Top(int? id)
         {
             var t = db.tForumThemes.Find(id);
@@ -101,6 +102,7 @@ namespace TalismanSqlForum.Controllers
             }
             return HttpNotFound();
         }
+        [Authorize(Roles = "admin,moderator")]
         public ActionResult Close(int? id)
         {
             var t = db.tForumThemes.Find(id);

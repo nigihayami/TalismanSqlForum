@@ -22,9 +22,6 @@
                            data-hint-position="top"></i>
                     }
                 </a>
-            }
-            @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator") || User.Identity.Name.Equals(ViewData["tUsers_NickName"])))
-            {
                 <a href="@Url.Action("Close", "ForumThemes", new { id = ViewData["ForumThemes_Id"] })" class="place-right fg-white">
                     @if ((bool)ViewData["tForumThemes_close"])
                     {
