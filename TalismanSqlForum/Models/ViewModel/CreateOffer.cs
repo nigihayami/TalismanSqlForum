@@ -13,6 +13,7 @@ namespace TalismanSqlForum.Models.ViewModel
     public class CreateOffer
     {
         public tForumMessages _message { get; set; }
+        public tForumThemes _themes { get; set; }
 
         [Display(Name = "Ошибка?")]
         public bool _iserror { get; set; }

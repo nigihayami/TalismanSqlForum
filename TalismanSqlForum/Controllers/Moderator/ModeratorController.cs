@@ -10,6 +10,7 @@ using FirebirdSql.Data.FirebirdClient;
 using TalismanSqlForum.Models.ViewModel;
 using TalismanSqlForum.Models.Moderator;
 using TalismanSqlForum.Models.Forum;
+using System.Web.Routing;
 
 namespace TalismanSqlForum.Controllers.Moderator
 {
@@ -44,7 +45,7 @@ namespace TalismanSqlForum.Controllers.Moderator
             tt.tModerator_database = @"85.175.98.196:bt";
             if (ModelState.IsValid)
             {
-                
+
                 db.Entry(tt).State = EntityState.Modified;
                 db.SaveChanges();
                 //первый прогон - попробуем соединится если интеренет
@@ -69,7 +70,7 @@ namespace TalismanSqlForum.Controllers.Moderator
             return RedirectToAction("Index", "ForumList");
         }
 
-        public ActionResult CreateOffer(int id)
+        public ActionResult CreateOffer(int? id, int? id_themes)
         {
             var tu = db.Users.Where(a => a.UserName == User.Identity.Name).First().tModerator;
             if (tu.Count == 0)
@@ -77,13 +78,24 @@ namespace TalismanSqlForum.Controllers.Moderator
                 return RedirectToAction("Settings");
             }
             else
-                if(!TryConnect(tu.First().Id))
+                if (!TryConnect(tu.First().Id))
                 {
                     return RedirectToAction("Settings");
                 }
-            tForumMessages tm = db.tForumMessages.Find(id);
             Models.ViewModel.CreateOffer c = new Models.ViewModel.CreateOffer();
-            c._message = tm;
+            if (id != null)
+            {
+                tForumMessages tm = db.tForumMessages.Find(id);
+                c._message = tm;
+                ViewData["_messages"] = tm.tForumMessages_messages;
+            }
+            else
+            {
+                tForumThemes tm = db.tForumThemes.Find(id_themes);
+                c._themes = tm;
+                ViewData["_messages"] = tm.tForumThemes_desc;
+            }
+
 
             return View(c);
         }
@@ -144,17 +156,32 @@ namespace TalismanSqlForum.Controllers.Moderator
                                 fcon.Parameters.AddWithValue("@ID_RELEASE_PROJECTS_EXEC", t.id_release_projects_exec);
                                 fcon.Parameters.AddWithValue("@ID_SUBSYSTEM", t.id_subsystem);
                                 fcon.Parameters.AddWithValue("@ID_BRANCH", t.id_branch);
-                                fcon.Parameters.AddWithValue("@comment", t._message.tForumThemes.tForumThemes_name);
-                                fcon.Parameters.AddWithValue("@DETAIL_COMMENT",
-                                    "<em><a href ='" +
-                                    Url.HttpRouteUrl("default",new{id =  t._message.tForumThemes.Id}) +
-                                    //string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) +
-                                    //Url.Action("Index", "ForumMessages", new { id = t._message.tForumThemes.Id }) +
-                                    "'> " +
-                                    Url.Action("Index", "ForumMessages", new { id = t._message.tForumThemes.Id }) + "</a></em>" +
+                                if (t._message.Id != 0)
+                                {
+                                    var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
+                                    fcon.Parameters.AddWithValue("@comment", t._message.tForumThemes.tForumThemes_name);
+                                    fcon.Parameters.AddWithValue("@DETAIL_COMMENT",
+                                        "<em><a href ='" +
+                                       Url.Action("Index", "ForumMessages", new { id = t._message.tForumThemes.Id, id_list = t._message.tForumThemes.tForumList.Id }, val) +
+                                        "'> " +
+                                       Url.Action("Index", "ForumMessages", new { id = t._themes.Id, id_list = t._themes.tForumList.Id }, val) +
+                                       "</a></em>" +
+                                        "<p>" + t._message.tForumMessages_messages + "</p>");
+                                }
+                                else
+                                {
+                                   var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
 
+                                    fcon.Parameters.AddWithValue("@comment", t._themes.tForumThemes_name);
+                                    fcon.Parameters.AddWithValue("@DETAIL_COMMENT",
+                                        "<em><a href ='" +
+                                        Url.Action("Index", "ForumMessages", new { id = t._themes.Id, id_list = t._themes.tForumList.Id }, val) +
+                                        "'> " +
+                                        Url.Action("Index","ForumMessages",new{id = t._themes.Id, id_list = t._themes.tForumList.Id},val) +
+                                        "</a></em>" +
+                                        "<p>" + t._themes.tForumThemes_desc + "</p>");
+                                }
 
-                                    "<p>" + t._message.tForumMessages_messages + "</p>");
                                 fcon.Parameters.AddWithValue("@ID_PROJECTS", t.id_projects);
 
                                 fcon.Parameters.AddWithValue("@DOC_NUMBER", doc_number);
@@ -233,7 +260,7 @@ namespace TalismanSqlForum.Controllers.Moderator
                             fb.Close();
                         }
                         fb.Dispose();
-                    }                    
+                    }
                 }
             }
             catch

@@ -14,6 +14,22 @@ namespace TalismanSqlForum
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "ForumMessages",
+                url: "{id_list}/{id}/Message",
+                defaults: new {controller = "ForumMessages",action = "Index", id = UrlParameter.Optional }
+                );
+            
+            routes.MapRoute(
+                name: "ForumThemes",
+                url: "{id}/Themes",
+                defaults: new { controller = "ForumThemes", action ="Index", id = UrlParameter.Optional }
+                );
+            routes.MapRoute(
+                name: "ForumThemes_Create",
+                url: "{id}/Add",
+                defaults: new {controller = "ForumThemes",action = "Create", id = UrlParameter.Optional }
+                );
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "ForumList", action = "Index", id = UrlParameter.Optional }

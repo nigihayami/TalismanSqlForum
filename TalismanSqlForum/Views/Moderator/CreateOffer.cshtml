@@ -32,10 +32,15 @@
             @Html.HiddenFor(model => model._message.tForumThemes.tForumThemes_name)
             @Html.HiddenFor(model => model._message.tForumMessages_messages)
             @Html.HiddenFor(model => model._message.Id)
+
+            @Html.HiddenFor(model => model._themes.Id)
+            @Html.HiddenFor(model => model._themes.tForumThemes_name)
+            @Html.HiddenFor(model => model._themes.tForumThemes_desc)
+            @Html.HiddenFor(model => model._themes.tForumList.Id)
             <fieldset>
                 <legend></legend>
                 <div class="listview-outlook">
-                    @Html.Raw(Model._message.tForumMessages_messages)
+                    @Html.Raw(ViewData["_messages"])
                 </div>
                 <div class="input-control switch" data-role="input-control">
                     <label class="inline-block" style="margin-right: 20px;">

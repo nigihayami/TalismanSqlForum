@@ -108,7 +108,7 @@
                         <div class="listview-outlook">
                             @foreach (var item in tForumThemes)
                         {
-                        <a href="@Url.Action("Index", "ForumMessages", new {id = item.Id})" class="list">
+                        <a href="@Url.Action("Index", "ForumMessages", new {id = item.Id, id_list = item.tForumList.Id})" class="list">
                             <div class="list-content">
                                 <div class="tile half bg-white">
                                     <div class="tile-content icon">

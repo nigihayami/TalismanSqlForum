@@ -40,7 +40,7 @@ namespace TalismanSqlForum.Code
                             node2.Key = "ForumMessages_" + item2.Id.ToString();
                             node2.ParentKey = node.Key;
                             node2.RouteValues.Add("id", item2.Id);
-                            node2.RouteValues.Add("id_fl", item2.tForumList.Id);
+                            node2.RouteValues.Add("id_list", item2.tForumList.Id);
                             node2.Action = "Index";
                             node2.Controller = "ForumMessages";
                             if (item2.tForumThemes_name.Length > 30)

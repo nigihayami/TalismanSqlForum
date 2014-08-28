@@ -94,6 +94,16 @@
         <div class="row bg-white offset1" style="margin-left:65px;">
             @Html.Raw(ViewData["ForumThemes_Desc"])
         </div>
+        @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator")))
+        {
+            <div class="row bg-white">
+                <a href="@Url.Action("CreateOffer", "Moderator", new { id_themes = ViewData["ForumThemes_Id"] })"
+                   class="button bg-transparent fg-gray  place-left">
+                    <i class="icon-plus on-left"></i>
+                    Замечание
+                </a>
+            </div>
+        }
     </div>
 </div>
 @foreach (var item in (IEnumerable<TalismanSqlForum.Models.Forum.tForumMessages>)ViewData["tForumMessages"])
