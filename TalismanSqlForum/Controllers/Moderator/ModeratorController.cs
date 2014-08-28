@@ -47,9 +47,18 @@ namespace TalismanSqlForum.Controllers.Moderator
                 
                 db.Entry(tt).State = EntityState.Modified;
                 db.SaveChanges();
+                //первый прогон - попробуем соединится если интеренет
                 if (!TryConnect(tt.Id))
                 {
-                    return View(tt);
+                    //если мы попали сюда, то интеренет не прокатил - сделаем лок
+                    tt.tModerator_database = @"192.168.1.250:bt";
+                    db.Entry(tt).State = EntityState.Modified;
+                    db.SaveChanges();
+                    if (!TryConnect(tt.Id))
+                    {
+                        //Ну значит вообще не прокатило
+                        return View(tt);
+                    }
                 }
             }
             else
@@ -138,8 +147,9 @@ namespace TalismanSqlForum.Controllers.Moderator
                                 fcon.Parameters.AddWithValue("@comment", t._message.tForumThemes.tForumThemes_name);
                                 fcon.Parameters.AddWithValue("@DETAIL_COMMENT",
                                     "<em><a href ='" +
-                                    string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) +
-                                    Url.Action("Index", "ForumMessages", new { id = t._message.tForumThemes.Id }) +
+                                    Url.HttpRouteUrl("default",new{id =  t._message.tForumThemes.Id}) +
+                                    //string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) +
+                                    //Url.Action("Index", "ForumMessages", new { id = t._message.tForumThemes.Id }) +
                                     "'> " +
                                     Url.Action("Index", "ForumMessages", new { id = t._message.tForumThemes.Id }) + "</a></em>" +
 

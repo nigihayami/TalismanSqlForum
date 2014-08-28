@@ -16,6 +16,7 @@ namespace TalismanSqlForum.Models.ViewModel
 
         [Display(Name = "Ошибка?")]
         public bool _iserror { get; set; }
+        [Required]
         [Display(Name = "Место обнаружения")]
         public string _location { get; set; }
 
