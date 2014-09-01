@@ -1,0 +1,60 @@
+﻿@model TalismanSqlForum.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Редактирование профиля";
+}
+<div class="row">
+    Для смены пароля воспользуйтесь @Html.ActionLink("формой смены пароля","Manage","Account")
+</div>
+<div class="row">
+    <div class="panel">
+        <div class="panel-header gradient_header fg-white">
+            <h4 class="fg-white">Регистрация</h4>
+        </div>
+        <div class="row bg-white reg_form" style="margin-top:0;">
+            @using (Html.BeginForm("ManageUser", "Account", new { id = ViewData["userId"] }, FormMethod.Post, new { @class = "bg-white" }))
+            {
+                <div class="margin10">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <fieldset>
+                        <legend></legend>
+                        <label class="margin10">
+                            <font class="fg-red">*</font> - <i class="fg-grayLight">Поля, обязательные для заполнения</i>
+                        </label>                        
+                        @Html.LabelFor(m => m.NickName, new { @class = "label_req" })
+                        <div class="input-control text">
+                            @Html.TextBoxFor(m => m.NickName)
+                        </div>                       
+                        @Html.LabelFor(m => m.Name_Org, new { @class = "label_req" })
+                        <div class="input-control text">
+                            @Html.TextBoxFor(m => m.Name_Org)
+                        </div>
+                        @Html.LabelFor(m => m.Mnemo_Org, new { @class = "label_req" })
+                        <div class="input-control text">
+                            @Html.TextBoxFor(m => m.Mnemo_Org)
+                        </div>
+                        @Html.LabelFor(m => m.Inn, new { @class = "label_req" })
+                        <div class="input-control text">
+                            @Html.TextBoxFor(m => m.Inn)
+                        </div>
+                        @Html.LabelFor(m => m.Adres, new { @class = "label_req" })
+                        <div class="input-control text">
+                            @Html.TextBoxFor(m => m.Adres)
+                        </div>
+                        @Html.LabelFor(m => m.PhoneNumber)
+                        <div class="input-control text">
+                            @Html.TextBoxFor(m => m.PhoneNumber)
+                        </div>
+                        <button class="element button_reg gradient_header fg-white" type="submit" style="margin-top:10px; border-radius:7px;">
+                            <i class="icon-enter on-left"></i>
+                            Сохранить
+                        </button>
+                    </fieldset>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
