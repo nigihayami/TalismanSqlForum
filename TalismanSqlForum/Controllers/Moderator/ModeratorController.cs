@@ -164,20 +164,20 @@ namespace TalismanSqlForum.Controllers.Moderator
                                         "<em><a href ='" +
                                        Url.Action("Index", "ForumMessages", new { id = t._message.tForumThemes.Id, id_list = t._message.tForumThemes.tForumList.Id }, val) +
                                         "'> " +
-                                       Url.Action("Index", "ForumMessages", new { id = t._themes.Id, id_list = t._themes.tForumList.Id }, val) +
+                                       Url.Action("Index", "ForumMessages", new { id = t._message.tForumThemes.Id, id_list = t._message.tForumThemes.tForumList.Id }, val) +
                                        "</a></em>" +
                                         "<p>" + t._message.tForumMessages_messages + "</p>");
                                 }
                                 else
                                 {
-                                   var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
+                                    var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
 
                                     fcon.Parameters.AddWithValue("@comment", t._themes.tForumThemes_name);
                                     fcon.Parameters.AddWithValue("@DETAIL_COMMENT",
                                         "<em><a href ='" +
                                         Url.Action("Index", "ForumMessages", new { id = t._themes.Id, id_list = t._themes.tForumList.Id }, val) +
                                         "'> " +
-                                        Url.Action("Index","ForumMessages",new{id = t._themes.Id, id_list = t._themes.tForumList.Id},val) +
+                                        Url.Action("Index", "ForumMessages", new { id = t._themes.Id, id_list = t._themes.tForumList.Id }, val) +
                                         "</a></em>" +
                                         "<p>" + t._themes.tForumThemes_desc + "</p>");
                                 }
@@ -206,6 +206,7 @@ namespace TalismanSqlForum.Controllers.Moderator
                     catch (FbException ex)
                     {
                         ModelState.AddModelError("", ex.Message);
+                        return View(t);
                     }
                     finally
                     {
@@ -216,18 +217,9 @@ namespace TalismanSqlForum.Controllers.Moderator
             }
             else
             {
-                ModelState.AddModelError("", "Настройте соединение с БТ");
+                return RedirectToAction("Settings");
             }
-            if (ModelState.IsValid)
-            {
-                tForumMessages tm = db.tForumMessages.Find(t._message.Id);
-                tm.tForumMessages_offer += "<p>Поставлено замечание № " + doc_number + " от " + DateTime.Now.ToString("dd MM yyyy") + "</p>";
-                db.Entry(tm).State = EntityState.Modified;
-                db.SaveChanges();
-                //Перенаправим на основу сообщений
-                return RedirectToAction("Index", "ForumMessages", new { id = t._message.tForumThemes.Id });
-            }
-            return View(t);
+            return RedirectToAction("Index", "ForumList");
         }
 
         public bool TryConnect(int id)

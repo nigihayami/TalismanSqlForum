@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using TalismanSqlForum.Models;
@@ -61,6 +62,16 @@ namespace TalismanSqlForum.Controllers
                 db.tForumMessages.Add(tForumMessages);
                 db.SaveChanges();
                 /*для всех авторизованных пользователей добавляем пометку - что появилась новая тема*/
+                MailMessage mail = new MailMessage();
+                var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
+                mail.Subject = "Новая сообщение на форуме " + tForumMessages.tForumThemes.tForumList.tForumList_name + " в разделе " + tForumMessages.tForumThemes.tForumThemes_name;
+                mail.Body = "<p><em><a href ='" +
+                                        Url.Action("Index", "ForumMessages", new { id = tForumMessages.tForumThemes.Id, id_list = tForumMessages.tForumThemes.tForumList.Id }, val) +
+                                        "'> " +
+                                        Url.Action("Index", "ForumMessages", new { id = tForumMessages.tForumThemes.Id, id_list = tForumMessages.tForumThemes.tForumList.Id }, val) +
+                                        "</a></em></p>"
+                    ;
+                mail.IsBodyHtml = true;
                 var r = db.Roles.ToList();
                 foreach (var item in r)
                 {
@@ -75,6 +86,12 @@ namespace TalismanSqlForum.Controllers
                             n.tUsers = item2;
                             db.tUserNewThemes.Add(n);
                             db.SaveChanges();
+                            if (item.Name == "moderator" || tForumMessages.tForumThemes.tForumMessages.Where(a => a.tUsers == item2).Count() > 0)
+                            {
+                                //Отсылаем модератору и пользователям, которые учавствовали в данной теме
+                                mail.To.Add(item2.Email);
+                                TalismanSqlForum.Code.Mail.SendEmail(mail);
+                            }
                         }
                     }
                 }

@@ -38,7 +38,8 @@ namespace TalismanSqlForum.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Имя пользователя")]
+        [EmailAddress]
+        [Display(Name = "Адрес электронной почты")]
         public string Email { get; set; }
 
         [Required]

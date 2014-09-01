@@ -63,7 +63,7 @@ namespace TalismanSqlForum.Controllers
                     await SignInAsync(user, model.RememberMe);
                     using(var db = new TalismanSqlForum.Models.ApplicationDbContext())
                     {
-                        var t = db.Users.Where(a => a.UserName == model.Email).First();
+                        var t = db.Users.Where(a => a.Email == model.Email).First();
                         t.LastIn = DateTime.Now;
                         db.Entry(t).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
@@ -98,8 +98,8 @@ namespace TalismanSqlForum.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { 
-                    UserName = model.NickName, 
+                var user = new ApplicationUser() {
+                    UserName = model.Email, 
                     Email = model.Email, 
                     Adres =model.Adres, 
                     Contact_Name = model.Contact_Name,

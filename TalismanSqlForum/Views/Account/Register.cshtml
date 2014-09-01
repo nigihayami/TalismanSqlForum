@@ -28,10 +28,7 @@
                         </div>
                         @Html.LabelFor(m => m.Password, new { @class = "label_req" })
                         <div class="input-control password"
-                             data-hint="1. В пароле должен быть по крайней мере один небуквенный или нецифровой символ (№ # : * ).
-                             2. в пароле должен быть символы больше шести
-                             3. хотя бы одна цифра
-                             4. должен присутствовать хотя бы один caps символ"
+                             data-hint="В пароле должен быть больше шести символов"
                              data-hint-position="top">
                             @Html.PasswordFor(m => m.Password)
                             <button class="btn-reveal"></button>

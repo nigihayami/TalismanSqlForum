@@ -62,7 +62,7 @@ namespace TalismanSqlForum.Code
                     {
                         t.mega_User += ", ";
                     }
-                    t.mega_User += item.First().tUsers.UserName;
+                    t.mega_User += item.First().tUsers.NickName;
                     i++;
                     if (i == 3)
                         break;

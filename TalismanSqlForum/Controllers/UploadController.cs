@@ -20,7 +20,7 @@ namespace TalismanSqlForum.Controllers
             {
                 if (upload != null && upload.ContentLength > 0)
                 {
-                    var vFileName = DateTime.Now.ToString("yyyyMMdd-HHMMssff") +
+                    var vFileName = Guid.NewGuid().ToString() +
                                     Path.GetExtension(upload.FileName).ToLower();
                     var vFolderPath = Server.MapPath("~/Content/Images/");
                     if (!Directory.Exists(vFolderPath))
@@ -29,7 +29,8 @@ namespace TalismanSqlForum.Controllers
                     }
                     vFilePath = Path.Combine(vFolderPath, vFileName);
                     upload.SaveAs(vFilePath);
-                    vImagePath = Url.Content("~/Content/Images/" + vFileName);
+                    var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
+                    vImagePath = Url.Action("Images", "Content", new { id = vFileName }, val);
                     vMessage = "Image was saved correctly";
                 }
             }

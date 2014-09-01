@@ -32,6 +32,7 @@
             @Html.HiddenFor(model => model._message.tForumThemes.tForumThemes_name)
             @Html.HiddenFor(model => model._message.tForumMessages_messages)
             @Html.HiddenFor(model => model._message.Id)
+            @Html.HiddenFor(model => model._message.tForumThemes.tForumList.Id)
 
             @Html.HiddenFor(model => model._themes.Id)
             @Html.HiddenFor(model => model._themes.tForumThemes_name)
@@ -52,6 +53,7 @@
                 @Html.LabelFor(model => model._location)
                 <div class="input-control text">
                     @Html.TextBoxFor(model => model._location)
+                    @Html.ValidationMessageFor(model => model._location)
                 </div>
                 @Html.LabelFor(model => model.id_branch)
                 <div class="input-control select">
