@@ -36,7 +36,13 @@
             onLoad: function () { "image" != j && this.hidePage("Link"); var a = this._.element.getDocument(); this.getContentElement("info", "ratioLock") && (this.addFocusable(a.getById(u), 5), this.addFocusable(a.getById(p), 5)); this.commitContent = r }, onHide: function () {
                 this.preview && this.commitContent(8, this.preview); this.originalElement && (this.originalElement.removeListener("load", q), this.originalElement.removeListener("error", h), this.originalElement.removeListener("abort", h), this.originalElement.remove(), this.originalElement =
                 !1); delete this.imageElement
-            }, contents: [{
+            }, contents: [
+                {
+                    id: "Upload", hidden: false, filebrowser: "uploadButton", label: c.lang.image.upload, elements: [
+                        { type: "file", id: "upload", label: c.lang.image.btnUpload, style: "height:40px", size: 38 },
+                        { type: "fileButton", id: "uploadButton", filebrowser: "info:txtUrl", label: c.lang.image.btnUpload, "for": ["Upload", "upload"] }]
+                },
+                {
                 id: "info", label: c.lang.image.infoTab, accessKey: "I", elements: [{
                     type: "vbox", padding: 0, children: [{
                         type: "hbox", widths: ["280px", "110px"], align: "right", children: [{
@@ -131,10 +137,6 @@
                         "")
                     }, commit: function (a, b) { 2 == a && (this.getValue() || this.isChanged()) && b.setAttribute("target", this.getValue()) }
                 }]
-            }, {
-                id: "Upload", hidden: false, filebrowser: "uploadButton", label: c.lang.image.upload, elements: [
-                    { type: "file", id: "upload", label: c.lang.image.btnUpload, style: "height:40px", size: 38 },
-                    { type: "fileButton", id: "uploadButton", filebrowser: "info:txtUrl", label: c.lang.image.btnUpload, "for": ["Upload", "upload"] }]
             }, {
                 id: "advanced", label: c.lang.common.advancedTab, elements: [{
                     type: "hbox", widths: ["50%", "25%", "25%"],
