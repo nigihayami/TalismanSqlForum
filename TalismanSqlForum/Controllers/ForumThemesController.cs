@@ -95,12 +95,12 @@ namespace TalismanSqlForum.Controllers
                             db.SaveChanges();
                             if(item.Name == "moderator")
                             {
-                                mail.To.Add(item2.Email);
-                                TalismanSqlForum.Code.Mail.SendEmail(mail);
+                                mail.To.Add(item2.Email);                                
                             }
                         }
                     }
-                }                
+                }
+                TalismanSqlForum.Code.Mail.SendEmail(mail);
                 return RedirectToAction("Index","ForumMessages", new { id = tForumThemes.Id });
             }
 

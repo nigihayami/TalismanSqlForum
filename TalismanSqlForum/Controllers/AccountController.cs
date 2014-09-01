@@ -136,13 +136,12 @@ namespace TalismanSqlForum.Controllers
                         {
                             foreach (var item2 in item.Users)
                             {
-                                mail.To.Add(db.Users.Find(item2.UserId).Email);
-                                TalismanSqlForum.Code.Mail.SendEmail(mail);
+                                mail.To.Add(db.Users.Find(item2.UserId).Email);                                
                             }
                         }
                         db.Dispose();
                     }
-
+                    TalismanSqlForum.Code.Mail.SendEmail(mail);
                     return RedirectToAction("Index", "ForumList");
                 }
                 else

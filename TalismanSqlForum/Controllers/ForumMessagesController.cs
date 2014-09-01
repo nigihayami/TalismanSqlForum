@@ -89,12 +89,12 @@ namespace TalismanSqlForum.Controllers
                             if (item.Name == "moderator" || tForumMessages.tForumThemes.tForumMessages.Where(a => a.tUsers == item2).Count() > 0)
                             {
                                 //Отсылаем модератору и пользователям, которые учавствовали в данной теме
-                                mail.To.Add(item2.Email);
-                                TalismanSqlForum.Code.Mail.SendEmail(mail);
+                                mail.To.Add(item2.Email);                                
                             }
                         }
                     }
                 }
+                TalismanSqlForum.Code.Mail.SendEmail(mail);
                 return RedirectToAction("Index", new { id = id, id_fl = tForumMessages.tForumThemes.tForumList.Id });
             }
 
