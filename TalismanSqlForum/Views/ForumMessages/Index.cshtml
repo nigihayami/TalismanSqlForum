@@ -2,51 +2,51 @@
     ViewBag.Title = "Index";
 }
 <div class="panel">
-    <div class="panel-header gradient_header fg-white">
-        <h4 class="fg-white">
-            @ViewData["ForumThemes_Name"]
-            @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator")))
-            {
-                <a href="@Url.Action("Top", "ForumThemes", new { id = ViewData["ForumThemes_Id"] })" class="place-right fg-white">
-                    @if ((bool)ViewData["tForumThemes_top"])
-                    {
-                        <i class="icon-link-2"
-                           data-hint="Открепить"
-                           data-hint-position="top">
-                        </i>
-                    }
-                    else
-                    {
-                        <i class="icon-link"
-                           data-hint="Закрепить"
-                           data-hint-position="top"></i>
-                    }
-                </a>
-                <a href="@Url.Action("Close", "ForumThemes", new { id = ViewData["ForumThemes_Id"] })" class="place-right fg-white">
-                    @if ((bool)ViewData["tForumThemes_close"])
-                    {
-                        <i class="icon-unlocked"
-                           data-hint="Открыть тему"
-                           data-hint-position="top">
-                        </i>
-                    }
-                    else
-                    {
-                        <i class="icon-locked-2"
-                           data-hint="Закрыть"
-                           data-hint-position="top"></i>
-                    }
-                </a>
-            }
-            @if ((bool)ViewData["tForumThemes_top"])
-            {
-                <i class="icon-attachment" data-hint="Тема закреплена" data-hint-position="top"></i>
-            }
-            @if ((bool)ViewData["tForumThemes_close"])
-            {
-                <i class="icon-locked-2" data-hint="Тема закрыта" data-hint-position="top"></i>
-            }
-        </h4>
+    <div class="panel-header gradient_header fg-white">        
+            <h4 class="fg-white">
+                @ViewData["ForumThemes_Name"]
+                @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator")))
+                {
+                    <a href="@Url.Action("Top", "ForumThemes", new { id = ViewData["ForumThemes_Id"] })" class="place-right fg-white">
+                        @if ((bool)ViewData["tForumThemes_top"])
+                        {
+                            <i class="icon-link-2"
+                               data-hint="Открепить"
+                               data-hint-position="top">
+                            </i>
+                        }
+                        else
+                        {
+                            <i class="icon-link"
+                               data-hint="Закрепить"
+                               data-hint-position="top"></i>
+                        }
+                    </a>
+                    <a href="@Url.Action("Close", "ForumThemes", new { id = ViewData["ForumThemes_Id"] })" class="place-right fg-white">
+                        @if ((bool)ViewData["tForumThemes_close"])
+                        {
+                            <i class="icon-unlocked"
+                               data-hint="Открыть тему"
+                               data-hint-position="top">
+                            </i>
+                        }
+                        else
+                        {
+                            <i class="icon-locked-2"
+                               data-hint="Закрыть"
+                               data-hint-position="top"></i>
+                        }
+                    </a>
+                }
+                @if ((bool)ViewData["tForumThemes_top"])
+                {
+                    <i class="icon-attachment" data-hint="Тема закреплена" data-hint-position="top"></i>
+                }
+                @if ((bool)ViewData["tForumThemes_close"])
+                {
+                    <i class="icon-locked-2" data-hint="Тема закрыта" data-hint-position="top"></i>
+                }
+            </h4>
     </div>
     <div class="panel-content bg-white" style="margin-top:-5px;">
         <div class="row bg-white" style="
@@ -108,6 +108,7 @@
 </div>
 @foreach (var item in (IEnumerable<TalismanSqlForum.Models.Forum.tForumMessages>)ViewData["tForumMessages"])
 {
+    <a id="m_@item.Id"></a>
     <div class="panel-content bg-white" style="margin-top:10px">
 
         <div class="row" style="
@@ -115,10 +116,10 @@
                                 border-bottom-width: 1px;
                                 border-bottom-style: solid;
                                     ">
-            <div class="button bg-transparent fg-gray  place-right">
+            <a class="button bg-transparent fg-gray  place-right">
                 <i class="icon-calendar on-left"></i>
                 @item.tForumMessages_datetime
-            </div>
+            </a>
             <div style="margin-left:10px;">
                 @item.tUsers.Name_Org
             </div>
