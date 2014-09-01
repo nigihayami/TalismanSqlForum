@@ -95,7 +95,7 @@ namespace TalismanSqlForum.Controllers
                     }
                 }
                 TalismanSqlForum.Code.Mail.SendEmail(mail);
-                return RedirectToAction("Index", new { id = id, id_fl = tForumMessages.tForumThemes.tForumList.Id });
+                return RedirectToAction("Index", new { id = id, id_list = tForumMessages.tForumThemes.tForumList.Id });
             }
 
             return View(tForumMessages);
