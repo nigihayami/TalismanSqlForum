@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -74,6 +75,26 @@ namespace TalismanSqlForum.Controllers.Admin
             else
             {
                 manager.AddToRole(userId.Id, RoleName);
+                //Отправляем письмо, о том, что пользователя авторизовали
+                MailMessage mail = new MailMessage();
+                var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
+                mail.Subject = "авторизация пройдена";
+                mail.Body = "<p>Вам назначена роль на форуме ";
+                switch(RoleName)
+                {
+                    case "user":
+                        mail.Body += "Пользователь</p>";
+                        mail.Body += "<p>Теперь вы можете создавать темы в разделах форума, а также писать сообщения</p>";
+                        break;
+                    case "moderator":
+                        mail.Body += "Модератор";
+                        mail.Body += "<p>Теперь вы можете создавать темы в разделах форума, создавать сообщения, закреплять и закрывать темы</p>";
+                        break;
+
+                }
+                mail.IsBodyHtml = true;
+                mail.To.Add(userId.Email);
+                TalismanSqlForum.Code.Mail.SendEmail(mail);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
