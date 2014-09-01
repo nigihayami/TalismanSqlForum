@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Owin;
 using TalismanSqlForum.Models;
+using System.Net.Mail;
 
 namespace TalismanSqlForum.Controllers
 {
@@ -28,7 +29,8 @@ namespace TalismanSqlForum.Controllers
             UserManager = userManager;
         }
 
-        public ApplicationUserManager UserManager {
+        public ApplicationUserManager UserManager
+        {
             get
             {
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
@@ -54,14 +56,14 @@ namespace TalismanSqlForum.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
-        {            
+        {
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindAsync(model.Email, model.Password);
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
-                    using(var db = new TalismanSqlForum.Models.ApplicationDbContext())
+                    using (var db = new TalismanSqlForum.Models.ApplicationDbContext())
                     {
                         var t = db.Users.Where(a => a.Email == model.Email).First();
                         t.LastIn = DateTime.Now;
@@ -98,10 +100,11 @@ namespace TalismanSqlForum.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() {
-                    UserName = model.Email, 
-                    Email = model.Email, 
-                    Adres =model.Adres, 
+                var user = new ApplicationUser()
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Adres = model.Adres,
                     Contact_Name = model.Contact_Name,
                     Inn = model.Inn,
                     Mnemo_Org = model.Mnemo_Org,
@@ -122,6 +125,24 @@ namespace TalismanSqlForum.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Подтверждение учетной записи", "Подтвердите вашу учетную запись, щелкнув <a href=\"" + callbackUrl + "\">здесь</a>");
 
+                    MailMessage mail = new MailMessage();
+                    mail.Subject = "Новый пользователь";
+                    mail.Body = "<p>Модератор!!! В системе появился новый пользователь " + model.Email + "</p>";
+                    mail.IsBodyHtml = true;
+
+                    using (ApplicationDbContext db = new ApplicationDbContext())
+                    {
+                        foreach (var item in db.Roles.Where(a => a.Name == "moderator"))
+                        {
+                            foreach (var item2 in item.Users)
+                            {
+                                mail.To.Add(db.Users.Find(item2.UserId).Email);
+                                TalismanSqlForum.Code.Mail.SendEmail(mail);
+                            }
+                        }
+                        db.Dispose();
+                    }
+
                     return RedirectToAction("Index", "ForumList");
                 }
                 else
@@ -139,7 +160,7 @@ namespace TalismanSqlForum.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || code == null) 
+            if (userId == null || code == null)
             {
                 return View("Error");
             }
@@ -199,13 +220,13 @@ namespace TalismanSqlForum.Controllers
         {
             return View();
         }
-	
+
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
-            if (code == null) 
+            if (code == null)
             {
                 return View("Error");
             }
@@ -433,13 +454,13 @@ namespace TalismanSqlForum.Controllers
                     if (result.Succeeded)
                     {
                         await SignInAsync(user, isPersistent: false);
-                        
+
                         // Дополнительные сведения о том, как включить подтверждение учетной записи и сброс пароля, см. по адресу: http://go.microsoft.com/fwlink/?LinkID=320771
                         // Отправка сообщения электронной почты с этой ссылкой
                         // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                         // SendEmail(user.Email, callbackUrl, "Подтверждение учетной записи", "Подтвердите вашу учетную запись, щелкнув эту ссылку");
-                        
+
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -475,7 +496,45 @@ namespace TalismanSqlForum.Controllers
             ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
-
+        public ActionResult ManageUser()
+        {
+            ViewData["userId"] = User.Identity.GetUserId();
+            var t = new RegisterViewModel();
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var u = db.Users.Find(ViewData["userId"]);
+                t.Adres = u.Adres;
+                t.Inn = u.Inn;
+                t.Mnemo_Org = u.Mnemo_Org;
+                t.Name_Org = u.Name_Org;
+                t.NickName = u.NickName;
+                t.PhoneNumber = u.PhoneNumber;
+                db.Dispose();
+                return View(t);
+            }
+        }
+        [HttpPost]
+        public ActionResult ManageUser(string id, RegisterViewModel model)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var t = db.Users.Find(id);
+                if (t == null)
+                {
+                    return HttpNotFound();
+                }
+                t.Adres = model.Adres;
+                t.Inn = model.Inn;
+                t.Mnemo_Org = model.Mnemo_Org;
+                t.Name_Org = model.Name_Org;
+                t.NickName = model.NickName;
+                t.PhoneNumber = model.PhoneNumber;
+                db.Entry(t).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                db.Dispose();
+            }
+            return RedirectToAction("Index", "ForumList");
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing && UserManager != null)
@@ -549,7 +608,8 @@ namespace TalismanSqlForum.Controllers
 
         private class ChallengeResult : HttpUnauthorizedResult
         {
-            public ChallengeResult(string provider, string redirectUri) : this(provider, redirectUri, null)
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
             {
             }
 

@@ -77,17 +77,16 @@ namespace TalismanSqlForum.Controllers.Admin
                 manager.AddToRole(userId.Id, RoleName);
                 //Отправляем письмо, о том, что пользователя авторизовали
                 MailMessage mail = new MailMessage();
-                var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
                 mail.Subject = "авторизация пройдена";
-                mail.Body = "<p>Вам назначена роль на форуме ";
+                mail.Body = "<p>Уважаемы пользователь " + userId.NickName + "</p>";
+                mail.Body = "<p>Вы авторизированы на форуме программы Талисман-SQL</p>";
+
                 switch(RoleName)
                 {
                     case "user":
-                        mail.Body += "Пользователь</p>";
                         mail.Body += "<p>Теперь вы можете создавать темы в разделах форума, а также писать сообщения</p>";
                         break;
                     case "moderator":
-                        mail.Body += "Модератор";
                         mail.Body += "<p>Теперь вы можете создавать темы в разделах форума, создавать сообщения, закреплять и закрывать темы</p>";
                         break;
 

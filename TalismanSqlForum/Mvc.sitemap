@@ -7,7 +7,8 @@
     <mvcSiteMapNode title="" controller="ForumThemes" action="Index" dynamicNodeProvider="TalismanSqlForum.Code.MenuDynamicNodeProvider, TalismanSqlForum"/>
     <mvcSiteMapNode title ="Вход" controller="Account" action="Login"/>
     <mvcSiteMapNode title ="Регистрация" controller="Account" action="Register"/>
-    <mvcSiteMapNode title ="Учетная запись" controller="Account" action="Manage"/>
+    <mvcSiteMapNode title ="Профиль" controller="Account" action="ManageUser"/>
+    <mvcSiteMapNode title ="Форма смены пароля" controller="Account" action="Manage"/>
     <mvcSiteMapNode title ="Поиск" controller="Search" action="Index"/>
     <mvcSiteMapNode title ="Правила форума" controller="Rules" action="Rules"/>
   </mvcSiteMapNode>
