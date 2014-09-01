@@ -10,7 +10,14 @@
                     }
                 </style>
                 <h4 class="list-group-item-heading">
-                    @Html.Raw(item.tForumThemes_name.Replace((string)ViewData["val"], "<em class =\"search\">" + (string)ViewData["val"] + "</em>"))
+                    @if ((string)ViewData["val"] != "")
+                    {
+                        @Html.Raw(item.tForumThemes_name.Replace((string)ViewData["val"], "<em class =\"search\">" + (string)ViewData["val"] + "</em>"));
+                    }
+                    else
+                    {
+                        @item.tForumThemes_name;
+                    }
                 </h4>
             </div>
         </a>

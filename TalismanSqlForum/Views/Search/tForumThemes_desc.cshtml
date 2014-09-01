@@ -13,7 +13,14 @@
                     }
                 </style>
                 <p class="list-group-item-text">
-                    @Html.Raw(item.tForumThemes_desc.Replace((string)ViewData["val"], "<em class =\"search\">" + (string)ViewData["val"] + "</em>"))
+                    @if ((string)ViewData["val"] != "")
+                    {
+                        @Html.Raw(item.tForumThemes_desc.Replace((string)ViewData["val"], "<em class =\"search\">" + (string)ViewData["val"] + "</em>"));
+                    }
+                    else
+                    {
+                        @Html.Raw(item.tForumThemes_desc);
+                    }
                 </p>
             </div>
         </a>
