@@ -38,7 +38,7 @@ namespace TalismanSqlForum.Models
     public class LoginViewModel
     {
         [Required(ErrorMessage = "Требуется поле Адрес электронной почты")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Неверный формат адреса электронной почты")]
         [Display(Name = "Адрес электронной почты")]
         public string Email { get; set; }
 
@@ -55,7 +55,7 @@ namespace TalismanSqlForum.Models
     {
         #region Основная информация
         [Required(ErrorMessage = "Требуется поле Адрес электронной почты")]
-        [EmailAddress(ErrorMessage="Неверный адрес электронной почты")]
+        [EmailAddress(ErrorMessage="Неверный формат адреса электронной почты")]
         [Display(Name = "Адрес электронной почты")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Требуется поле Пароль")]
