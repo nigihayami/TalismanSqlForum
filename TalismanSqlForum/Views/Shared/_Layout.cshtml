@@ -23,7 +23,7 @@
 <body class="metro">
     <div class="grid">
         <div class="row container">
-            <img src="~/Content/logo.png" style="padding-top:20px;"/>
+            <img src="~/Content/logo.png" style="padding-top:20px;" />
             <nav class="sidebar bg-transparent place-right" style="width: 180px !important;">
                 <div class="margin10" style="padding:1px;">
                     <a class="place-left fg-black" href="http://Talisman-sql.ru" style="text-decoration: underline;">
@@ -33,18 +33,18 @@
                         Форум
                     </a>
                 </div>
-                <ul style="padding-top: 20px; font-family:'Trebuchet MS'">                    
+                <ul style="padding-top: 20px; font-family:'Trebuchet MS'">
                     @Html.Partial("_LoginPartial")
                 </ul>
             </nav>
             <div class="row">
-            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "element input-element bg-transparent no-margin" }))
-            {
-                <div class="input-control text bg-transparent" style="width: 270px !important;">
-                    <input id="_searchVal" name="_searchVal" type="text" placeholder="Поиск..." style="border-radius:7px;">
-                    <button class="btn-search"></button>
-                </div>
-            }
+                @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "element input-element bg-transparent no-margin" }))
+                {
+                    <div class="input-control text bg-transparent" style="width: 270px !important;">
+                        <input id="_searchVal" name="_searchVal" type="text" placeholder="Поиск..." style="border-radius:7px;">
+                        <button class="btn-search"></button>
+                    </div>
+                }
             </div>
         </div>
         <div class="row">
@@ -56,6 +56,17 @@
         </div>
         <div class="row">
             <div class="container">
+                <div class="row">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <text>Вы зашли как(</text>
+                        <a href="@Url.Action("ManageUser","Account")">
+                            <i class="icon-pencil"></i>
+                            @User.Identity.Name
+                        </a>
+                        <text>)</text>
+                    }
+                </div>
                 @RenderBody()
             </div>
         </div>
