@@ -18,12 +18,12 @@ namespace TalismanSqlForum.Models
 
     public class ManageUserViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Требуется поле Текущий пароль")]
         [DataType(DataType.Password)]
         [Display(Name = "Текущий пароль")]
         public string OldPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Требуется поле Новый пароль")]
         [StringLength(100, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Новый пароль")]
@@ -37,12 +37,12 @@ namespace TalismanSqlForum.Models
 
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Требуется поле Адрес электронной почты")]
         [EmailAddress]
         [Display(Name = "Адрес электронной почты")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage="Требуется поле Пароль")]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
         public string Password { get; set; }
@@ -54,11 +54,11 @@ namespace TalismanSqlForum.Models
     public class RegisterViewModel
     {
         #region Основная информация
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Требуется поле Адрес электронной почты")]
+        [EmailAddress(ErrorMessage="Неверный адрес электронной почты")]
         [Display(Name = "Адрес электронной почты")]
         public string Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Требуется поле Пароль")]
         [StringLength(100, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
@@ -67,22 +67,22 @@ namespace TalismanSqlForum.Models
         [Display(Name = "Подтверждение пароля")]
         [Compare("Password", ErrorMessage = "Пароль и его подтверждение не совпадают.")]
         public string ConfirmPassword { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Требуется поле Имя пользователя")]
         [Display(Name = "Имя пользователя")]
         public string NickName { get; set; }
         #endregion
         #region Доп информация
-        [Required]
+        [Required(ErrorMessage = "Требуется поле Полное наименование учреждения")]
         [Display(Name = "Полное наименование учреждения")]
         public string Name_Org { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Требуется поле Краткое наименование учреждения")]
         [Display(Name = "Краткое наименование учреждения")]
         public string Mnemo_Org { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Требуется поле ИНН")]
         [Display(Name = "ИНН")]
         [StringLength(10, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 10)]
         public string Inn { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Требуется поле Адрес")]
         [Display(Name = "Адрес")]
         public string Adres { get; set; }
         [Display(Name = "Контактное лицо")]
