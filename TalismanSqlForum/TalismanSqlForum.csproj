@@ -203,6 +203,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Admin\AdminController.cs" />
     <Compile Include="Controllers\Admin\AdminForumController.cs" />
+    <Compile Include="Controllers\Admin\AdminUserController.cs" />
     <Compile Include="Controllers\Admin\RulesController.cs" />
     <Compile Include="Controllers\ForumListController.cs" />
     <Compile Include="Controllers\ForumMessagesController.cs" />
@@ -566,6 +567,11 @@
     <Content Include="Views\ForumThemes\_Stat.cshtml" />
     <Content Include="Views\ForumMessages\_Stat.cshtml" />
     <Content Include="Views\Account\ManageUser.cshtml" />
+    <Content Include="Views\AdminUser\Users.cshtml" />
+    <Content Include="Views\AdminUser\UserPartital\_UsersIsNew.cshtml" />
+    <Content Include="Views\AdminUser\UserPartital\_UsersWait.cshtml" />
+    <Content Include="Views\AdminUser\UserPartital\_UsersModerator.cshtml" />
+    <Content Include="Views\AdminUser\UserPartital\_UsersOther.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

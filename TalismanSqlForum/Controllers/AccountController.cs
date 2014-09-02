@@ -112,7 +112,8 @@ namespace TalismanSqlForum.Controllers
                     NickName = model.NickName,
                     PhoneNumber = model.PhoneNumber,
                     LastIn = DateTime.Now,
-                    DateReg = DateTime.Now
+                    DateReg = DateTime.Now,
+                    IsNew = true
                 };
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

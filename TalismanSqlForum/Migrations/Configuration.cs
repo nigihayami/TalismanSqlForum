@@ -91,7 +91,8 @@ namespace TalismanSqlForum.Migrations
                     Adres = "Краснодар, Садовая 166/1",
                     NickName = "admin",
                     LastIn = System.DateTime.Now,
-                    DateReg = System.DateTime.Now
+                    DateReg = System.DateTime.Now,
+                    IsNew = false
                 };
 
                 manager.Create(user, "qvantologiya!");

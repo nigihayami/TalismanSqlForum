@@ -53,6 +53,9 @@ namespace TalismanSqlForum.Models
         [Display(Name = "Дата регистрации")]
         public System.DateTime DateReg { get; set; }
 
+        [Display(Name = "Новый пользователь")]
+        public bool IsNew { get; set; }
+
         public virtual ICollection<tForumThemes> tForumThemes { get; set; }
         public virtual ICollection<tForumMessages> tForumMessages { get; set; }
         public virtual ICollection<tModerator> tModerator { get; set; }

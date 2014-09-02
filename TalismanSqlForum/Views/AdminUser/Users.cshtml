@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Пользолватели";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+<div class="tab-control" data-role="tab-control">
+    <ul class="tabs">
+        <li class="active">
+            <a href="#_page_1">
+                Новые пользователи
+                <em class="fg-orange">
+                    @{
+                        var t = (IEnumerable<TalismanSqlForum.Models.ApplicationUser>)ViewData["users_new"];
+                        <text>
+                            @t.Count()
+                        </text>
+                    }
+                </em>
+            </a>
+        </li>
+        <li>
+            <a href="#_page_2">
+                Ожидающие авторизацию
+                <em class="fg-orange">
+                    @{
+                        var t2 = (IEnumerable<TalismanSqlForum.Models.ApplicationUser>)ViewData["users_wait"];
+                        <text>
+                            @t2.Count()
+                        </text>
+                    }
+                </em>
+            </a>
+        </li>
+        <li>
+            <a href="#_page_3">
+                Все пользователи
+                @{
+                    var t3 = (List<TalismanSqlForum.Models.ApplicationUser>)ViewData["users_moderator"];
+                    var t4 = (List<TalismanSqlForum.Models.ApplicationUser>)ViewData["users_other"];
+                    var c = t3.Count + t4.Count;
+                    <text>
+                        @c
+                    </text>
+                }
+            </a>
+        </li>
+    </ul>
+    <div class="frames">
+        <div class="frame" id="_page_1">
+            @Html.Partial("~/Views/AdminUser/UserPartital/_UsersIsNew.cshtml")
+        </div>
+        <div class="frame" id="_page_2">
+            @Html.Partial("~/Views/AdminUser/UserPartital/_UsersWait.cshtml")
+        </div>
+        <div class="frame" id="_page_3">
+            @Html.Partial("~/Views/AdminUser/UserPartital/_UsersModerator.cshtml")
+            @Html.Partial("~/Views/AdminUser/UserPartital/_UsersOther.cshtml")
+        </div>
+    </div>
+
+</div>
+
+
+

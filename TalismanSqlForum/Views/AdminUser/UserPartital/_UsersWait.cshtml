@@ -1,0 +1,42 @@
+﻿@{
+    var t = (IEnumerable<TalismanSqlForum.Models.ApplicationUser>)ViewData["users_wait"];
+    foreach (var item in t.OrderByDescending(a => a.DateReg))
+    {
+        <div class="panel" data-role="panel">
+            <div class="panel-header bg-lightBlue fg-white">
+                @item.NickName
+                <i class="icon-calendar"></i>
+                @item.DateReg
+            </div>
+            <div class="panel-content">
+                <div class="row">
+                    <table class="table striped bordered hovered">
+                        <thead>
+                            <tr>
+                                <th class="text-left">Email</th>
+                                <th class="text-left">Учреждение</th>
+                                <th class="text-left">Телефон</th>
+                                <th class="text-left">ИНН</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@item.Email</td>
+                                <td>@item.Mnemo_Org</td>
+                                <td>@item.PhoneNumber</td>
+                                <td>@item.Inn</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    @using (Html.BeginForm("AuthUser", "AdminUser", new { id = @item.Id, auth = 1 }, FormMethod.Post, new { @class = "place-left" }))
+                    {
+                        <button type="submit">Авторизовать</button>
+                    }                    
+                </div>
+            </div>
+        </div>
+    }
+}
+

@@ -1,0 +1,42 @@
+﻿<div class="panel" data-role="panel">
+    <div class="panel-header bg-lightBlue fg-white">
+        Пользователи
+    </div>
+    <div class="panel-content">
+        <div class="row">
+            <table class="table striped bordered hovered">
+                <thead>
+                    <tr>
+                        <th class="text-left">Email</th>
+                        <th class="text-left">Дата регистрации</th>
+                        <th class="text-left">Учреждение</th>
+                        <th class="text-left">Телефон</th>
+                        <th class="text-left">ИНН</th>
+                        <th class="text-left">Удалить</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var t = (List<TalismanSqlForum.Models.ApplicationUser>)ViewData["users_other"];
+                        foreach (var item in t.OrderByDescending(a => a.DateReg))
+                        {
+                            <tr>
+                                <td>@item.Email</td>
+                                <td>@item.DateReg</td>
+                                <td>@item.Mnemo_Org</td>
+                                <td>@item.PhoneNumber</td>
+                                <td>@item.Inn</td>
+                                <td>
+                                    @using (Html.BeginForm("DelUser", "AdminUser", new { id = @item.Id }, FormMethod.Post, null))
+                                    {
+                                        <button type="submit" class="icon-remove bg-transparent" data-hint="Удалить"></button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
