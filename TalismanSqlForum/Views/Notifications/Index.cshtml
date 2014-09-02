@@ -1,0 +1,10 @@
+﻿@{
+    Layout = null;
+}
+
+@{
+    var t = (List<TalismanSqlForum.Models.Notification.tNotification>)ViewData["notif"];
+    foreach (var item in t)
+    {<p>@item.Id;@item.tNotification_date;@item.tNotification_href;@item.tNotification_message;@item.tNotificationType.Id;</p>}
+}
+

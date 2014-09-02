@@ -8,6 +8,7 @@ namespace TalismanSqlForum.Migrations
     using System.Linq;
     using TalismanSqlForum.Models;
     using TalismanSqlForum.Models.Forum;
+    using TalismanSqlForum.Models.Notification;
 
     internal sealed class Configuration : DbMigrationsConfiguration<TalismanSqlForum.Models.ApplicationDbContext>
     {
@@ -28,6 +29,11 @@ namespace TalismanSqlForum.Migrations
                new tForumList { tForumList_name = "Общие вопросы", tForumList_description = "Ваши вопросы и пожелания", tForumList_hide = false, tForumList_icon = "icon-support" },
                new tForumList { tForumList_name = "Система учета замечаний", tForumList_description = "Обсуждение модуля \"Система учета замечаний\" ПК Талисман-SQL", tForumList_hide = false, tForumList_icon = "icon-wrench" }
                );
+            context.tNotificationType.AddOrUpdate(a => a.Id,
+                new tNotificationType { Id = 1, tNotificationType_name = "Новый пользователь" },
+                new tNotificationType { Id = 2, tNotificationType_name = "Новая тема" },
+                new tNotificationType { Id = 3, tNotificationType_name = "Новое сообщение" }
+                );
             if (context.tRules.Count() == 0)
             {
                 context.tRules.Add(new Models.Admin.tRules

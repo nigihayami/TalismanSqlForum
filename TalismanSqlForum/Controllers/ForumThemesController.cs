@@ -66,19 +66,7 @@ namespace TalismanSqlForum.Controllers
                     tForumThemes.tForumThemes_close = false;
                 }
                 db.tForumThemes.Add(tForumThemes);
-                db.SaveChanges();
-                /*для всех авторизованных пользователей добавляем пометку - что появилась новая тема*/
-                MailMessage mail = new MailMessage();
-                var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
-                mail.Subject = "Новая тема на форуме " + tForumThemes.tForumList.tForumList_name;
-                mail.Body = "<p>" + tForumThemes.tForumThemes_name + "</p>" +
-                            "<p><em><a href ='" +
-                                        Url.Action("Index", "ForumThemes", new { id = tForumThemes.tForumList.Id}, val) +
-                                        "'> " +
-                                        Url.Action("Index", "ForumThemes", new { id = tForumThemes.tForumList.Id }, val) +
-                                        "</a></em></p>"                   
-                    ;
-                mail.IsBodyHtml = true;
+                db.SaveChanges();                
                 var r = db.Roles.ToList();
                 foreach (var item in r)
                 {
@@ -93,14 +81,15 @@ namespace TalismanSqlForum.Controllers
                             n.tUsers = item2;
                             db.tUserNewThemes.Add(n);
                             db.SaveChanges();
-                            if(item.Name == "moderator")
-                            {
-                                mail.To.Add(item2.Email);                                
-                            }
                         }
                     }
                 }
-                TalismanSqlForum.Code.Mail.SendEmail(mail);
+                //отсылаем сообщение всем модераторам
+                var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
+                var href = Url.Action("Index", "ForumMessages", new { id = tForumThemes.Id, id_list = tForumThemes.tForumList.Id }, val);
+                TalismanSqlForum.Code.Notify.NewThemes(tForumThemes.Id, href);
+                
+                
                 return RedirectToAction("Index","ForumMessages", new { id = tForumThemes.Id });
             }
 

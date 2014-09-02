@@ -142,7 +142,7 @@ namespace TalismanSqlForum.Controllers
                         }
                         db.Dispose();
                     }
-                    TalismanSqlForum.Code.Mail.SendEmail(mail);
+                    TalismanSqlForum.Code.Notify.NewUser(user.Id);
                     return RedirectToAction("Index", "ForumList");
                 }
                 else

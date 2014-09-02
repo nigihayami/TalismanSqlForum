@@ -30,6 +30,11 @@ namespace TalismanSqlForum
                 defaults: new {controller = "ForumThemes",action = "Create", id = UrlParameter.Optional }
                 );
             routes.MapRoute(
+                name: "Notifications",
+                url: "Notifications/{username}",
+                defaults: new {controller ="Notifications", action = "Index", username = UrlParameter.Optional }
+                );
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "ForumList", action = "Index", id = UrlParameter.Optional }
