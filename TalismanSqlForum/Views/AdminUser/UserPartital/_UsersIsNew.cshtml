@@ -1,50 +1,38 @@
-﻿@{
-    var t = (IEnumerable<TalismanSqlForum.Models.ApplicationUser>)ViewData["users_new"];
-    foreach (var item in t.OrderByDescending(a => a.DateReg))
-    {
-        <div class="panel" data-role="panel">
-            <div class="panel-header fg-black" 
-                 style="background-color:#C8E3EF !important;
-font-family: Arial,Helvetica,sans-serif;
-font-size: 1.5rem;
-padding: 4px;">
-                @item.NickName
-                <i class="icon-calendar"></i>
-                @item.DateReg
-            </div>
-            <div class="panel-content">
-                <div class="row" style="margin-top:0;">
-                    <table class="table striped bordered hovered">
-                        <thead>
-                            <tr>
-                                <th class="text-left">Email</th>
-                                <th class="text-left">Учреждение</th>
-                                <th class="text-left">Телефон</th>
-                                <th class="text-left">ИНН</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>@item.Email</td>
-                                <td>@item.Mnemo_Org</td>
-                                <td>@item.PhoneNumber</td>
-                                <td>@item.Inn</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="row">
-                    @using (Html.BeginForm("AuthUser", "AdminUser", new { id = @item.Id, auth = 1 }, FormMethod.Post, new { @class = "place-left" }))
-                    {
-                        <button type="submit">Авторизовать</button>
-                    }
-                    <span class="padding5 place-left"></span>
-                    @using (Html.BeginForm("AuthUser", "AdminUser", new { id = @item.Id, auth = 0 }, FormMethod.Post, new { @class = "place-left" }))
-                    {
-                        <button type="submit">В список Ожидающих</button>
-                    }
-                </div>
-            </div>
-        </div>
-    }
-}
+﻿<table class="table striped bordered hovered">
+    <thead>
+        <tr>
+            <th class="text-left">Имя</th>
+            <th class="text-left">Email</th>
+            <th class="text-left">Учреждение</th>
+            <th class="text-left">Телефон</th>
+            <th class="text-left">ИНН</th>
+            <th class="text-left">Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var t = (IEnumerable<TalismanSqlForum.Models.ApplicationUser>)ViewData["users_new"];
+            foreach (var item in t.OrderByDescending(a => a.DateReg))
+            {
+                <tr>
+                    <td>@item.NickName</td>
+                    <td>@item.Email</td>
+                    <td>@item.Mnemo_Org</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.Inn</td>
+                    <td>
+                        @using (Html.BeginForm("AuthUser", "AdminUser", new { id = @item.Id, auth = 1 }, FormMethod.Post, new { @class = "place-left" }))
+                        {
+                            <button type="submit" class="icon-checkmark bg-transparent"></button>
+                        }
+                        <span class="padding5 place-left"></span>
+                        @using (Html.BeginForm("AuthUser", "AdminUser", new { id = @item.Id, auth = 0 }, FormMethod.Post, new { @class = "place-left" }))
+                        {
+                            <button type="submit" class="icon-cancel-2 bg-transparent"></button>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
