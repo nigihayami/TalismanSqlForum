@@ -11,6 +11,7 @@
     <mvcSiteMapNode title ="Форма смены пароля" controller="Account" action="Manage"/>
     <mvcSiteMapNode title ="Поиск" controller="Search" action="Index"/>
     <mvcSiteMapNode title ="Правила форума" controller="Rules" action="Rules"/>
+    <mvcSiteMapNode title ="Оповевещия" controller="Notifications" action="New"/>
   </mvcSiteMapNode>
 </mvcSiteMap>
 

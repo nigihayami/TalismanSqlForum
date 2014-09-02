@@ -70,6 +70,22 @@
                 @RenderBody()
             </div>
         </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a href="@Url.Action("New","Notifications")"
+               class="element place-right fg-black" 
+               style="top: 50%;
+                        position: absolute;
+                        right: 0px;">
+                <i class="icon-comments-4"></i>
+                @{
+            var c = TalismanSqlForum.Code.Notify.Count(User.Identity.Name);
+            <text>
+                @c
+            </text>
+                }
+            </a>
+        }
 
     </div>
     <div class="clearfix">

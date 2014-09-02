@@ -84,5 +84,14 @@ namespace TalismanSqlForum.Code
                 db.Dispose();
             }
         }
+
+        public static int Count(string username)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                int c = db.tNotification.Where(a => a.tUsers.UserName == username).Where(a => !a.tNotification_IsRead).Count();
+                return c;
+            }
+        }
     }
 }

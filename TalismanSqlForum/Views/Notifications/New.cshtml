@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Оповещения";
+}
+<div class="panel">
+    <div class="panel-header gradient_header">
+        <h4 class="fg-white">
+            <i class="icon-comments-4"></i>
+            Оповещения
+        </h4>
+    </div>
+    <div class="panel-content bg-white">
+        <table class="table striped bordered hovered">
+            <tbody>
+                @{
+                    var t = (List<TalismanSqlForum.Models.Notification.tNotification>)ViewData["notif"];
+                    foreach (var item in t)
+                    {
+                        <tr>
+                            <td>
+                                @using (Html.BeginForm("New", "Notifications", new { id = item.Id }, FormMethod.Post, new { @class = "place-left" }))
+                                {
+                                    switch (item.tNotificationType.Id)
+                                    {
+                                        case 1:
+                                            <button type="submit" class="icon-checkmark bg-transparent"></button>
+                                            break;
+                                        case 2:
+                                        <button type="submit" class="icon-arrow-right bg-transparent"></button>
+                                            break;
+                                        case 3:
+                                        <button type="submit" class="icon-arrow-right bg-transparent"></button>
+                                            break;
+                                    }
+
+                                }
+                            </td>
+                            <td>
+                                @item.tNotification_message
+                            </td>
+                            <td>
+                                @item.tNotification_date
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
