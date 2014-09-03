@@ -27,9 +27,13 @@
                                 <td>@item.PhoneNumber</td>
                                 <td>@item.Inn</td>
                                 <td>
-                                    @using (Html.BeginForm("DelUser", "AdminUser", new { id = @item.Id }, FormMethod.Post, null))
+                                    @using (Html.BeginForm("DelUser", "AdminUser", new { id = @item.Id }, FormMethod.Post, new {@class = "place-right" }))
                                     {
                                         <button type="submit" class="icon-remove bg-transparent" data-hint="Удалить"></button>
+                                    }
+                                    @using (Html.BeginForm("ModUser", "AdminUser", new { id = @item.Id }, FormMethod.Post, new { @class = "place-right" }))
+                                    {
+                                        <button type="submit" class="icon-arrow-up bg-transparent" data-hint="Назначить модератором"></button>
                                     }
                                 </td>
                             </tr>

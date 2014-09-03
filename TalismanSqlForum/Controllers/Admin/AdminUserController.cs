@@ -38,10 +38,6 @@ namespace TalismanSqlForum.Controllers.Admin
             ViewData["users_other"] = uo;
             return View();
         }
-
-
-
-
         [HttpPost]
         public ActionResult AuthUser(string id, int auth)
         {
@@ -69,6 +65,17 @@ namespace TalismanSqlForum.Controllers.Admin
                 setRole(id,RoleName);
             }
             return RedirectToAction("Users","AdminUser");
+        }
+        [HttpPost]
+        public ActionResult ModUser(string id)
+        {
+            foreach (var item in db.Users.Find(id).Roles)
+            {
+                var RoleName = db.Roles.Find(item.RoleId).Name;
+                setRole(id, RoleName);
+            }
+            setRole(id, "moderator");
+            return RedirectToAction("Users", "AdminUser");
         }
 
         public void setRole(string id, string RoleName)
