@@ -36,6 +36,9 @@ namespace TalismanSqlForum.Controllers.Notify
             var d = new List<tNotification>();
             foreach (var item in db.tNotification.Where(a => a.tUsers.UserName == username).Where(a => !a.tNotification_IsRead))
             {
+                item.tNotification_IsRead = true;
+                db.Entry(item).State = EntityState.Modified;
+                db.SaveChanges();
                 d.Add(item);
             }
             ViewData["notif"] = d;
