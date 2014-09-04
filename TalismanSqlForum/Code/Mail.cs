@@ -12,7 +12,7 @@ namespace TalismanSqlForum.Code
         public static void SendEmail(MailMessage mail)
         {
             SmtpClient smtpServer = new SmtpClient("smtp.gmail.com");
-            smtpServer.Credentials = new System.Net.NetworkCredential("forumtalismanwebru", "ckj;ysqgfhjkm");
+            smtpServer.Credentials = new System.Net.NetworkCredential("TalismanSqlForum", "Shidzenreku1988#");
             smtpServer.Port = 587; // Gmail works on this port
             smtpServer.EnableSsl = true;
 
