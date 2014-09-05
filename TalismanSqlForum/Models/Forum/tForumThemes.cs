@@ -25,6 +25,7 @@ namespace TalismanSqlForum.Models.Forum
 
         [AllowHtml]
         [Display(Name="Краткое описание")]
+        [MaxLength]
         public string tForumThemes_desc { get; set; }
 
         [Display(Name = "Закрепленная тема")]

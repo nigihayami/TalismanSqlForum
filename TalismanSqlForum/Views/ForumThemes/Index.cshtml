@@ -41,7 +41,7 @@
                             @foreach (var item in tForumThemes_top)
                         {
                         <div class="list">
-                                <a href="@Url.Action("Index", "ForumMessages", new {id = item.Id})">
+                                <a href="@Url.Action("Index", "ForumMessages", new {id = item.Id, id_list = item.tForumList.Id})">
                             <div class="list-content">
                                 <div class="tile half bg-white">
                                     <div class="tile-content icon">

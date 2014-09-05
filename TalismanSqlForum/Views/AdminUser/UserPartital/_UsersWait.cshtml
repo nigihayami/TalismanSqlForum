@@ -23,7 +23,7 @@
                     <td>
                         @using (Html.BeginForm("AuthUser", "AdminUser", new { id = @item.Id, auth = 1 }, FormMethod.Post, new { @class = "place-left" }))
                         {
-                            <button type="submit" class="icon-checkmark bg-transparent"></button>
+                            <button type="submit" class="icon-checkmark bg-transparent" data-hint="Авторизовать"></button>
                         }
                     </td>
                 </tr>

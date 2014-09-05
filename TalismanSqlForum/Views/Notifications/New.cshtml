@@ -9,42 +9,43 @@
         </h4>
     </div>
     <div class="panel-content bg-white">
-        <table class="table striped bordered hovered">
-            <tbody>
-                @{
-                    var t = (List<TalismanSqlForum.Models.Notification.tNotification>)ViewData["notif"];
-                    foreach (var item in t)
+        <div class="listview-outlook">
+            @{
+                var t = (List<TalismanSqlForum.Models.Notification.tNotification>)ViewData["notif"];
+                foreach (var item in t)
+                {
+                    var href = "";
+                    if (item.tNotification_href != null && item.tNotification_href != "")
                     {
-                        <tr>
-                            <td>
-                                @using (Html.BeginForm("New", "Notifications", new { id = item.Id }, FormMethod.Post, new { @class = "place-left" }))
-                                {
-                                    switch (item.tNotificationType.Id)
+                        href = item.tNotification_href;
+                    }
+                    else
+                    {
+                        href = Url.Action("New", "Notifications");
+                    }
+                    <a href="@href" class="list">
+                        <div class="list-content">
+                            <div class="tile half bg-white">
+                                <div class="tile-content icon">
+                                    @switch (item.tNotificationType.Id)
                                     {
                                         case 1:
-                                            <button type="submit" class="icon-checkmark bg-transparent"></button>
+                                            <i class="icon-user fg-gray"></i>
                                             break;
-                                        case 2:
-                                        <button type="submit" class="icon-arrow-right bg-transparent"></button>
-                                            break;
-                                        case 3:
-                                        <button type="submit" class="icon-arrow-right bg-transparent"></button>
+                                        default:
+                                        <i class="icon-mail fg-gray"></i>
                                             break;
                                     }
 
-                                }
-                            </td>
-                            <td>
-                                @item.tNotification_message
-                            </td>
-                            <td>
-                                @item.tNotification_date
-                            </td>
-                        </tr>
-                    }
+                                </div>
+                            </div>
+                            <h5 style="margin-bottom:0; margin-top:0;">@item.tNotification_message</h5>
+                            <small>@item.tNotification_date</small>
+                        </div>
+                    </a>
                 }
-            </tbody>
-        </table>
+            }
+        </div>
     </div>
 </div>
 

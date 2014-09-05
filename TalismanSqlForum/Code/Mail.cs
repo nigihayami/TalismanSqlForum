@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Net;
 using System.Web;
+using System.Configuration;
 
 namespace TalismanSqlForum.Code
 {
@@ -12,7 +13,9 @@ namespace TalismanSqlForum.Code
         public static void SendEmail(MailMessage mail)
         {
             SmtpClient smtpServer = new SmtpClient("smtp.gmail.com");
-            smtpServer.Credentials = new System.Net.NetworkCredential("TalismanSqlForum", "Shidzenreku1988#");
+            var acc = ConfigurationManager.AppSettings["email_account"];
+            var pass = ConfigurationManager.AppSettings["email_pass"];
+            smtpServer.Credentials = new System.Net.NetworkCredential(acc, pass);
             smtpServer.Port = 587; // Gmail works on this port
             smtpServer.EnableSsl = true;
 

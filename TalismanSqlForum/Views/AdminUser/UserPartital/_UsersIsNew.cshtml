@@ -23,12 +23,12 @@
                     <td>
                         @using (Html.BeginForm("AuthUser", "AdminUser", new { id = @item.Id, auth = 1 }, FormMethod.Post, new { @class = "place-left" }))
                         {
-                            <button type="submit" class="icon-checkmark bg-transparent"></button>
+                            <button type="submit" class="icon-checkmark bg-transparent" data-hint="Авторизовать" ></button>
                         }
                         <span class="padding5 place-left"></span>
                         @using (Html.BeginForm("AuthUser", "AdminUser", new { id = @item.Id, auth = 0 }, FormMethod.Post, new { @class = "place-left" }))
                         {
-                            <button type="submit" class="icon-cancel-2 bg-transparent"></button>
+                            <button type="submit" class="icon-cancel-2 bg-transparent" data-hint="Удалить"></button>
                         }
                     </td>
                 </tr>

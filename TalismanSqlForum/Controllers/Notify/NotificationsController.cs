@@ -44,30 +44,6 @@ namespace TalismanSqlForum.Controllers.Notify
             ViewData["notif"] = d;
             return View();
         }
-        [Authorize]
-        [HttpPost]
-        public ActionResult New(int id)
-        {
-            var t = db.tNotification.Find(id);
-            if (t != null)
-            {
-                //Помечаем к прочтению
-                t.tNotification_IsRead = true;
-                db.Entry(t).State = EntityState.Modified;
-                db.SaveChanges();
-                //Берем адрес
-                var url = t.tNotification_href;
-                if (url != null && url != "")
-                {
-                    return Redirect(url);
-                }
-                else
-                {
-                    return RedirectToAction("New", "Notifications");
-                }
-            }
-            return HttpNotFound();
-        }
         
         protected override void Dispose(bool disposing)
         {

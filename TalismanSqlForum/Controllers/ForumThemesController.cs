@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using TalismanSqlForum.Models;
 using TalismanSqlForum.Models.Forum;
 using TalismanSqlForum.Models.Users;
+using TalismanSqlForum.Models.ViewModel;
 
 namespace TalismanSqlForum.Controllers
 {
@@ -95,6 +96,39 @@ namespace TalismanSqlForum.Controllers
 
             return View(tForumThemes);
         }
+
+        [Authorize(Roles="admin,moderator")]
+        public ActionResult Edit(int? id)
+        {
+            var t = db.tForumThemes.Find(id);
+            if (t != null)
+            {
+                var m = new tForumThemes_Edit();
+                m.tForumThemes_desc = t.tForumThemes_desc;
+                ViewData["tForumThemes_name"] = t.tForumThemes_name;
+                ViewData["tForumThemes_id"] = t.Id;
+                return View(m);
+            }
+            return HttpNotFound();
+        }
+        [Authorize(Roles = "admin,moderator")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "tForumThemes_desc")] int id, tForumThemes_Edit t)
+        {
+            var d = db.tForumThemes.Find(id);
+            if (d != null)
+            {
+                d.tForumThemes_desc = t.tForumThemes_desc;
+                db.Entry(d).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", "ForumThemes", new { id = d.tForumList.Id });
+            }
+            return HttpNotFound();
+        }
+        
+        
+        
         [Authorize(Roles = "admin,moderator")]
         public ActionResult Top(int? id)
         {

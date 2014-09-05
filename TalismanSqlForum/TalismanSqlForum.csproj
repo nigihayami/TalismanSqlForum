@@ -230,6 +230,7 @@
     <Compile Include="Models\Notification\tNotificationType.cs" />
     <Compile Include="Models\Users\UserNewThemes.cs" />
     <Compile Include="Models\ViewModel\CreateOffer.cs" />
+    <Compile Include="Models\ViewModel\tForumThemes_Edit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -578,6 +579,7 @@
     <Content Include="Views\AdminUser\UserPartital\_UsersOther.cshtml" />
     <Content Include="Views\Notifications\Index.cshtml" />
     <Content Include="Views\Notifications\New.cshtml" />
+    <Content Include="Views\ForumThemes\Edit.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

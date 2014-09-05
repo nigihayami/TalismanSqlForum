@@ -1,0 +1,39 @@
+﻿@model TalismanSqlForum.Models.ViewModel.tForumThemes_Edit
+@{
+    ViewBag.Title = ViewData["tForumThemes_name"];
+}
+@section CKE{
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+}
+<div class="panel">
+    <div class="panel-header gradient_header fg-white">
+        <h4 class="fg-white">
+            <i class="icon-plus-2"></i>
+            @ViewBag.Title
+        </h4>
+    </div>
+    @using (Html.BeginForm("Edit", "ForumThemes", new { id = ViewData["tForumThemes_id"] }, FormMethod.Post, new { @class = "panel-content bg-white" }))
+    {
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend></legend>
+            @Html.LabelFor(m => m.tForumThemes_desc)
+            <div class="input-control textarea">
+                @Html.TextAreaFor(m => m.tForumThemes_desc, new { @class = "ckeditor", @id = "tRules_rules" })
+            </div>
+            <button class="button" type="submit">
+                Сохранить
+            </button>
+        </fieldset>
+    }
+</div>
+
+<script type="text/javascript">
+    CKEDITOR.replace('tForumThemes_desc', {
+        filebrowserImageUploadUrl: '@Url.Action("UploadImage", "Upload")'
+    });
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
