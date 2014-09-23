@@ -21,6 +21,12 @@
             <h4 class="fg-white">
                 <i class="@ViewData["tforumlist_icon"]"></i>
                 @ViewBag.Title
+                @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                {
+                    <a href="@Url.Action("HideAllThemes","ForumList",new{id = ViewData["tForumList_id"] })" class="place-right fg-red">
+                        <i class="icon-remove fg-red"data-hint="Скрыть все темы" data-hint-position="top"></i>
+                    </a>
+                }
             </h4>
         </div>
         <div class="panel-content bg-white">
