@@ -33,6 +33,8 @@ namespace TalismanSqlForum.Models.Forum
         [Display(Name = "Закрытая тема")]
         public bool tForumThemes_close { get; set; }
 
+        public bool tForumThemes_hide { get; set; }
+
         public virtual tForumList tForumList { get; set; }
         public virtual ApplicationUser tUsers { get; set; }
         public virtual ICollection<tForumMessages> tForumMessages { get; set; }

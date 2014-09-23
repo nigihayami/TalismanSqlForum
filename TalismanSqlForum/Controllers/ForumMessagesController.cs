@@ -29,7 +29,7 @@ namespace TalismanSqlForum.Controllers
             ViewData["ForumThemes_Id"] = t.Id;
             ViewData["tForumThemes_top"] = t.tForumThemes_top;
             ViewData["tForumThemes_close"] = t.tForumThemes_close;
-            ViewData["tForumMessages"] = t.tForumMessages;
+            ViewData["tForumMessages"] = t.tForumMessages.Where(a => !a.tForumMessages_hide).ToList();
             ViewData["tUsers"] = t.tUsers;
             ViewData["tUsers_NickName"] = t.tUsers.NickName;
             ViewData["tUsers_Org"] = t.tUsers.Name_Org;
@@ -72,6 +72,7 @@ namespace TalismanSqlForum.Controllers
             tForumMessages.tForumThemes = db.tForumThemes.Find(id);
             tForumMessages.tUsers = db.Users.Where(a => a.UserName == User.Identity.Name).First();
             tForumMessages.tForumMessages_datetime = DateTime.Now;
+            tForumMessages.tForumMessages_hide = false;
             var UserId = tForumMessages.tUsers.Id;
             if (tForumMessages.tForumMessages_messages != null)
             {
@@ -106,7 +107,19 @@ namespace TalismanSqlForum.Controllers
 
             return View(tForumMessages);
         }
-
+        [Authorize(Roles="admin,moderator")]
+        public ActionResult Hide (int? id)
+        {
+            var t = db.tForumMessages.Find(id);
+            if (t!= null)
+            {
+                t.tForumMessages_hide = true;
+                db.Entry(t).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = t.tForumThemes.Id, id_list = t.tForumThemes.tForumList.Id });
+            }
+            return HttpNotFound();
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

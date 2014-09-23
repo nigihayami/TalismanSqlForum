@@ -30,8 +30,8 @@ namespace TalismanSqlForum.Controllers
             ViewBag.Title = t.tForumList_name;
             ViewData["tForumList_id"] = t.Id;
             ViewData["tForumList_icon"] = t.tForumList_icon;
-            ViewData["tForumThemes_top"] = t.tForumThemes.Where(a => a.tForumThemes_top == true).OrderByDescending(a => a.tForumThemes_datetime).ToList();
-            ViewData["tForumThemes"] = t.tForumThemes.Where(a => a.tForumThemes_top == false).OrderByDescending(a => a.tForumThemes_datetime).ToList();
+            ViewData["tForumThemes_top"] = t.tForumThemes.Where(a => !a.tForumThemes_hide).Where(a => a.tForumThemes_top).OrderByDescending(a => a.tForumThemes_datetime).ToList();
+            ViewData["tForumThemes"] = t.tForumThemes.Where(a => !a.tForumThemes_hide).Where(a => !a.tForumThemes_top).OrderByDescending(a => a.tForumThemes_datetime).ToList();
             return View();
         }
 
@@ -53,6 +53,7 @@ namespace TalismanSqlForum.Controllers
             tForumThemes.tForumList = db.tForumLists.Find(id);
             tForumThemes.tForumThemes_datetime = DateTime.Now;
             tForumThemes.tUsers = db.Users.Where(a => a.UserName == User.Identity.Name).First();
+            tForumThemes.tForumThemes_hide = false;
 
             var UserId = tForumThemes.tUsers.Id;
             if (tForumThemes.tForumThemes_desc != null)
@@ -159,7 +160,20 @@ namespace TalismanSqlForum.Controllers
             }
             return HttpNotFound();
         }
-
+        [Authorize(Roles="admin")]
+        public ActionResult Hide(int? id)
+        {
+            var t = db.tForumThemes.Find(id);
+            if (t != null)
+            {
+                t.tForumThemes_hide = true;
+                db.Entry(t).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = t.tForumList.Id });
+            }
+            return HttpNotFound();
+        }
+        #region Перенос темы
         [Authorize(Roles = "admin,moderator")]
         public ActionResult Transfer(int? id)
         {
@@ -185,6 +199,7 @@ namespace TalismanSqlForum.Controllers
             }
             return HttpNotFound();
         }
+        #endregion
 
         protected override void Dispose(bool disposing)
         {

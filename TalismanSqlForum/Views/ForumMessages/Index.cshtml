@@ -43,6 +43,12 @@
                            data-hint-position="top">
                         </i>
                     </a>
+                    <a href="@Url.Action("Hide","ForumThemes",new{id = ViewData["ForumThemes_Id"]})" class="place-right fg-red">
+                        <i class="icon-remove fg-red"
+                           data-hint="Скрыть"
+                           data-hint-position="top">
+                        </i>
+                    </a>
                 }
                 @if ((bool)ViewData["tForumThemes_top"])
                 {
@@ -59,7 +65,7 @@
                                 border-bottom-color: gray;
                                 border-bottom-width: 1px;
                                 border-bottom-style: solid;
-                                    ">
+                                    ">            
             <div class="button bg-transparent fg-gray place-right">
                 <i class="icon-calendar on-left"></i>
                 @ViewData["ForumThemes_DateTime"]
@@ -127,6 +133,15 @@
                                 border-bottom-width: 1px;
                                 border-bottom-style: solid;
                                     ">
+            @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator")))
+            {
+                <a href="@Url.Action("Hide","ForumMessages",new{id = item.Id})" class="place-right fg-red">
+                    <i class="icon-remove fg-red"
+                       data-hint="Скрыть"
+                       data-hint-position="top">
+                    </i>
+                </a>
+            }
             <a class="button bg-transparent fg-gray  place-right">
                 <i class="icon-calendar on-left"></i>
                 @item.tForumMessages_datetime

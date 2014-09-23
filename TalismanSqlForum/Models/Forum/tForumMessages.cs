@@ -21,6 +21,8 @@ namespace TalismanSqlForum.Models.Forum
         [AllowHtml]
         public string tForumMessages_offer { get; set; }
 
+        public bool tForumMessages_hide { get; set; }
+
 
         public virtual tForumThemes tForumThemes { get; set; }
         public virtual ApplicationUser tUsers { get; set; }
