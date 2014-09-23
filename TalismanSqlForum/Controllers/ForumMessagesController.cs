@@ -72,6 +72,7 @@ namespace TalismanSqlForum.Controllers
             tForumMessages.tForumThemes = db.tForumThemes.Find(id);
             tForumMessages.tUsers = db.Users.Where(a => a.UserName == User.Identity.Name).First();
             tForumMessages.tForumMessages_datetime = DateTime.Now;
+            var UserId = tForumMessages.tUsers.Id;
             if (tForumMessages.tForumMessages_messages != null)
             {
                 tForumMessages.tForumMessages_messages = WebUtility.HtmlDecode(tForumMessages.tForumMessages_messages);
@@ -84,7 +85,7 @@ namespace TalismanSqlForum.Controllers
                 foreach (var item in r)
                 {
                     //по ролям
-                    foreach (var item2 in db.Users.Where(a => a.Roles.Where(b => b.RoleId == item.Id).Count() > 0))
+                    foreach (var item2 in db.Users.Where(a => a.Roles.Where(b => b.RoleId == item.Id).Count() > 0).Where(a=> a.Id != UserId))
                     {
                         //по пользователям в роли
                         if (db.tUserNewThemes.Where(a => a.tUsers.Id == item2.Id).Where(b => b.tForumThemes.Id == tForumMessages.tForumThemes.Id).Count() == 0)
@@ -99,7 +100,7 @@ namespace TalismanSqlForum.Controllers
                 }
                 var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
                 var href = Url.Action("Index", "ForumMessages", new { id = tForumMessages.tForumThemes.Id, id_list = tForumMessages.tForumThemes.tForumList.Id }, val);
-                TalismanSqlForum.Code.Notify.NewMessage(tForumMessages.Id,href);                
+                TalismanSqlForum.Code.Notify.NewMessage(tForumMessages.Id,href,UserId);                
                 return RedirectToAction("Index", new { id = id, id_list = tForumMessages.tForumThemes.tForumList.Id });
             }
 

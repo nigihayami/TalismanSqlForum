@@ -49,10 +49,12 @@ namespace TalismanSqlForum.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,tForumThemes_name,tForumThemes_datetime,tForumThemes_desc,tForumThemes_top,tForumThemes_close")] int? id, tForumThemes tForumThemes)
-        {
+        {           
             tForumThemes.tForumList = db.tForumLists.Find(id);
             tForumThemes.tForumThemes_datetime = DateTime.Now;
             tForumThemes.tUsers = db.Users.Where(a => a.UserName == User.Identity.Name).First();
+
+            var UserId = tForumThemes.tUsers.Id;
             if (tForumThemes.tForumThemes_desc != null)
             {
                 tForumThemes.tForumThemes_desc = WebUtility.HtmlDecode(tForumThemes.tForumThemes_desc);
@@ -72,7 +74,7 @@ namespace TalismanSqlForum.Controllers
                 foreach (var item in r)
                 {
                     //по ролям
-                    foreach (var item2 in db.Users.Where(a => a.Roles.Where(b => b.RoleId == item.Id).Count() > 0))
+                    foreach (var item2 in db.Users.Where(a => a.Roles.Where(b => b.RoleId == item.Id).Count() > 0).Where(a => a.Id != UserId))
                     {
                         //по пользователям в роли
                         if (db.tUserNewThemes.Where(a=> a.tUsers.Id == item2.Id).Where(b => b.tForumThemes.Id == tForumThemes.Id).Count() == 0)
@@ -88,7 +90,7 @@ namespace TalismanSqlForum.Controllers
                 //отсылаем сообщение всем модераторам
                 var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
                 var href = Url.Action("Index", "ForumMessages", new { id = tForumThemes.Id, id_list = tForumThemes.tForumList.Id }, val);
-                TalismanSqlForum.Code.Notify.NewThemes(tForumThemes.Id, href);
+                TalismanSqlForum.Code.Notify.NewThemes(tForumThemes.Id, href, UserId);
                 
                 
                 return RedirectToAction("Index","ForumMessages", new { id = tForumThemes.Id });
@@ -104,6 +106,7 @@ namespace TalismanSqlForum.Controllers
             if (t != null)
             {
                 var m = new tForumThemes_Edit();
+                m.tForumThemes_name = t.tForumThemes_name;
                 m.tForumThemes_desc = t.tForumThemes_desc;
                 ViewData["tForumThemes_name"] = t.tForumThemes_name;
                 ViewData["tForumThemes_id"] = t.Id;

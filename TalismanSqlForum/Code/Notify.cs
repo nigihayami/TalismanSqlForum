@@ -30,7 +30,7 @@ namespace TalismanSqlForum.Code
                 db.Dispose();
             }
         }
-        public static void NewThemes(int id, string href)
+        public static void NewThemes(int id, string href, string UserId)
         {
             using(ApplicationDbContext db = new ApplicationDbContext())
             {
@@ -44,7 +44,7 @@ namespace TalismanSqlForum.Code
                 //Отсылаем модераторам
                 foreach (var item in db.Roles.Where(a => a.Name == "moderator"))
                 {
-                    foreach (var item2 in item.Users)
+                    foreach (var item2 in item.Users.Where(a => a.UserId != UserId))
                     {
                         t.tUsers = db.Users.Find(item2.UserId);
                         db.tNotification.Add(t);
@@ -54,7 +54,7 @@ namespace TalismanSqlForum.Code
                 //Отсылаем администраторам.. Только я конечо я незнаю зачем все это?????!!!!!!
                 foreach (var item in db.Roles.Where(a => a.Name == "admin"))
                 {
-                    foreach (var item2 in item.Users)
+                    foreach (var item2 in item.Users.Where(a => a.UserId != UserId))
                     {
                         t.tUsers = db.Users.Find(item2.UserId);
                         db.tNotification.Add(t);
@@ -64,7 +64,7 @@ namespace TalismanSqlForum.Code
                 db.Dispose();
             }
         }
-        public static void NewMessage(int id, string href)
+        public static void NewMessage(int id, string href, string UserId)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
@@ -78,7 +78,7 @@ namespace TalismanSqlForum.Code
                 //Отсылаем модераторам
                 foreach (var item in db.Roles.Where(a => a.Name == "moderator"))
                 {
-                    foreach (var item2 in item.Users)
+                    foreach (var item2 in item.Users.Where(a => a.UserId != UserId))
                     {
                         t.tUsers = db.Users.Find(item2.UserId);
                         db.tNotification.Add(t);
@@ -88,18 +88,21 @@ namespace TalismanSqlForum.Code
                 //Отсылаем администраторам
                 foreach (var item in db.Roles.Where(a => a.Name == "admin"))
                 {
-                    foreach (var item2 in item.Users)
+                    foreach (var item2 in item.Users.Where(a => a.UserId != UserId))
                     {
                         t.tUsers = db.Users.Find(item2.UserId);
                         db.tNotification.Add(t);
                         db.SaveChanges();
                     }
                 }
-                foreach(var item in ft.tForumThemes.tForumMessages.Select(a => a.tUsers).Distinct())
+                foreach (var item in ft.tForumThemes.tForumMessages.Select(a => a.tUsers).Distinct().Where(a => a.Id != UserId))
                 {
-                    t.tUsers = db.Users.Find(item.Id);
-                    db.tNotification.Add(t);
-                    db.SaveChanges();
+                    if (db.tNotification.Where(a => a.tUsers.Id == item.Id).Where(a => a.tNotification_href == t.tNotification_href).Count() == 0)
+                    {
+                        t.tUsers = db.Users.Find(item.Id);
+                        db.tNotification.Add(t);
+                        db.SaveChanges();
+                    }
                 }
                 db.Dispose();
             }
