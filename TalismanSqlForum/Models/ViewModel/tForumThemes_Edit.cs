@@ -12,5 +12,9 @@ namespace TalismanSqlForum.Models.ViewModel
         [AllowHtml]
         [MaxLength]
         public string tForumThemes_desc { get; set; }
+        [Required]
+        [Display(Name = "Название темы")]
+        [MaxLength(100)]
+        public string tForumThemes_name { get; set; }
     }
 }

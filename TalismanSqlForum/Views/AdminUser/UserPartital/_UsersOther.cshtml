@@ -7,6 +7,7 @@
             <table class="table striped bordered hovered">
                 <thead>
                     <tr>
+                        <th class="text-left">Имя</th>
                         <th class="text-left">Email</th>
                         <th class="text-left">Дата регистрации</th>
                         <th class="text-left">Учреждение</th>
@@ -21,6 +22,7 @@
                         foreach (var item in t.OrderByDescending(a => a.DateReg))
                         {
                             <tr>
+                                <td>@item.NickName</td>
                                 <td>@item.Email</td>
                                 <td>@item.DateReg</td>
                                 <td>@item.Mnemo_Org</td>

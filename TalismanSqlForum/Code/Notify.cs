@@ -51,6 +51,16 @@ namespace TalismanSqlForum.Code
                         db.SaveChanges();
                     }
                 }
+                //Отсылаем администраторам.. Только я конечо я незнаю зачем все это?????!!!!!!
+                foreach (var item in db.Roles.Where(a => a.Name == "admin"))
+                {
+                    foreach (var item2 in item.Users)
+                    {
+                        t.tUsers = db.Users.Find(item2.UserId);
+                        db.tNotification.Add(t);
+                        db.SaveChanges();
+                    }
+                }
                 db.Dispose();
             }
         }
@@ -67,6 +77,16 @@ namespace TalismanSqlForum.Code
                 t.tNotification_href = href;
                 //Отсылаем модераторам
                 foreach (var item in db.Roles.Where(a => a.Name == "moderator"))
+                {
+                    foreach (var item2 in item.Users)
+                    {
+                        t.tUsers = db.Users.Find(item2.UserId);
+                        db.tNotification.Add(t);
+                        db.SaveChanges();
+                    }
+                }
+                //Отсылаем администраторам
+                foreach (var item in db.Roles.Where(a => a.Name == "admin"))
                 {
                     foreach (var item2 in item.Users)
                     {

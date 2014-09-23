@@ -37,6 +37,25 @@ namespace TalismanSqlForum.Controllers
             ViewBag.ReturnUrl = Url.Action("Index", "ForumMessages", new { id = id });
             if (User.Identity.IsAuthenticated)
             {
+                ViewData["ForumThemes_Is_Edit"] = false;
+                if (!User.IsInRole("admin"))
+                {
+                    if (User.IsInRole("moderator"))
+                    {
+                        var r = db.Roles.Where(a => a.Name == "admin").First();
+                        if (!(t.tUsers.Roles.Where(a => a.RoleId == r.Id).Count() > 0))
+                        {
+                            ViewData["ForumThemes_Is_Edit"] = true;
+                        }
+                    }                    
+                }
+                else
+                {
+                    //admin GRANT
+                    ViewData["ForumThemes_Is_Edit"] = true;
+                }
+
+                
                 foreach (var tUserNewThemes in db.tUserNewThemes.Where(a => a.tUsers.UserName == User.Identity.Name).Where(b => b.tForumThemes.Id == id))
                 {
                     //Удаляем из новых сообщений

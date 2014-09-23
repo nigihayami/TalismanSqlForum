@@ -14,26 +14,57 @@ namespace TalismanSqlForum.Controllers.Admin
     public class AdminUserController : Controller
     {
         ApplicationDbContext db = new ApplicationDbContext();
-        public ActionResult Users()
+        public ActionResult Users(string val)
         {
             ViewData["users_new"] = db.Users.Where(a => a.IsNew).ToList();
             ViewData["users_wait"] = db.Users.Where(a => !a.IsNew).Where(a => a.Roles.Count() == 0).ToList();
             List<ApplicationUser> um = new List<ApplicationUser> { };
-            foreach (var item in db.Roles.Where(a => a.Name == "moderator"))
-            {
-                foreach (var item2 in item.Users)
-                {
-                    um.Add(db.Users.Find(item2.UserId));
-                }
-            }
             List<ApplicationUser> uo = new List<ApplicationUser> { };
-            foreach (var item in db.Roles.Where(a => a.Name == "user"))
+            if (val != null && val != "")
             {
-                foreach (var item2 in item.Users)
+                string _val = val;
+                foreach (var item in db.Roles.Where(a => a.Name == "moderator"))
                 {
-                    uo.Add(db.Users.Find(item2.UserId));
+                    foreach (var item2 in item.Users)
+                    {
+                        if (db.Users.Find(item2.UserId).Email.Contains(_val) || db.Users.Find(item2.UserId).NickName.Contains(_val))
+                        {
+                            um.Add(db.Users.Find(item2.UserId));
+                        }
+                    }
+                }
+                foreach (var item in db.Roles.Where(a => a.Name == "user"))
+                {
+                    foreach (var item2 in item.Users)
+                    {
+                        if (db.Users.Find(item2.UserId).Email.Contains(_val) || db.Users.Find(item2.UserId).NickName.Contains(_val))
+                        {
+                            uo.Add(db.Users.Find(item2.UserId));
+                        }
+                    }
                 }
             }
+            else
+            {
+                //moderator
+                foreach (var item in db.Roles.Where(a => a.Name == "moderator"))
+                {
+                    foreach (var item2 in item.Users)
+                    {
+                        um.Add(db.Users.Find(item2.UserId));
+                    }
+                }
+                //user
+                foreach (var item in db.Roles.Where(a => a.Name == "user"))
+                {
+                    foreach (var item2 in item.Users)
+                    {
+                        uo.Add(db.Users.Find(item2.UserId));
+                    }
+                }
+            }
+            
+            
             ViewData["users_moderator"] = um;
             ViewData["users_other"] = uo;
             return View();
@@ -83,6 +114,11 @@ namespace TalismanSqlForum.Controllers.Admin
             var context = new TalismanSqlForum.Models.ApplicationDbContext();
             var store = new UserStore<ApplicationUser>(context);
             var manager = new UserManager<ApplicationUser>(store);
+            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            {
+                AllowOnlyAlphanumericUserNames = false,
+                RequireUniqueEmail = true
+            };
 
             var userId = db.Users.Find(id);
             var roleId = db.Roles.Where(a => a.Name == RoleName).First();
@@ -92,7 +128,7 @@ namespace TalismanSqlForum.Controllers.Admin
             }
             else
             {
-                manager.AddToRole(userId.Id, RoleName);
+                var roleresult = manager.AddToRole(userId.Id, RoleName);
                 //Отправляем письмо, о том, что пользователя авторизовали
                 MailMessage mail = new MailMessage();
                 mail.Subject = "авторизация пройдена";

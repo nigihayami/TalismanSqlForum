@@ -6,6 +6,19 @@
     <ul class="tabs">
         <li class="active">
             <a href="#_page_1">
+                Все пользователи
+                @{
+                    var t3 = (List<TalismanSqlForum.Models.ApplicationUser>)ViewData["users_moderator"];
+                    var t4 = (List<TalismanSqlForum.Models.ApplicationUser>)ViewData["users_other"];
+                    var c = t3.Count + t4.Count;
+                    <text>
+                        @c
+                    </text>
+                }
+            </a>
+        </li>
+        <li>
+            <a href="#_page_2">
                 Новые пользователи
                 <em class="fg-orange">
                     @{
@@ -18,7 +31,7 @@
             </a>
         </li>
         <li>
-            <a href="#_page_2">
+            <a href="#_page_3">
                 Ожидающие авторизацию
                 <em class="fg-orange">
                     @{
@@ -30,34 +43,24 @@
                 </em>
             </a>
         </li>
-        <li>
-            <a href="#_page_3">
-                Все пользователи
-                @{
-                    var t3 = (List<TalismanSqlForum.Models.ApplicationUser>)ViewData["users_moderator"];
-                    var t4 = (List<TalismanSqlForum.Models.ApplicationUser>)ViewData["users_other"];
-                    var c = t3.Count + t4.Count;
-                    <text>
-                        @c
-                    </text>
-                }
-            </a>
-        </li>
     </ul>
     <div class="frames">
         <div class="frame" id="_page_1">
-            @Html.Partial("~/Views/AdminUser/UserPartital/_UsersIsNew.cshtml")
-        </div>
-        <div class="frame" id="_page_2">
-            @Html.Partial("~/Views/AdminUser/UserPartital/_UsersWait.cshtml")
-        </div>
-        <div class="frame" id="_page_3">
+            @using (Html.BeginForm("Users", "AdminUser", FormMethod.Post, new { @class = "element input-element bg-transparent no-margin" }))
+            {
+                <div class="input-control text bg-transparent" style="width: 270px !important;">
+                    <input id="val" name="val" type="text" placeholder="Поиск..." style="border-radius:7px;">
+                    <button class="btn-search"></button>
+                </div>
+            }
             @Html.Partial("~/Views/AdminUser/UserPartital/_UsersModerator.cshtml")
             @Html.Partial("~/Views/AdminUser/UserPartital/_UsersOther.cshtml")
         </div>
+        <div class="frame" id="_page_2">
+            @Html.Partial("~/Views/AdminUser/UserPartital/_UsersIsNew.cshtml")
+        </div>
+        <div class="frame" id="_page_3">
+            @Html.Partial("~/Views/AdminUser/UserPartital/_UsersWait.cshtml")
+        </div>
     </div>
-
 </div>
-
-
-

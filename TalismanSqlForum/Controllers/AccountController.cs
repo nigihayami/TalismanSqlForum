@@ -147,7 +147,17 @@ namespace TalismanSqlForum.Controllers
                 }
                 else
                 {
-                    AddErrors(result);
+                    using (ApplicationDbContext db = new ApplicationDbContext())
+                    {
+                        if (db.Users.Where(a => a.Email == model.Email).Count() > 0)
+                        {
+                            AddErrors(new IdentityResult(new string[] { "Данный Email уже используется" }));
+                        }
+                        else
+                        {
+                            AddErrors(result);
+                        }
+                    }
                 }
             }
 

@@ -114,11 +114,12 @@ namespace TalismanSqlForum.Controllers
         [Authorize(Roles = "admin,moderator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "tForumThemes_desc")] int id, tForumThemes_Edit t)
+        public ActionResult Edit([Bind(Include = "tForumThemes_desc,tForumThemes_Name")] int id, tForumThemes_Edit t)
         {
             var d = db.tForumThemes.Find(id);
             if (d != null)
             {
+                d.tForumThemes_name = t.tForumThemes_name;
                 d.tForumThemes_desc = t.tForumThemes_desc;
                 db.Entry(d).State = EntityState.Modified;
                 db.SaveChanges();

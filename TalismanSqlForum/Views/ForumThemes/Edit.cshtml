@@ -17,6 +17,12 @@
         @Html.AntiForgeryToken()
         <fieldset>
             <legend></legend>
+            @Html.LabelFor(m => m.tForumThemes_name)
+            <div class="input-control text">
+                @Html.TextBoxFor(m => m.tForumThemes_name)
+                @Html.ValidationMessageFor(model => model.tForumThemes_name, "", new { @class = "fg-red" })
+            </div>
+
             @Html.LabelFor(m => m.tForumThemes_desc)
             <div class="input-control textarea">
                 @Html.TextAreaFor(m => m.tForumThemes_desc, new { @class = "ckeditor", @id = "tRules_rules" })
