@@ -37,16 +37,22 @@
                                data-hint-position="top"></i>
                         }
                     </a>
+                    <a href="@Url.Action("Transfer","ForumThemes",new{id = ViewData["ForumThemes_Id"]})" class="place-right fg-white">
+                        <i class="icon-tab"
+                           data-hint="Перенести"
+                           data-hint-position="top">
+                        </i>
+                    </a>
                 }
                 @if ((bool)ViewData["tForumThemes_top"])
                 {
-                    <i class="icon-attachment" data-hint="Тема закреплена" data-hint-position="top"></i>
+                        <i class="icon-attachment" data-hint="Тема закреплена" data-hint-position="top"></i>
                 }
-                @if ((bool)ViewData["tForumThemes_close"])
+                    @if ((bool)ViewData["tForumThemes_close"])
                 {
-                    <i class="icon-locked-2" data-hint="Тема закрыта" data-hint-position="top"></i>
+                        <i class="icon-locked-2" data-hint="Тема закрыта" data-hint-position="top"></i>
                 }
-            </h4>
+</h4>
     </div>
     <div class="panel-content bg-white" style="margin-top:-5px;">
         <div class="row bg-white" style="

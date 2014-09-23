@@ -159,6 +159,33 @@ namespace TalismanSqlForum.Controllers
             }
             return HttpNotFound();
         }
+
+        [Authorize(Roles = "admin,moderator")]
+        public ActionResult Transfer(int? id)
+        {
+            var t = db.tForumThemes.Find(id);
+            if (t != null)
+            {
+                ViewData["tForumList"] = db.tForumLists.Where(a => a.Id != t.tForumList.Id).ToList();
+                ViewData["tForumThemes_Id"] = id;
+                return View();
+            }
+            return HttpNotFound();
+        }
+        [Authorize(Roles = "admin,moderator")]
+        public ActionResult TransferGo(int? id, int? id_list)
+        {
+            var t = db.tForumThemes.Find(id);
+            if (t != null)
+            {
+                t.tForumList = db.tForumLists.Find(id_list);
+                db.Entry(t).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", new {id = id_list });
+            }
+            return HttpNotFound();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

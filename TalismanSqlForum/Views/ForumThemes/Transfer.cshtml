@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Перенести тему в";
+}
+<div class="panel">
+    <div class="panel-header gradient_header fg-white">
+        <h4 class="fg-white">
+            <i class="icon-plus-2"></i>
+            @ViewBag.Title
+        </h4>
+    </div>
+    <div class="panel-content bg-white">
+        <div class="listview-outlook">
+            @{
+                var t = (IEnumerable<TalismanSqlForum.Models.Forum.tForumList>)ViewData["tForumList"];
+                foreach (var item in t.OrderBy(a => a.tForumList_name))
+                {
+                    <a href="@Url.Action("TransferGo","ForumThemes", new { id = ViewData["tForumThemes_Id"], id_list = item.Id})" class = "list">
+                        <div class="list-content">
+                            <i class="@item.tForumList_icon"></i>
+                            @item.tForumList_name
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+</div>
