@@ -13,7 +13,7 @@ using TalismanSqlForum.Models.Users;
 
 namespace TalismanSqlForum.Controllers
 {
-    [Authorize(Roles="admin,moderator,user")]
+    [Authorize(Roles = "admin,moderator,user")]
     public class ForumMessagesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -47,7 +47,7 @@ namespace TalismanSqlForum.Controllers
                         {
                             ViewData["ForumThemes_Is_Edit"] = true;
                         }
-                    }                    
+                    }
                 }
                 else
                 {
@@ -55,7 +55,7 @@ namespace TalismanSqlForum.Controllers
                     ViewData["ForumThemes_Is_Edit"] = true;
                 }
 
-                
+
                 foreach (var tUserNewThemes in db.tUserNewThemes.Where(a => a.tUsers.UserName == User.Identity.Name).Where(b => b.tForumThemes.Id == id))
                 {
                     //Удаляем из новых сообщений
@@ -67,7 +67,7 @@ namespace TalismanSqlForum.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "tForumMessages_messages")] int? id , tForumMessages tForumMessages)
+        public ActionResult Create([Bind(Include = "tForumMessages_messages")] int? id, tForumMessages tForumMessages)
         {
             tForumMessages.tForumThemes = db.tForumThemes.Find(id);
             tForumMessages.tUsers = db.Users.Where(a => a.UserName == User.Identity.Name).First();
@@ -86,7 +86,7 @@ namespace TalismanSqlForum.Controllers
                 foreach (var item in r)
                 {
                     //по ролям
-                    foreach (var item2 in db.Users.Where(a => a.Roles.Where(b => b.RoleId == item.Id).Count() > 0).Where(a=> a.Id != UserId))
+                    foreach (var item2 in db.Users.Where(a => a.Roles.Where(b => b.RoleId == item.Id).Count() > 0).Where(a => a.Id != UserId))
                     {
                         //по пользователям в роли
                         if (db.tUserNewThemes.Where(a => a.tUsers.Id == item2.Id).Where(b => b.tForumThemes.Id == tForumMessages.tForumThemes.Id).Count() == 0)
@@ -101,19 +101,45 @@ namespace TalismanSqlForum.Controllers
                 }
                 var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
                 var href = Url.Action("Index", "ForumMessages", new { id = tForumMessages.tForumThemes.Id, id_list = tForumMessages.tForumThemes.tForumList.Id }, val);
-                TalismanSqlForum.Code.Notify.NewMessage(tForumMessages.Id,href,UserId);                
+                TalismanSqlForum.Code.Notify.NewMessage(tForumMessages.Id, href, UserId);
                 return RedirectToAction("Index", new { id = id, id_list = tForumMessages.tForumThemes.tForumList.Id });
             }
 
             return View(tForumMessages);
         }
-        [Authorize(Roles="admin,moderator")]
-        public ActionResult Hide (int? id)
+        [Authorize(Roles = "admin,moderator")]
+        public ActionResult Hide(int? id)
         {
             var t = db.tForumMessages.Find(id);
-            if (t!= null)
+            if (t != null)
             {
                 t.tForumMessages_hide = true;
+                db.Entry(t).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = t.tForumThemes.Id, id_list = t.tForumThemes.tForumList.Id });
+            }
+            return HttpNotFound();
+        }
+        [Authorize(Roles="admin,moderator")]
+        public ActionResult Edit(int? id)
+        {
+            var t = db.tForumMessages.Find(id);
+            if (t != null)
+            {                
+                return View(t);
+            }
+            return HttpNotFound();
+        }
+        [Authorize(Roles = "admin,moderator")]
+        [HttpPost]
+        public ActionResult Edit([Bind(Include = "tForumMessages_messages")] int? id, tForumMessages tForumMessages)
+        {
+            var t = db.tForumMessages.Find(id);
+            if (t != null)
+            {
+                t.tForumMessages_messages = WebUtility.HtmlDecode(tForumMessages.tForumMessages_messages);
+                t.tUsers_Edit_name = db.Users.Where(a => a.UserName == User.Identity.Name).First();
+                t.tUsers_Edit_datetime = DateTime.Now;
                 db.Entry(t).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index", new { id = t.tForumThemes.Id, id_list = t.tForumThemes.tForumList.Id });

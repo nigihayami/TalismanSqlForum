@@ -26,5 +26,8 @@ namespace TalismanSqlForum.Models.Forum
 
         public virtual tForumThemes tForumThemes { get; set; }
         public virtual ApplicationUser tUsers { get; set; }
+
+        public virtual ApplicationUser tUsers_Edit_name { get; set; }
+        public System.DateTime tUsers_Edit_datetime { get; set; }
     }
 }

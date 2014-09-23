@@ -1,0 +1,27 @@
+﻿@model TalismanSqlForum.Models.Forum.tForumMessages
+
+@{
+    ViewBag.Title = "Редактировать сообщение";
+}
+@section CKE{
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+}
+@using (Html.BeginForm("Edit", "ForumMessages",FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend></legend>
+        @Html.HiddenFor(model => model.Id)
+        @Html.LabelFor(m => m.tForumMessages_messages)
+        <div class="input-control textarea">
+            @Html.TextAreaFor(m => m.tForumMessages_messages, new { @class = "ckeditor", @id = "tForumMessages_messages" })
+        </div>
+        <button class="button" type="submit">
+            Сохранить
+        </button>
+    </fieldset>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

@@ -116,7 +116,7 @@
                 </a>
                 <a href="@Url.Action("Edit", "ForumThemes", new { id = ViewData["ForumThemes_Id"] })"
                    class="button bg-transparent fg-gray  place-right">
-                    <i class="icon-plus on-left"></i>
+                    <i class="icon-pencil on-left"></i>
                     Редактировать
                 </a>
             </div>
@@ -183,6 +183,12 @@
         <div class="row offset1" style="margin-left:65px;">
             @Html.Raw(item.tForumMessages_messages)
         </div>
+        @if(item.tUsers_Edit_name != null)
+        {
+            <div class="row bg-white">
+                <em class="small">Отредактировано @item.tUsers_Edit_name.NickName - @item.tUsers_Edit_datetime</em>
+            </div>
+        }
 
         @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator")))
         {
@@ -191,6 +197,11 @@
                    class="button bg-transparent fg-gray  place-left">
                     <i class="icon-plus on-left"></i>
                     Замечание
+                </a>
+                <a href="@Url.Action("Edit", "ForumMessages", new { id = item.Id})"
+                   class="button bg-transparent fg-gray  place-right">
+                    <i class="icon-pencil on-left"></i>
+                    Редактировать
                 </a>
             </div>
         }
