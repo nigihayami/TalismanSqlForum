@@ -80,7 +80,7 @@ namespace TalismanSqlForum.Models
         public string Mnemo_Org { get; set; }
         [Required(ErrorMessage = "Требуется поле ИНН")]
         [Display(Name = "ИНН")]
-        [StringLength(10, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 10)]
+        [StringLength(12, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 10)]
         public string Inn { get; set; }
         [Required(ErrorMessage = "Требуется поле Адрес")]
         [Display(Name = "Адрес")]
