@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Bt";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+<div class="panel">
+    <div class="panel-header bg-grayDark">
+        <h3 class="fg-white">
+            <i class="icon-spin"></i>
+            Действия
+        </h3>
+    </div>
+    <div class="panel-content">
+        <a href="@Url.Action("Sync","AdminBt")" class="button bg-grayDark fg-white">
+            <i class="icon-spin"></i>
+            Синхронизировать справочники
+        </a>
+            <em class="fg-darkGreen">@ViewData["mes"]</em>
+    </div>
+</div>
+

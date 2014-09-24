@@ -1,0 +1,121 @@
+﻿@model TalismanSqlForum.Models.Offer.tOffer
+@using TalismanSqlForum.Models.Offer
+@{
+    ViewBag.Title = "Создать замечание";
+    List<val> l = new List<val> { };
+    foreach (var i in (IEnumerable<tBranch>) ViewData["tBranch"])
+    {
+        l.Add(new val {id = i.Id, name = i.tBranch_name });
+    }
+    SelectList s_branch = new SelectList(l, "id", "name");
+
+    List<val> l_projects = new List<val> { };
+    foreach (var i in (IEnumerable<tProject>) ViewData["tProject"])
+    {
+        l_projects.Add(new val {id = i.Id, name = i.tProject_name });
+    }
+    SelectList s_projects = new SelectList(l_projects, "id", "name");
+}
+<div class="panel">
+    <div class="panel-header gradient_header fg-white">
+        <h4 class="fg-white">
+            <i class="icon-plus-2"></i>
+            @ViewBag.Title
+        </h4>
+    </div>
+    @using (Html.BeginForm("CreateOffer", "Moder", new {id_mess = ViewData["id_mess"], id_theme = ViewData["id_theme"] }, FormMethod.Post, new { @class = "panel-content bg-white" }))
+    {
+        <div class="padding20">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <fieldset>
+                <legend></legend>
+                <div class="listview-outlook">
+                    @if ((int)ViewData["id_mess"] != 0)
+                    { 
+                        @Html.Raw(Model.tforummessages.tForumMessages_messages)
+                    }
+                    @if ((int)ViewData["id_theme"] != 0)
+                    {
+                        @Html.Raw(Model.tforumthemes.tForumThemes_desc)
+                    }
+                </div>
+                <div class="input-control switch" data-role="input-control">
+                    <label class="inline-block" style="margin-right: 20px;">
+                        @Html.LabelFor(model => model.tOffer_error)
+                        @Html.CheckBoxFor(model => model.tOffer_error)
+                        <span class="check"></span>
+                    </label>
+                </div>
+                @Html.LabelFor(model => model.tOffer_place)
+                <div class="input-control text">
+                    @Html.TextBoxFor(model => model.tOffer_place)
+                    @Html.ValidationMessageFor(model => model.tOffer_place)
+                </div>
+                @Html.LabelFor(model => model.tOffer_tBranch_id)
+                <div class="input-control select">
+                    @Html.DropDownListFor(model => model.tOffer_tBranch_id, s_branch)
+                </div>
+                @Html.LabelFor(model => model.tOffer_tProject_id)
+                <div class="input-control select">
+                    @Html.DropDownListFor(model => model.tOffer_tProject_id, s_projects)
+                </div>
+                @Html.LabelFor(model => model.tOffer_tReleaseProject_id)
+                <div class="input-control select">
+                    <select id="tOffer_tReleaseProject_id" name="tOffer_tReleaseProject_id"></select>
+                </div>
+                @Html.LabelFor(model => model.tOffer_tReleaseProject_exec_id)
+                <div class="input-control select">
+                    <select id="tOffer_tReleaseProject_exec_id" name="tOffer_tReleaseProject_exec_id" class="form-control"></select>
+                </div>
+                @Html.LabelFor(model => model.tOffer_tSubsystem_id)
+                <div class="input-control select">
+                    <select id="tOffer_tSubsystem_id" name="tOffer_tSubsystem_id" class="form-control">
+                        <option>1</option>
+                    </select>
+                </div>
+                <button class="element button_reg gradient_header fg-white" type="submit" style="margin-top:10px; border-radius:7px;">
+                    Создать
+                </button>
+            </fieldset>
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("#tOffer_tProject_id").change(function () {
+            loadData(2, $("#tOffer_tProject_id option:selected").val());
+        });
+        $("#tOffer_tProject_id :first").attr("selected", "selected");
+        loadData(2, $("#tOffer_tProject_id option:selected").val());
+    }
+    );
+    function loadData(level, id) {
+        switch (level) {
+            case 2:
+                $("#tOffer_tReleaseProject_id").children().remove();
+                $("#tOffer_tReleaseProject_exec_id").children().remove();
+                $("#tOffer_tSubsystem_id").children().remove();
+                $.getJSON("@Url.Action("get_data","Moder")", { 'id': id, '_table': 'RELEASE_PROJECTS' }, function (data) {
+                    $.each(data, function (i, value) {
+                        $("#tOffer_tReleaseProject_id").append($("<option></option>").attr("value", value.id).text(value.name));
+                    });
+                });
+                $.getJSON("@Url.Action("get_data", "Moder")", { 'id': id, '_table': 'RELEASE_PROJECTS' }, function (data) {
+                    $.each(data, function (i, value) {
+                        $("#tOffer_tReleaseProject_exec_id").append($("<option></option>").attr("value", value.id).text(value.name));
+                    });
+                });
+                $.getJSON("@Url.Action("get_data", "Moder")", { 'id': id, '_table': 'SUBSYSTEMS' }, function (data) {
+                    $.each(data, function (i, value) {
+                        $("#tOffer_tSubsystem_id").append($("<option></option>").attr("value", value.id).text(value.name));
+                    });
+                });
+                break;
+        }
+    }
+</script>
+
+
+

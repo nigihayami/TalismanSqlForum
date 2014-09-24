@@ -202,6 +202,7 @@
     <Compile Include="Code\Notify.cs" />
     <Compile Include="Code\Stat.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Admin\AdminBtController.cs" />
     <Compile Include="Controllers\Admin\AdminController.cs" />
     <Compile Include="Controllers\Admin\AdminForumController.cs" />
     <Compile Include="Controllers\Admin\AdminUserController.cs" />
@@ -210,7 +211,7 @@
     <Compile Include="Controllers\ForumMessagesController.cs" />
     <Compile Include="Controllers\ForumThemesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\Moderator\ModeratorController.cs" />
+    <Compile Include="Controllers\Moderator\ModerController.cs" />
     <Compile Include="Controllers\Notify\NotificationsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="Models\Moderator\tModerator.cs" />
     <Compile Include="Models\Notification\tNotification.cs" />
     <Compile Include="Models\Notification\tNotificationType.cs" />
+    <Compile Include="Models\Offer\tOffer.cs" />
     <Compile Include="Models\Users\UserNewThemes.cs" />
     <Compile Include="Models\ViewModel\CreateOffer.cs" />
     <Compile Include="Models\ViewModel\tForumThemes_Edit.cs" />
@@ -582,6 +584,9 @@
     <Content Include="Views\ForumThemes\Edit.cshtml" />
     <Content Include="Views\ForumThemes\Transfer.cshtml" />
     <Content Include="Views\ForumMessages\Edit.cshtml" />
+    <Content Include="Views\Moder\Settings.cshtml" />
+    <Content Include="Views\Moder\CreateOffer.cshtml" />
+    <Content Include="Views\Admin\Bt.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -652,6 +657,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\" />
+    <Folder Include="Views\AdminBt\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

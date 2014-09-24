@@ -9,6 +9,7 @@ using TalismanSqlForum.Models.Moderator;
 using TalismanSqlForum.Models.Users;
 using TalismanSqlForum.Models.Admin;
 using TalismanSqlForum.Models.Notification;
+using TalismanSqlForum.Models.Offer;
 
 namespace TalismanSqlForum.Models
 {
@@ -38,7 +39,7 @@ namespace TalismanSqlForum.Models
         public string Mnemo_Org { get; set; }
         [Required]
         [Display(Name = "ИНН")]
-        [StringLength(10, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 10)]
+        [StringLength(12, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 10)]
         public string Inn { get; set; }
         [Required]
         [Display(Name = "Адрес")]
@@ -86,7 +87,33 @@ namespace TalismanSqlForum.Models
                 .HasMany(a => a.tUserNewForumThemes)
                 .WithRequired(b => b.tForumThemes)
                 .WillCascadeOnDelete(true);
-
+            #region tOffer
+            modelBuilder.Entity<tOffer>()
+                .HasRequired(a => a.tproject)
+                .WithMany(b => b.toffer)
+                .HasForeignKey(a => a.tOffer_tProject_id)
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<tOffer>()
+                .HasRequired(a => a.tsubsystem)
+                .WithMany(b => b.toffer)
+                .HasForeignKey(a => a.tOffer_tSubsystem_id)
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<tOffer>()
+                .HasRequired(a => a.treleaseproject)
+                .WithMany(b => b.toffer)
+                .HasForeignKey(a=> a.tOffer_tReleaseProject_id)
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<tOffer>()
+                .HasRequired(a => a.treleaseproject_exec)
+                .WithMany(b => b.toffer_exec)
+                .HasForeignKey(a=> a.tOffer_tReleaseProject_exec_id)
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<tOffer>()
+                .HasRequired(a => a.tbranch)
+                .WithMany(b => b.toffer)
+                .HasForeignKey(a => a.tOffer_tBranch_id)
+                .WillCascadeOnDelete(false);
+            #endregion
             base.OnModelCreating(modelBuilder);
         }
         public static ApplicationDbContext Create()
@@ -109,5 +136,11 @@ namespace TalismanSqlForum.Models
 
         public System.Data.Entity.DbSet<tNotificationType> tNotificationType { get; set; }
         public System.Data.Entity.DbSet<tNotification> tNotification { get; set; }
+
+        public System.Data.Entity.DbSet<tOffer> tOffer { get; set; }
+        public System.Data.Entity.DbSet<tBranch> tBranch { get; set; }
+        public System.Data.Entity.DbSet<tProject> tProject { get; set; }
+        public System.Data.Entity.DbSet<tReleaseProject> tReleaseProject { get; set; }
+        public System.Data.Entity.DbSet<tSubsystem> tSubsystem { get; set; }
     }
 }

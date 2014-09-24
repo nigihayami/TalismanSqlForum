@@ -5,11 +5,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TalismanSqlForum.Models.Offer;
 
 namespace TalismanSqlForum.Models.Forum
 {
     public class tForumMessages
     {
+        public tForumMessages()
+        {
+            this.toffer = new HashSet<tOffer>();
+        }
         public int Id { get; set; }
         [Required]
         [Display(Name = "Сообщение")]
@@ -28,6 +33,8 @@ namespace TalismanSqlForum.Models.Forum
         public virtual ApplicationUser tUsers { get; set; }
 
         public virtual ApplicationUser tUsers_Edit_name { get; set; }
-        public System.DateTime tUsers_Edit_datetime { get; set; }
+        public System.DateTime? tUsers_Edit_datetime { get; set; }
+
+        public virtual ICollection<tOffer> toffer { get; set; }
     }
 }

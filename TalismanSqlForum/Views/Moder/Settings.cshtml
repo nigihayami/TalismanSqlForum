@@ -1,0 +1,39 @@
+﻿@model TalismanSqlForum.Models.Moderator.tModerator
+
+@{
+    ViewBag.Title = "Настройки подключения к БТ";
+}
+<div class="panel">
+    <div class="panel-header gradient_header fg-white">
+        <h4 class="fg-white">
+            <i class="icon-plus-2"></i>
+            @ViewBag.Title
+        </h4>
+    </div>
+    @using (Html.BeginForm("Settings", "Moder", new {returnUrl = ViewData["returnUrl"]},FormMethod.Post, new { @class = "panel-content bg-white" }))
+    {
+        <div class="padding10">
+            @Html.ValidationSummary(true)
+            <fieldset>
+                <legend></legend>
+                @Html.LabelFor(model => model.tModerator_userId, new { @class = "col-lg-2 control-label" })
+                <div class="input-control text">
+                    @Html.TextBoxFor(model => model.tModerator_userId, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.tModerator_userId)
+                </div>
+                @Html.LabelFor(model => model.tModerator_password, new { @class = "col-lg-2 control-label" })
+                <div class="input-control text">
+                    @Html.TextBoxFor(model => model.tModerator_password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.tModerator_password)
+                </div>
+                <button class="element button_reg gradient_header fg-white" type="submit" style="margin-top:10px; border-radius:7px;">
+                    Сохранить
+                </button>
+            </fieldset>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

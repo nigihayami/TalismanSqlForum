@@ -106,10 +106,23 @@
         <div class="row bg-white offset1" style="margin-left:65px;">
             @Html.Raw(ViewData["ForumThemes_Desc"])
         </div>
+        @{
+            var v = (List<int>)ViewData["tForumThemes_docnumber"];
+            if (v.Count != 0)
+            {
+                <div class="row bg-white">
+                    Поставлено замечание №
+                    @foreach(var i in v)
+                    {
+                        <em>@i;</em>
+                    }
+                </div>                
+            }
+        }
         @if (User.Identity.IsAuthenticated && (bool)ViewData["ForumThemes_Is_Edit"] && (User.IsInRole("admin") || User.IsInRole("moderator")))
         {
             <div class="row bg-white">
-                <a href="@Url.Action("CreateOffer", "Moderator", new { id_themes = ViewData["ForumThemes_Id"] })"
+                <a href="@Url.Action("CreateOffer", "Moder", new {id_mess = 0, id_theme = ViewData["ForumThemes_Id"] })"
                    class="button bg-transparent fg-gray  place-left">
                     <i class="icon-plus on-left"></i>
                     Замечание
@@ -189,11 +202,23 @@
                 <em class="small">Отредактировано @item.tUsers_Edit_name.NickName - @item.tUsers_Edit_datetime</em>
             </div>
         }
-
+        @{
+        var vm = item.toffer;
+        if (vm.Count != 0)
+        {
+            <div class="row bg-white">
+                Поставлено замечание №
+                @foreach (var i in vm)
+                {
+                    <em>@i.tOffer_docnumber;</em>
+                }
+            </div>
+        }
+        }
         @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator")))
         {
             <div class="row bg-white">
-                <a href="@Url.Action("CreateOffer", "Moderator", new { id = item.Id})"
+                <a href="@Url.Action("CreateOffer", "Moder", new { id_mess = item.Id, id_theme = 0})"
                    class="button bg-transparent fg-gray  place-left">
                     <i class="icon-plus on-left"></i>
                     Замечание

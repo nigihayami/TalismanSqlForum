@@ -98,6 +98,12 @@ namespace TalismanSqlForum.Controllers.Admin
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Bt(string mes)
+        {
+            ViewData["mes"] = mes;
+            return View();
+        }
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

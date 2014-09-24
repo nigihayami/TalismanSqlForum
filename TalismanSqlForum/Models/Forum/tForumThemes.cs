@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TalismanSqlForum.Models.Offer;
 using TalismanSqlForum.Models.Users;
 
 namespace TalismanSqlForum.Models.Forum
@@ -14,6 +15,7 @@ namespace TalismanSqlForum.Models.Forum
         public tForumThemes()
         {
             this.tForumMessages = new HashSet<tForumMessages>();
+            this.toffer = new HashSet<tOffer>();
         }
         public int Id { get; set; }
         [Required]
@@ -40,5 +42,6 @@ namespace TalismanSqlForum.Models.Forum
         public virtual ICollection<tForumMessages> tForumMessages { get; set; }
 
         public virtual ICollection<tUserNewThemes> tUserNewForumThemes { get; set; }
+        public virtual ICollection<tOffer> toffer { get; set; }
     }
 }
