@@ -69,6 +69,12 @@ namespace TalismanSqlForum.Controllers
                     db.tUserNewThemes.Remove(tUserNewThemes);
                     db.SaveChanges();
                 }
+                foreach (var tUserNewMessages in db.tUserNewMessages.Where(a => a.tUsers.UserName == User.Identity.Name).Where(b => b.tForumMessages.tForumThemes.Id == id))
+                {
+                    //Удаляем из новых сообщений
+                    db.tUserNewMessages.Remove(tUserNewMessages);
+                    db.SaveChanges();
+                }
             }
             return View();
         }
@@ -102,6 +108,15 @@ namespace TalismanSqlForum.Controllers
                             n.tForumThemes = tForumMessages.tForumThemes;
                             n.tUsers = item2;
                             db.tUserNewThemes.Add(n);
+                            db.SaveChanges();
+                        }
+                        //Также новое сообщение
+                        if (db.tUserNewMessages.Where(a => a.tUsers.Id == item2.Id).Where(b => b.tForumMessages.Id == tForumMessages.Id).Count() == 0)
+                        {
+                            var n = new tUserNewMessages();
+                            n.tForumMessages = tForumMessages;
+                            n.tUsers = item2;
+                            db.tUserNewMessages.Add(n);
                             db.SaveChanges();
                         }
                     }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TalismanSqlForum.Models.Offer;
+using TalismanSqlForum.Models.Users;
 
 namespace TalismanSqlForum.Models.Forum
 {
@@ -14,6 +15,7 @@ namespace TalismanSqlForum.Models.Forum
         public tForumMessages()
         {
             this.toffer = new HashSet<tOffer>();
+            this.tusernewmessages = new HashSet<tUserNewMessages>();
         }
         public int Id { get; set; }
         [Required]
@@ -36,5 +38,6 @@ namespace TalismanSqlForum.Models.Forum
         public System.DateTime? tUsers_Edit_datetime { get; set; }
 
         public virtual ICollection<tOffer> toffer { get; set; }
+        public virtual ICollection<tUserNewMessages> tusernewmessages { get; set; }
     }
 }

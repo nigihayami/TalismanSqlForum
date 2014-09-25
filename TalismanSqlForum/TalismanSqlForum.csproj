@@ -230,6 +230,7 @@
     <Compile Include="Models\Notification\tNotification.cs" />
     <Compile Include="Models\Notification\tNotificationType.cs" />
     <Compile Include="Models\Offer\tOffer.cs" />
+    <Compile Include="Models\Users\tUserNewMessages.cs" />
     <Compile Include="Models\Users\UserNewThemes.cs" />
     <Compile Include="Models\ViewModel\CreateOffer.cs" />
     <Compile Include="Models\ViewModel\tForumThemes_Edit.cs" />

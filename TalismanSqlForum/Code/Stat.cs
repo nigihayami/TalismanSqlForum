@@ -25,6 +25,15 @@ namespace TalismanSqlForum.Code
                 return t;
             }
         }
+        public static int count_mess_list(string username, int id)
+        {
+            //id = forumlist_id
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var t = db.tUserNewMessages.Where(a => a.tUsers.UserName == username).Where(a => a.tForumMessages.tForumThemes.tForumList.Id == id).Count() ;
+                return t;
+            }
+        }
         public class statForumList
         {
             public int count_list { get; set; }

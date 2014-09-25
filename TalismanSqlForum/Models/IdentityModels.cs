@@ -30,6 +30,7 @@ namespace TalismanSqlForum.Models
             this.tModerator = new HashSet<tModerator>();
             this.tUserNewThemes = new HashSet<tUserNewThemes>();
             this.tNotification = new HashSet<tNotification>();
+            this.tusernewmessages = new HashSet<tUserNewMessages>();
         }
         [Required]
         [Display(Name = "Полное наименование учреждения")]
@@ -64,6 +65,8 @@ namespace TalismanSqlForum.Models
         public virtual ICollection<tModerator> tModerator { get; set; }
         public virtual ICollection<tUserNewThemes> tUserNewThemes { get; set; }
         public virtual ICollection<tNotification> tNotification { get; set; }
+
+        public virtual ICollection<tUserNewMessages> tusernewmessages { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -142,5 +145,7 @@ namespace TalismanSqlForum.Models
         public System.Data.Entity.DbSet<tProject> tProject { get; set; }
         public System.Data.Entity.DbSet<tReleaseProject> tReleaseProject { get; set; }
         public System.Data.Entity.DbSet<tSubsystem> tSubsystem { get; set; }
+
+        public System.Data.Entity.DbSet<tUserNewMessages> tUserNewMessages { get; set; }
     }
 }
