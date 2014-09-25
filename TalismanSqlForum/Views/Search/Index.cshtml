@@ -13,24 +13,96 @@
             Параметры поиска
         </div>
         <div class="panel-content" style="display:none;">
-            @using(@Html.BeginForm("Index", "Search", null, FormMethod.Get, new { @class = "bg-white padding10" }))
+            @using (@Html.BeginForm("Index", "Search", null, FormMethod.Get, new { @class = "bg-white padding10" }))
             {
-            <fieldset>
-                <legend></legend>
-                <label>Ключевое слово</label>
-                <div class="input-control text" data-role="input-control">
-                    <input name="_searchVal" type="text" placeholder="Ключевое слово" value="@ViewData["val"]">
-                    <button tabindex="-1" class="btn-clear" type="button"></button>
-                </div>
-                <label>Пользователь</label>
-                <div class="input-control text" data-role="input-control">
-                    <input name="_searchUser" type="text" placeholder="Пользователь" value="@ViewData["user"]">
-                    <button tabindex="-1" class="btn-clear" type="button"></button>
-                </div>
-                <button type="submit">
-                    Искать
-                </button>
-            </fieldset>
+                <fieldset>
+                    <legend></legend>
+                    <div class="row padding10 border">
+                        <div class="span3">
+                            <label>Ключевое слово</label>
+                            <div class="input-control text" data-role="input-control">
+                                <input name="_searchVal" type="text" placeholder="Ключевое слово" value="@ViewData["val"]">
+                                <button tabindex="-1" class="btn-clear" type="button"></button>
+                            </div>
+                            <div class="input-control select">
+                                <select name="_searchPlace">
+                                    <option value="-1">Везде</option>
+                                    <option value="1">Искать в сообщениях</option>
+                                    <option value="2">Искать в заголовках тем</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="span3">
+                            <label>Организация/Пользователь</label>
+                            <div class="input-control text" data-role="input-control">
+                                <input name="_searchUser" type="text" placeholder="Пользователь" value="@ViewData["user"]">
+                                <button tabindex="-1" class="btn-clear" type="button"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row padding10 border">
+                        <label>Выбор периода</label>
+                        <span class="span1">С</span>
+                        <div class="span3 input-control text" data-role="datepicker"
+                             data-locale="ru"
+                             data-position="bottom"
+                             data-effect="slide">
+                            <input type="text" name="_searchFrom">
+                            <button class="btn-date"></button>
+                        </div>
+                        <span class=" span1">По</span>
+                        <div class="span3 input-control text" data-role="datepicker"
+                             data-locale="ru"
+                             data-position="bottom"
+                             data-effect="fade">
+                            <input type="text" name="_searchTo">
+                            <button class="btn-date"></button>
+                        </div>
+                    </div>
+                    <div class="row border">
+                        <label>Сортировка результата</label>
+                        <div class="span3 input-control select">
+                            <select name="_searchOrder">
+                                <option value="1">По дате(возрастание)</option>
+                                <option value="2">По дате(убывание)</option>
+                                <option value="3">По заголовку(возрастание)</option>
+                                <option value="4">По заголовку(убывание)</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <label>Поиск по разделу</label>
+                    <input type="text" hidden name="_searchIn" id="_searchIn" />
+                    <ul class="treeview" data-role="treeview">
+                        <li class="node">
+                            <a style="padding-left: 0px;" href="#" onclick="select_tree('all')"><span class="node-toggle"></span>Везде</a>
+                            <ul>
+                                @{
+                var t = (IEnumerable<TalismanSqlForum.Models.Forum.tForumList>)ViewData["tForumList"];
+                foreach (var item in t)
+                {
+                    <li class="node">
+                        <a style="padding-left: 10px;" href="#" onclick="select_tree('fl_@item.Id')"><span class="node-toggle"></span>@item.tForumList_name</a>
+                        <ul>
+                            @foreach (var item2 in item.tForumThemes)
+                            {
+                                <li>
+                                    <a style="padding-left: 10px;" href="#" onclick="select_tree('fm_@item2.Id')">>@item2.tForumThemes_name</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <button type="submit">
+                        Искать
+                    </button>
+                </fieldset>
             }
         </div>
     </div>
@@ -91,4 +163,9 @@
         }
     }
 </div>
+<script>
+    function select_tree(e) {
+       document.getElementById('_searchIn').value = e;
+    };
+</script>
 
