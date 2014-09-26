@@ -1,11 +1,7 @@
 ﻿using FirebirdSql.Data.FirebirdClient;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Web;
-using TalismanSqlForum.Models;
 using TalismanSqlForum.Models.Forum;
 
 namespace TalismanSqlForum.Models.ViewModel

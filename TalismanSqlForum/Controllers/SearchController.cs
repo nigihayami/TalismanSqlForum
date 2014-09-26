@@ -9,15 +9,15 @@ namespace TalismanSqlForum.Controllers
 {
     public class SearchController : Controller
     {
-        private readonly ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext _db = new ApplicationDbContext();
 
         // GET: Search
         public ActionResult Index(string _searchVal, string _searchUser, string _searchPlace, string _searchFrom, string _searchTo, string _searchOrder, string _searchIn)
         {
             ViewData["val"] = _searchVal;
-            var t1 = db.tForumThemes.Where(a => a.tForumThemes_name.Contains(_searchVal));
-            var t2 = db.tForumThemes.Where(a => a.tForumThemes_desc.Contains(_searchVal));
-            var t3 = db.tForumMessages.Where(a => a.tForumMessages_messages.Contains(_searchVal));
+            var t1 = _db.tForumThemes.Where(a => a.tForumThemes_name.Contains(_searchVal));
+            var t2 = _db.tForumThemes.Where(a => a.tForumThemes_desc.Contains(_searchVal));
+            var t3 = _db.tForumMessages.Where(a => a.tForumMessages_messages.Contains(_searchVal));
             if (!string.IsNullOrEmpty(_searchIn))
             {
                 if (!_searchIn.StartsWith("all"))
@@ -41,7 +41,7 @@ namespace TalismanSqlForum.Controllers
            
             if (!string.IsNullOrEmpty(_searchUser))
             {
-                if (db.Users.Any(a => String.Equals(a.Name_Org, _searchUser, StringComparison.CurrentCultureIgnoreCase)))
+                if (_db.Users.Any(a => String.Equals(a.Name_Org, _searchUser, StringComparison.CurrentCultureIgnoreCase)))
                 {
                     t1 = t1.Where(a => String.Equals(a.tUsers.Name_Org, _searchUser, StringComparison.CurrentCultureIgnoreCase));
                     t2 = t2.Where(a => String.Equals(a.tUsers.Name_Org, _searchUser, StringComparison.CurrentCultureIgnoreCase));
@@ -108,7 +108,7 @@ namespace TalismanSqlForum.Controllers
             ViewData["tForumThemes"] = t1;
             ViewData["tForumThemes_desc"] = t2;
             ViewData["tForumMessages"] = t3;
-            ViewData["tForumList"] = db.tForumLists.ToList();
+            ViewData["tForumList"] = _db.tForumLists.ToList();
             return View("Index");
         }
     }

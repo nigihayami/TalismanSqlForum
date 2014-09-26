@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Net;
-using System.Web;
+﻿using System.Net.Mail;
 using System.Configuration;
 
 namespace TalismanSqlForum.Code
 {
-    public class Mail
+    public static class Mail
     {
         public static void SendEmail(MailMessage mail)
         {
-            SmtpClient smtpServer = new SmtpClient("smtp.gmail.com");
             var acc = ConfigurationManager.AppSettings["email_account"];
             var pass = ConfigurationManager.AppSettings["email_pass"];
-            smtpServer.Credentials = new System.Net.NetworkCredential(acc, pass);
-            smtpServer.Port = 587; // Gmail works on this port
-            smtpServer.EnableSsl = true;
+            var smtpServer = new SmtpClient("smtp.gmail.com")
+            {
+                Credentials = new System.Net.NetworkCredential(acc, pass),
+                Port = 587,
+                EnableSsl = true
+            };
 
             mail.From = new MailAddress("noreply@talisman-sql.ru");
             try

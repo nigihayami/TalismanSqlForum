@@ -36,9 +36,9 @@
                             <div class="tile-status">
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    var t_mes = 0;
-                                    t_mes = TalismanSqlForum.Code.Stat.count_mess_list(username: User.Identity.Name, id: item.Id);
-                                    <span class="name center-block fg-orange" style="float:left; margin:0">@t_mes</span>
+                                    var tMes = 0;
+                                    tMes = TalismanSqlForum.Code.Stat.count_mess_list(username: User.Identity.Name, id: item.Id);
+                                    <span class="name center-block fg-orange" style="float:left; margin:0">@tMes</span>
                                 }
                                 <span class="name center-block fg-gray" style="float:right; margin:0">@item.tForumThemes.Count</span>
                             </div>

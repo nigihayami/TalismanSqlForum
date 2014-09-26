@@ -1,8 +1,9 @@
 using System.Web.Optimization;
+using TalismanSqlForum;
 
-[assembly: WebActivatorEx.PostApplicationStartMethod(typeof(TalismanSqlForum.App_Start.MetroUICSSBundleConfig), "RegisterBundles")]
+[assembly: WebActivatorEx.PostApplicationStartMethod(typeof(MetroUICSSBundleConfig), "RegisterBundles")]
 
-namespace TalismanSqlForum.App_Start
+namespace TalismanSqlForum
 {
 	public class MetroUICSSBundleConfig
 	{

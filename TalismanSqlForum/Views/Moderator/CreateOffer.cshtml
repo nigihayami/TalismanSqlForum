@@ -3,19 +3,13 @@
 
 @{
     ViewBag.Title = "Создать замечание";
-    List<val> l = new List<val> { };
-    foreach (var i in rep.get("BRANCH", 0, User.Identity.Name))
-    {
-        l.Add(i);
-    }
-    SelectList s_branch = new SelectList(l, "id", "name");
+    var l = new List<val> { };
+    l.AddRange(Rep.Get("BRANCH", 0, User.Identity.Name));
+    var sBranch = new SelectList(l, "id", "name");
 
-    List<val> l_projects = new List<val> { };
-    foreach (var i in rep.get("PROJECTS", 0, User.Identity.Name))
-    {
-        l_projects.Add(i);
-    }
-    SelectList s_projects = new SelectList(l_projects, "id", "name");
+    var lProjects = new List<val> { };
+    lProjects.AddRange(Rep.Get("PROJECTS", 0, User.Identity.Name));
+    var sProjects = new SelectList(lProjects, "id", "name");
 }
 <div class="panel">
     <div class="panel-header gradient_header fg-white">
@@ -57,11 +51,11 @@
                 </div>
                 @Html.LabelFor(model => model.id_branch)
                 <div class="input-control select">
-                    @Html.DropDownListFor(model => model.id_branch, s_branch)
+                    @Html.DropDownListFor(model => model.id_branch, sBranch)
                 </div>
                 @Html.LabelFor(model => model.id_projects)
                 <div class="input-control select">
-                    @Html.DropDownListFor(model => model.id_projects, s_projects)
+                    @Html.DropDownListFor(model => model.id_projects, sProjects)
                 </div>
                 @Html.LabelFor(model => model.id_release_projects)
                 <div class="input-control select">
