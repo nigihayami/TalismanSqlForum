@@ -14,13 +14,13 @@ namespace TalismanSqlForum.Controllers.Moderator
     [Authorize(Roles = "admin,moderator")]
     public class ModerController : Controller
     {
-        ApplicationDbContext db = new ApplicationDbContext();
+        readonly ApplicationDbContext _db = new ApplicationDbContext();
 
         public ActionResult Settings(string returnUrl)
         {
             ViewData["returnUrl"] = returnUrl;
 
-            foreach (var item2 in db.tModerator.Where(a => a.tUsers.UserName == User.Identity.Name))
+            foreach (var item2 in _db.tModerator.Where(a => a.tUsers.UserName == User.Identity.Name))
             {
                 //смотрим настройки модератора - если мы здесь, то ясень пень что они есть
                 return View(item2);
@@ -33,90 +33,83 @@ namespace TalismanSqlForum.Controllers.Moderator
         public ActionResult Settings (string returnUrl, tModerator tmoderator)
         {
             var username = User.Identity.Name;
-            foreach(var item in db.tModerator.Where(a => a.tUsers.UserName == username))
+            foreach(var item in _db.tModerator.Where(a => a.tUsers.UserName == username))
             {
                 //у нас уже сужествуют настройки
                 item.tModerator_database = @"85.175.98.196:bt";
                 item.tModerator_password = tmoderator.tModerator_password;
                 item.tModerator_userId = tmoderator.tModerator_userId;
-                db.Entry(item).State = EntityState.Modified;
-                db.SaveChanges();
-                if (!TryConnect(username))
-                {
-                    item.tModerator_database = @"192.168.1.250:bt";
-                    db.Entry(item).State = EntityState.Modified;
-                    db.SaveChanges();
-                    if(!TryConnect(username))
-                    {
-                        ModelState.AddModelError("", "Невозможно подключиться к базе БТ, проверьте настройки соединения");
-                        return View(item);
-                    }
-                }
-                return RedirectToLocal(returnUrl);
+                _db.Entry(item).State = EntityState.Modified;
+                _db.SaveChanges();
+                //первая попытка соединения
+                if (TryConnect(username)) return RedirectToLocal(returnUrl);
+
+                //если не удалась, то продолжим
+                item.tModerator_database = @"192.168.1.250:bt";
+                _db.Entry(item).State = EntityState.Modified;
+                _db.SaveChanges();
+                //Вторая попытка
+                if (TryConnect(username)) return RedirectToLocal(returnUrl);
+
+                //Досвидание
+                ModelState.AddModelError("", "Невозможно подключиться к базе БТ, проверьте настройки соединения");
+                return View(item);
             }
             //настроек нет, значит создадим
-            var t = new tModerator();
-            t.tModerator_database = @"85.175.98.196:bt";
-            t.tModerator_password = tmoderator.tModerator_password;
-            t.tModerator_userId = tmoderator.tModerator_userId;
-            t.tUsers = db.Users.Where(a => a.UserName == username).First();
-            db.tModerator.Add(t);
-            db.SaveChanges();
-            if (!TryConnect(username))
+            var t = new tModerator
             {
-                t.tModerator_database = @"192.168.1.250:bt";
-                db.Entry(t).State = EntityState.Modified;
-                db.SaveChanges();
-                if (!TryConnect(username))
-                {
-                    ModelState.AddModelError("", "Невозможно подключиться к базе БТ, проверьте настройки соединения");
-                    return View(t);
-                }
-            }
-            return RedirectToLocal(returnUrl);
+                tModerator_database = @"85.175.98.196:bt",
+                tModerator_password = tmoderator.tModerator_password,
+                tModerator_userId = tmoderator.tModerator_userId,
+                tUsers = _db.Users.First(a => a.UserName == username)
+            };
+            _db.tModerator.Add(t);
+            _db.SaveChanges();
+            //Номер раз
+            if (TryConnect(username)) return RedirectToLocal(returnUrl);
+            t.tModerator_database = @"192.168.1.250:bt";
+            _db.Entry(t).State = EntityState.Modified;
+            _db.SaveChanges();
+            //Номер два
+            if (TryConnect(username)) return RedirectToLocal(returnUrl);
+            ModelState.AddModelError("", "Невозможно подключиться к базе БТ, проверьте настройки соединения");
+            return View(t);
         }
 
         public ActionResult CreateOffer(int id_mess, int id_theme)
         {
             var returnUrl = Url.Action("CreateOffer", new { id_mess = id_mess, id_theme = id_theme });
             //попробуем для начала подсоедениться к БТ
-            if (TryConnect(User.Identity.Name))
+            if (!TryConnect(User.Identity.Name)) return RedirectToAction("Settings", new {returnUrl = returnUrl});
+            var t = _db.tForumMessages.Find(id_mess);
+            tOffer toffer;
+            if (t != null)
             {
-                var t = db.tForumMessages.Find(id_mess);
-                if (t != null)
-                {
-                    //создаем замечание на основании сообщения
-                    var toffer = new tOffer();
-                    toffer.tforummessages = t;
-                    //теперь нам нужны данные для комбиков
-                    ViewData["tBranch"] = db.tBranch.ToList();
-                    ViewData["tProject"] = db.tProject.ToList();
-                    ViewData["tReleaseProject"] = db.tReleaseProject.ToList();
-                    ViewData["tReleaseProject_exec"] = db.tReleaseProject.ToList();
-                    ViewData["tSubsystem"] = db.tSubsystem.ToList();
-                    ViewData["id_mess"] = id_mess;
-                    ViewData["id_theme"] = id_theme;
-                    return View(toffer);
-                }
-                var tm = db.tForumThemes.Find(id_theme);
-                if (tm != null)
-                {
-                    //создаем замечание на основании сообщения
-                    var toffer = new tOffer();
-                    toffer.tforumthemes = tm;
-                    //теперь нам нужны данные для комбиков
-                    ViewData["tBranch"] = db.tBranch.ToList();
-                    ViewData["tProject"] = db.tProject.ToList();
-                    ViewData["tReleaseProject"] = db.tReleaseProject.ToList();
-                    ViewData["tReleaseProject_exec"] = db.tReleaseProject.ToList();
-                    ViewData["tSubsystem"] = db.tSubsystem.ToList();
-                    ViewData["id_mess"] = id_mess;
-                    ViewData["id_theme"] = id_theme;
-                    return View(toffer);
-                }
-                return HttpNotFound();
+                //создаем замечание на основании сообщения
+                toffer = new tOffer {tforummessages = t};
+                //теперь нам нужны данные для комбиков
+                ViewData["tBranch"] = _db.tBranch.ToList();
+                ViewData["tProject"] = _db.tProject.ToList();
+                ViewData["tReleaseProject"] = _db.tReleaseProject.ToList();
+                ViewData["tReleaseProject_exec"] = _db.tReleaseProject.ToList();
+                ViewData["tSubsystem"] = _db.tSubsystem.ToList();
+                ViewData["id_mess"] = id_mess;
+                ViewData["id_theme"] = id_theme;
+                return View(toffer);
             }
-            return RedirectToAction("Settings", new { returnUrl = returnUrl });
+            var tm = _db.tForumThemes.Find(id_theme);
+            if (tm == null) return HttpNotFound();
+            //создаем замечание на основании сообщения
+            toffer = new tOffer {tforumthemes = tm};
+            //теперь нам нужны данные для комбиков
+            ViewData["tBranch"] = _db.tBranch.ToList();
+            ViewData["tProject"] = _db.tProject.ToList();
+            ViewData["tReleaseProject"] = _db.tReleaseProject.ToList();
+            ViewData["tReleaseProject_exec"] = _db.tReleaseProject.ToList();
+            ViewData["tSubsystem"] = _db.tSubsystem.ToList();
+            ViewData["id_mess"] = id_mess;
+            ViewData["id_theme"] = id_theme;
+            return View(toffer);
         }
 
         [HttpPost]
@@ -125,51 +118,53 @@ namespace TalismanSqlForum.Controllers.Moderator
                                         int id_mess, 
                                         int id_theme, tOffer toffer)
         {
-            var val = this.Url.RequestContext.HttpContext.Request.Url.Scheme;
+            var val = Url.RequestContext.HttpContext.Request.Url.Scheme;
             var returnUrl = "";
-            string href = "";
+            var href = "";
             if (id_mess != 0)
             {
-                var t = db.tForumMessages.Find(id_mess);
+                var t = _db.tForumMessages.Find(id_mess);
                 toffer.tforummessages = t;
-                db.tOffer.Add(toffer);
-                db.SaveChanges();
+                _db.tOffer.Add(toffer);
+                _db.SaveChanges();
                 returnUrl = Url.Action("Index", "ForumMessages", new { id = t.tForumThemes.Id, id_list = t.tForumThemes.tForumList.Id });
                 href = Url.Action("Index", "ForumMessages", new { id = t.tForumThemes.Id, id_list = t.tForumThemes.tForumList.Id }, val);
             }
             else
             {
-                var t = db.tForumThemes.Find(id_theme);
+                var t = _db.tForumThemes.Find(id_theme);
                 toffer.tforumthemes = t;
-                db.tOffer.Add(toffer);
-                db.SaveChanges();
+                _db.tOffer.Add(toffer);
+                _db.SaveChanges();
                 returnUrl = Url.Action("Index", "ForumThemes", new { id = t.tForumList.Id });
                 href = Url.Action("Index", "ForumThemes", new { id = t.tForumList.Id }, val);
             }
             //и теперь мы создаем замечание - выделим отдельно, так как там много кода
             toffer.tOffer_docnumber =  create(toffer.Id,User.Identity.Name,href);
-            db.Entry(toffer).State = EntityState.Modified;
-            db.SaveChanges();
+            _db.Entry(toffer).State = EntityState.Modified;
+            _db.SaveChanges();
             
             return RedirectToLocal(returnUrl);
         }
 
         static bool TryConnect(string username)
         {
-            bool res = false;
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            var res = false;
+            using (var db = new ApplicationDbContext())
             {
                 foreach(var item in db.tModerator.Where(a => a.tUsers.UserName == username))
                 {
                     try
                     {
-                        FbConnectionStringBuilder fc = new FbConnectionStringBuilder();
-                        fc.UserID = item.tModerator_userId;
-                        fc.Password = item.tModerator_password;
-                        fc.Database = item.tModerator_database;
-                        fc.Pooling = false;
-                        fc.Charset = "win1251";
-                        using (FbConnection fb = new FbConnection(fc.ConnectionString))
+                        var fc = new FbConnectionStringBuilder
+                        {
+                            UserID = item.tModerator_userId,
+                            Password = item.tModerator_password,
+                            Database = item.tModerator_database,
+                            Pooling = false,
+                            Charset = "win1251"
+                        };
+                        using (var fb = new FbConnection(fc.ConnectionString))
                         {
                             try
                             {
@@ -189,22 +184,14 @@ namespace TalismanSqlForum.Controllers.Moderator
         }
         public JsonResult get_data(int id, string _table)
         {
-            List<val> result = new List<val>();
+            var result = new List<val>();
             switch(_table)
             {
                 case "RELEASE_PROJECTS":
-                    foreach(var item in db.tProject.Find(id).treleaseproject.OrderByDescending(a=> a.tReleaseProject_name))
-                    {
-                        var v = new val { id = item.Id, name = item.tReleaseProject_name };
-                        result.Add(v);
-                    }
+                    result.AddRange(_db.tProject.Find(id).treleaseproject.OrderByDescending(a => a.tReleaseProject_name).Select(item => new val {id = item.Id, name = item.tReleaseProject_name}));
                     break;
                 case "SUBSYSTEMS":
-                    foreach (var item in db.tProject.Find(id).tsubsystem.OrderBy(a=>a.tSubsystem_name))
-                    {
-                        var v = new val { id = item.Id, name = item.tSubsystem_name };
-                        result.Add(v);
-                    }
+                    result.AddRange(_db.tProject.Find(id).tsubsystem.OrderBy(a => a.tSubsystem_name).Select(item => new val {id = item.Id, name = item.tSubsystem_name}));
                     break;
             }
 
@@ -333,7 +320,7 @@ namespace TalismanSqlForum.Controllers.Moderator
         }
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            _db.Dispose();
             base.Dispose(disposing);
         }
     }

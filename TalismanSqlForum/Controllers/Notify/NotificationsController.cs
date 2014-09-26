@@ -13,19 +13,12 @@ namespace TalismanSqlForum.Controllers.Notify
 {
     public class NotificationsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext _db = new ApplicationDbContext();
 
         // GET: Notifications
         public ActionResult Index(string username)
         {
-            var d = new List<tNotification>();
-            foreach (var item in db.tNotification.Where(a => a.tUsers.UserName == username).Where(a => !a.tNotification_IsRead))
-            {
-                //item.tNotification_IsRead = true;
-                //db.Entry(item).State = EntityState.Modified;
-                //db.SaveChanges();
-                d.Add(item);
-            }
+            var d = _db.tNotification.Where(a => a.tUsers.UserName == username).Where(a => !a.tNotification_IsRead).ToList();
             ViewData["notif"] = d;
             return View();
         }
@@ -34,11 +27,11 @@ namespace TalismanSqlForum.Controllers.Notify
         {
             var username = User.Identity.Name;
             var d = new List<tNotification>();
-            foreach (var item in db.tNotification.Where(a => a.tUsers.UserName == username).Where(a => !a.tNotification_IsRead))
+            foreach (var item in _db.tNotification.Where(a => a.tUsers.UserName == username).Where(a => !a.tNotification_IsRead))
             {
                 item.tNotification_IsRead = true;
-                db.Entry(item).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(item).State = EntityState.Modified;
+                _db.SaveChanges();
                 d.Add(item);
             }
             ViewData["notif"] = d;
@@ -49,7 +42,7 @@ namespace TalismanSqlForum.Controllers.Notify
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -164,7 +164,7 @@
 {
     color:red;
     content:'*';
-    font-size:initial;
+    font-size:inherit;
     display:inline-block;
 }
 

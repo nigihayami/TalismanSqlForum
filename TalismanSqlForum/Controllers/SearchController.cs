@@ -9,7 +9,7 @@ namespace TalismanSqlForum.Controllers
 {
     public class SearchController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Search
         public ActionResult Index(string _searchVal, string _searchUser, string _searchPlace, string _searchFrom, string _searchTo, string _searchOrder, string _searchIn)
@@ -18,20 +18,20 @@ namespace TalismanSqlForum.Controllers
             var t1 = db.tForumThemes.Where(a => a.tForumThemes_name.Contains(_searchVal));
             var t2 = db.tForumThemes.Where(a => a.tForumThemes_desc.Contains(_searchVal));
             var t3 = db.tForumMessages.Where(a => a.tForumMessages_messages.Contains(_searchVal));
-            if (_searchIn != null && _searchIn != "")
+            if (!string.IsNullOrEmpty(_searchIn))
             {
                 if (!_searchIn.StartsWith("all"))
                 {
                     if (_searchIn.StartsWith("fl"))
                     {
-                        int i = Convert.ToInt32(_searchIn.Substring(3));
+                        var i = Convert.ToInt32(_searchIn.Substring(3));
                         t1 = t1.Where(a => a.tForumList.Id == i);
                         t2 = t2.Where(a => a.tForumList.Id == i);
                         t3 = t3.Where(a => a.tForumThemes.tForumList.Id == i);
                     }
                     else if (_searchIn.StartsWith("fm"))
                     {
-                        int i = Convert.ToInt32(_searchIn.Substring(3));
+                        var i = Convert.ToInt32(_searchIn.Substring(3));
                         t1 = t1.Where(a => a.Id == i);
                         t2 = t2.Where(a => a.Id == i);
                         t3 = t3.Where(a => a.tForumThemes.Id == i);
@@ -39,19 +39,19 @@ namespace TalismanSqlForum.Controllers
                 }
             }
            
-            if (_searchUser != null && _searchUser != "")
+            if (!string.IsNullOrEmpty(_searchUser))
             {
-                if (db.Users.Where(a => a.Name_Org.ToUpper() == _searchUser.ToUpper()).Count() > 0)
+                if (db.Users.Any(a => String.Equals(a.Name_Org, _searchUser, StringComparison.CurrentCultureIgnoreCase)))
                 {
-                    t1 = t1.Where(a => a.tUsers.Name_Org.ToUpper() == _searchUser.ToUpper());
-                    t2 = t2.Where(a => a.tUsers.Name_Org.ToUpper() == _searchUser.ToUpper());
-                    t3 = t3.Where(a => a.tUsers.Name_Org.ToUpper() == _searchUser.ToUpper());
+                    t1 = t1.Where(a => String.Equals(a.tUsers.Name_Org, _searchUser, StringComparison.CurrentCultureIgnoreCase));
+                    t2 = t2.Where(a => String.Equals(a.tUsers.Name_Org, _searchUser, StringComparison.CurrentCultureIgnoreCase));
+                    t3 = t3.Where(a => String.Equals(a.tUsers.Name_Org, _searchUser, StringComparison.CurrentCultureIgnoreCase));
                 }
                 else
                 {
-                    t1 = t1.Where(a => a.tUsers.NickName.ToUpper() == _searchUser.ToUpper());
-                    t2 = t2.Where(a => a.tUsers.NickName.ToUpper() == _searchUser.ToUpper());
-                    t3 = t3.Where(a => a.tUsers.NickName.ToUpper() == _searchUser.ToUpper());
+                    t1 = t1.Where(a => String.Equals(a.tUsers.NickName, _searchUser, StringComparison.CurrentCultureIgnoreCase));
+                    t2 = t2.Where(a => String.Equals(a.tUsers.NickName, _searchUser, StringComparison.CurrentCultureIgnoreCase));
+                    t3 = t3.Where(a => String.Equals(a.tUsers.NickName, _searchUser, StringComparison.CurrentCultureIgnoreCase));
                 }
             }
             switch (_searchPlace)
@@ -64,23 +64,21 @@ namespace TalismanSqlForum.Controllers
                     t3 = t3.Where(a => a.Id == -1); ;
                     break;
             }
-            if (_searchFrom != null && _searchFrom != "")
+            if (!string.IsNullOrEmpty(_searchFrom))
             {
-                Convert.ToDateTime(_searchFrom);
-                DateTime s = Convert.ToDateTime(_searchFrom);
+                var s = Convert.ToDateTime(_searchFrom);
                 t1 = t1.Where(a => a.tForumThemes_datetime >= s);
                 t2 = t1.Where(a => a.tForumThemes_datetime >= s);
                 t3 = t3.Where(a => a.tForumMessages_datetime >= s);
             }
-            if (_searchTo != null && _searchTo != "")
+            if (!string.IsNullOrEmpty(_searchTo))
             {
-                Convert.ToDateTime(_searchTo);
-                DateTime s = Convert.ToDateTime(_searchTo);
+                var s = Convert.ToDateTime(_searchTo);
                 t1 = t1.Where(a => a.tForumThemes_datetime <= s);
                 t2 = t1.Where(a => a.tForumThemes_datetime <= s);
                 t3 = t3.Where(a => a.tForumMessages_datetime <= s);
             }
-            if (_searchOrder != null && _searchOrder != "")
+            if (!string.IsNullOrEmpty(_searchOrder))
             {
                 switch (_searchOrder)
                 {

@@ -2,22 +2,20 @@ namespace TalismanSqlForum.Migrations
 {
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
-    using TalismanSqlForum.Models;
-    using TalismanSqlForum.Models.Forum;
-    using TalismanSqlForum.Models.Notification;
+    using Models;
+    using Models.Forum;
+    using Models.Notification;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<TalismanSqlForum.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(TalismanSqlForum.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             context.tForumLists.AddOrUpdate(a => a.tForumList_name,
                new tForumList { tForumList_name = "ФЭО", tForumList_description = "Обсуждение модуля \"ФЭО\" ПК Талисман-SQL", tForumList_hide = false, tForumList_icon = "icon-libreoffice" },
@@ -34,7 +32,7 @@ namespace TalismanSqlForum.Migrations
                 new tNotificationType { Id = 2, tNotificationType_name = "Новая тема" },
                 new tNotificationType { Id = 3, tNotificationType_name = "Новое сообщение" }
                 );
-            if (context.tRules.Count() == 0)
+            if (!context.tRules.Any())
             {
                 context.tRules.Add(new Models.Admin.tRules
                 {

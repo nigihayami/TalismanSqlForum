@@ -1,102 +1,23 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
-using System.Web.Security;
 using TalismanSqlForum.Models;
-using TalismanSqlForum.Models.Admin;
 
 namespace TalismanSqlForum.Controllers.Admin
 {
     [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
-        ApplicationDbContext db = new ApplicationDbContext();
+        readonly ApplicationDbContext _db = new ApplicationDbContext();
         // GET: Admin
         public ActionResult Index()
         {
             return View();
-        }
-        public ActionResult Users()
-        {
-            var t = db.Users.Where(a => a.UserName != "admin@talismansql.ru").ToList();
-            ViewData["_users"] = t;
-            return View();
-        }
-        public ActionResult UsersGet(string UserId)
-        {
-            var t = db.Users.Where(a => a.UserName == UserId).First();
-            ViewData["username"] = t.UserName;
-            var r = new ViewRole();
-            foreach (var item in db.Roles.ToList())
-            {
-                switch (item.Name)
-                {
-                    case "moderator":
-                        if (t.Roles.Where(a => a.RoleId == item.Id).Count() > 0)
-                        {
-                            r.is_moderator = true;
-                        }
-                        break;
-                    case "user":
-                        if (t.Roles.Where(a => a.RoleId == item.Id).Count() > 0)
-                        {
-                            r.is_user = true;
-                        }
-                        break;
-                }
-            }
-            ViewData["userrole"] = r;
-            return View();
-        }
+        }      
 
         public ActionResult Forum()
         {
-            ViewData["tForumList"] = db.tForumLists.OrderBy(a => a.tForumList_name).ToList();
+            ViewData["tForumList"] = _db.tForumLists.OrderBy(a => a.tForumList_name).ToList();
             return View();
-        }
-
-        public JsonResult set_UsersRoles(string UserId, string RoleName)
-        {
-            var context = new TalismanSqlForum.Models.ApplicationDbContext();
-            var store = new UserStore<ApplicationUser>(context);
-            var manager = new UserManager<ApplicationUser>(store);
-
-            var userId = db.Users.Where(a => a.UserName == UserId).First();
-            var roleId = db.Roles.Where(a => a.Name == RoleName).First();
-            if (userId.Roles.Where(a => a.RoleId == roleId.Id).Count() != 0)
-            {
-                manager.RemoveFromRole(userId.Id, RoleName);
-            }
-            else
-            {
-                manager.AddToRole(userId.Id, RoleName);
-                //Отправляем письмо, о том, что пользователя авторизовали
-                MailMessage mail = new MailMessage();
-                mail.Subject = "авторизация пройдена";
-                mail.Body = "<p>Уважаемы пользователь " + userId.NickName + "</p>";
-                mail.Body = "<p>Вы авторизированы на форуме программы Талисман-SQL</p>";
-
-                switch(RoleName)
-                {
-                    case "user":
-                        mail.Body += "<p>Теперь вы можете создавать темы в разделах форума, а также писать сообщения</p>";
-                        break;
-                    case "moderator":
-                        mail.Body += "<p>Теперь вы можете создавать темы в разделах форума, создавать сообщения, закреплять и закрывать темы</p>";
-                        break;
-
-                }
-                mail.IsBodyHtml = true;
-                mail.To.Add(userId.Email);
-                TalismanSqlForum.Code.Mail.SendEmail(mail);
-            }
-
-            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Bt(string mes)
@@ -106,7 +27,7 @@ namespace TalismanSqlForum.Controllers.Admin
         }
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            _db.Dispose();
             base.Dispose(disposing);
         }
     }

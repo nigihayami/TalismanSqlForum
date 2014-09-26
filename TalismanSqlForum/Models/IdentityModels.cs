@@ -14,7 +14,7 @@ using TalismanSqlForum.Models.Offer;
 namespace TalismanSqlForum.Models
 {
     // Чтобы добавить данные профиля для пользователя, можно добавить дополнительные свойства в класс ApplicationUser. Дополнительные сведения см. по адресу: http://go.microsoft.com/fwlink/?LinkID=317594.
-    public class ApplicationUser : IdentityUser
+    public sealed class ApplicationUser : IdentityUser
     {
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -60,13 +60,13 @@ namespace TalismanSqlForum.Models
         [Display(Name = "Новый пользователь")]
         public bool IsNew { get; set; }
 
-        public virtual ICollection<tForumThemes> tForumThemes { get; set; }
-        public virtual ICollection<tForumMessages> tForumMessages { get; set; }
-        public virtual ICollection<tModerator> tModerator { get; set; }
-        public virtual ICollection<tUserNewThemes> tUserNewThemes { get; set; }
-        public virtual ICollection<tNotification> tNotification { get; set; }
+        private ICollection<tForumThemes> tForumThemes { get; set; }
+        private ICollection<tForumMessages> tForumMessages { get; set; }
+        private ICollection<tModerator> tModerator { get; set; }
+        private ICollection<tUserNewThemes> tUserNewThemes { get; set; }
+        private ICollection<tNotification> tNotification { get; set; }
 
-        public virtual ICollection<tUserNewMessages> tusernewmessages { get; set; }
+        private ICollection<tUserNewMessages> tusernewmessages { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -123,15 +123,13 @@ namespace TalismanSqlForum.Models
         {
             return new ApplicationDbContext();
         }
-        public System.Data.Entity.DbSet<TalismanSqlForum.Models.Forum.tForumList> tForumLists { get; set; }
+        public System.Data.Entity.DbSet<tForumList> tForumLists { get; set; }
 
-        public System.Data.Entity.DbSet<TalismanSqlForum.Models.Forum.tForumThemes> tForumThemes { get; set; }
+        public System.Data.Entity.DbSet<tForumThemes> tForumThemes { get; set; }
 
-        public System.Data.Entity.DbSet<TalismanSqlForum.Models.Forum.tForumMessages> tForumMessages { get; set; }
+        public System.Data.Entity.DbSet<tForumMessages> tForumMessages { get; set; }
 
-        public System.Data.Entity.DbSet<TalismanSqlForum.Models.Moderator.tModerator> tModerator { get; set; }
-
-        public System.Data.Entity.DbSet<IdentityUserRole> IdentityUserRole { get; set; }
+        public System.Data.Entity.DbSet<tModerator> tModerator { get; set; }
 
         public System.Data.Entity.DbSet<tUserNewThemes> tUserNewThemes { get; set; }
 

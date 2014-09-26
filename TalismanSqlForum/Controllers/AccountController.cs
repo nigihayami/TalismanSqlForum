@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Owin;
 using TalismanSqlForum.Models;
 using System.Net.Mail;
 
@@ -20,22 +16,13 @@ namespace TalismanSqlForum.Controllers
     {
         private ApplicationUserManager _userManager;
 
-        public AccountController()
-        {
-        }
-
-        public AccountController(ApplicationUserManager userManager)
-        {
-            UserManager = userManager;
-        }
-
-        public ApplicationUserManager UserManager
+        private ApplicationUserManager UserManager
         {
             get
             {
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
-            private set
+            set
             {
                 _userManager = value;
             }
@@ -57,229 +44,85 @@ namespace TalismanSqlForum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+            var user = await UserManager.FindAsync(model.Email, model.Password);
+            if (user != null)
             {
-                var user = await UserManager.FindAsync(model.Email, model.Password);
-                if (user != null)
+                await SignInAsync(user, model.RememberMe);
+                using (var db = new ApplicationDbContext())
                 {
-                    await SignInAsync(user, model.RememberMe);
-                    using (var db = new TalismanSqlForum.Models.ApplicationDbContext())
+                    var t = db.Users.First(a => a.Email == model.Email);
+                    if (t != null)
                     {
-                        var t = db.Users.Where(a => a.Email == model.Email).First();
                         t.LastIn = DateTime.Now;
                         db.Entry(t).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
-                        db.Dispose();
                     }
-                    return RedirectToLocal(returnUrl);
+                    db.Dispose();
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Недопустимое имя пользователя или пароль.");
-                }
+                return RedirectToLocal(returnUrl);
             }
-
-            // Появление этого сообщения означает наличие ошибки; повторное отображение формы
+            ModelState.AddModelError("", "Недопустимое имя пользователя или пароль.");
             return View(model);
         }
 
-        //
-        // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
 
-        //
-        // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+            var user = new ApplicationUser()
             {
-                var user = new ApplicationUser()
-                {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    Adres = model.Adres,
-                    Contact_Name = model.Contact_Name,
-                    Inn = model.Inn,
-                    Mnemo_Org = model.Mnemo_Org,
-                    Name_Org = model.Name_Org,
-                    NickName = model.NickName,
-                    PhoneNumber = model.PhoneNumber,
-                    LastIn = DateTime.Now,
-                    DateReg = DateTime.Now,
-                    IsNew = true
-                };
-                IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInAsync(user, isPersistent: false);
-
-                    // Дополнительные сведения о том, как включить подтверждение учетной записи и сброс пароля, см. по адресу: http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Отправка сообщения электронной почты с этой ссылкой
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Подтверждение учетной записи", "Подтвердите вашу учетную запись, щелкнув <a href=\"" + callbackUrl + "\">здесь</a>");
-
-                    MailMessage mail = new MailMessage();
-                    mail.Subject = "Новый пользователь";
-                    mail.Body = "<p>Модератор!!! В системе появился новый пользователь " + model.Email + "</p>";
-                    mail.IsBodyHtml = true;
-
-                    using (ApplicationDbContext db = new ApplicationDbContext())
-                    {
-                        foreach (var item in db.Roles.Where(a => a.Name == "moderator"))
-                        {
-                            foreach (var item2 in item.Users)
-                            {
-                                mail.To.Add(db.Users.Find(item2.UserId).Email);                                
-                            }
-                        }
-                        db.Dispose();
-                    }
-                    TalismanSqlForum.Code.Notify.NewUser(user.Id);
-                    return RedirectToAction("Index", "ForumList");
-                }
-                else
-                {
-                    using (ApplicationDbContext db = new ApplicationDbContext())
-                    {
-                        if (db.Users.Where(a => a.Email == model.Email).Count() > 0)
-                        {
-                            AddErrors(new IdentityResult(new string[] { "Данный Email уже используется" }));
-                        }
-                        else
-                        {
-                            AddErrors(result);
-                        }
-                    }
-                }
-            }
-
-            // Появление этого сообщения означает наличие ошибки; повторное отображение формы
-            return View(model);
-        }
-
-        //
-        // GET: /Account/ConfirmEmail
-        [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(string userId, string code)
-        {
-            if (userId == null || code == null)
-            {
-                return View("Error");
-            }
-
-            IdentityResult result = await UserManager.ConfirmEmailAsync(userId, code);
+                UserName = model.Email,
+                Email = model.Email,
+                Adres = model.Adres,
+                Contact_Name = model.Contact_Name,
+                Inn = model.Inn,
+                Mnemo_Org = model.Mnemo_Org,
+                Name_Org = model.Name_Org,
+                NickName = model.NickName,
+                PhoneNumber = model.PhoneNumber,
+                LastIn = DateTime.Now,
+                DateReg = DateTime.Now,
+                IsNew = true
+            };
+            var result = await UserManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return View("ConfirmEmail");
-            }
-            else
-            {
-                AddErrors(result);
-                return View();
-            }
-        }
-
-        //
-        // GET: /Account/ForgotPassword
-        [AllowAnonymous]
-        public ActionResult ForgotPassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Account/ForgotPassword
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                await SignInAsync(user, isPersistent: false);
+                var mail = new MailMessage
                 {
-                    ModelState.AddModelError("", "Пользователь не существует или не подтвержден.");
-                    return View();
+                    Subject = "Новый пользователь",
+                    Body = "<p>Модератор!!! В системе появился новый пользователь " + model.Email + "</p>",
+                    IsBodyHtml = true
+                };
+
+                using (var db = new ApplicationDbContext())
+                {
+                    foreach (var item2 in db.Roles.Where(a => a.Name == "moderator").SelectMany(item => item.Users))
+                    {
+                        mail.To.Add(db.Users.Find(item2.UserId).Email);
+                    }
+                    db.Dispose();
                 }
-
-                // Дополнительные сведения о том, как включить подтверждение учетной записи и сброс пароля, см. по адресу: http://go.microsoft.com/fwlink/?LinkID=320771
-                // Отправка сообщения электронной почты с этой ссылкой
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Сброс пароля", "Сбросьте ваш пароль, щелкнув <a href=\"" + callbackUrl + "\">здесь</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                Code.Notify.NewUser(user.Id);
+                return RedirectToAction("Index", "ForumList");
             }
-
-            // Появление этого сообщения означает наличие ошибки; повторное отображение формы
+            //Есть такие люди
+            using (var db = new ApplicationDbContext())
+            {
+                AddErrors(db.Users.Any(a => a.Email == model.Email)
+                    ? new IdentityResult(new string[] { "Данный Email уже используется" })
+                    : result);
+            }
             return View(model);
-        }
-
-        //
-        // GET: /Account/ForgotPasswordConfirmation
-        [AllowAnonymous]
-        public ActionResult ForgotPasswordConfirmation()
-        {
-            return View();
-        }
-
-        //
-        // GET: /Account/ResetPassword
-        [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
-        {
-            if (code == null)
-            {
-                return View("Error");
-            }
-            return View();
-        }
-
-        //
-        // POST: /Account/ResetPassword
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null)
-                {
-                    ModelState.AddModelError("", "Пользователь не найден.");
-                    return View();
-                }
-                IdentityResult result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("ResetPasswordConfirmation", "Account");
-                }
-                else
-                {
-                    AddErrors(result);
-                    return View();
-                }
-            }
-
-            // Появление этого сообщения означает наличие ошибки; повторное отображение формы
-            return View(model);
-        }
-
-        //
-        // GET: /Account/ResetPasswordConfirmation
-        [AllowAnonymous]
-        public ActionResult ResetPasswordConfirmation()
-        {
-            return View();
         }
 
         //
@@ -324,90 +167,43 @@ namespace TalismanSqlForum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Manage(ManageUserViewModel model)
         {
-            bool hasPassword = HasPassword();
+            var hasPassword = HasPassword();
             ViewBag.HasLocalPassword = hasPassword;
             ViewBag.ReturnUrl = Url.Action("Manage");
             if (hasPassword)
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid) return View(model);
+                var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                if (result.Succeeded)
                 {
-                    IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                        await SignInAsync(user, isPersistent: false);
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
-                    }
-                    else
-                    {
-                        AddErrors(result);
-                    }
+                    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                    await SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
                 }
+                AddErrors(result);
             }
             else
             {
                 // Для пользователя не указан пароль, поэтому все ошибки проверки из-за отсутствия поля OldPassword будут удалены
-                ModelState state = ModelState["OldPassword"];
+                var state = ModelState["OldPassword"];
                 if (state != null)
                 {
                     state.Errors.Clear();
                 }
 
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid) return View(model);
+                var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+                if (result.Succeeded)
                 {
-                    IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
-                    }
-                    else
-                    {
-                        AddErrors(result);
-                    }
+                    return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
                 }
+                AddErrors(result);
             }
 
             // Появление этого сообщения означает наличие ошибки; повторное отображение формы
             return View(model);
         }
 
-        //
-        // POST: /Account/ExternalLogin
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
-        {
-            // Запрос перенаправления к внешнему поставщику входа
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
-        }
-
-        //
-        // GET: /Account/ExternalLoginCallback
-        [AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
-        {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
-            {
-                return RedirectToAction("Login");
-            }
-
-            // Выполнение входа пользователя посредством данного внешнего поставщика входа, если у пользователя уже есть имя входа
-            var user = await UserManager.FindAsync(loginInfo.Login);
-            if (user != null)
-            {
-                await SignInAsync(user, isPersistent: false);
-                return RedirectToLocal(returnUrl);
-            }
-            else
-            {
-                // Если у пользователя нет учетной записи, то ему предлагается создать ее
-                ViewBag.ReturnUrl = returnUrl;
-                ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
-            }
-        }
 
         //
         // POST: /Account/LinkLogin
@@ -437,51 +233,6 @@ namespace TalismanSqlForum.Controllers
         }
 
         //
-        // POST: /Account/ExternalLoginConfirmation
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Manage");
-            }
-
-            if (ModelState.IsValid)
-            {
-                // Получение сведений о пользователе от внешнего поставщика входа
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-                if (info == null)
-                {
-                    return View("ExternalLoginFailure");
-                }
-                var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-                IdentityResult result = await UserManager.CreateAsync(user);
-                if (result.Succeeded)
-                {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
-                    if (result.Succeeded)
-                    {
-                        await SignInAsync(user, isPersistent: false);
-
-                        // Дополнительные сведения о том, как включить подтверждение учетной записи и сброс пароля, см. по адресу: http://go.microsoft.com/fwlink/?LinkID=320771
-                        // Отправка сообщения электронной почты с этой ссылкой
-                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                        // SendEmail(user.Email, callbackUrl, "Подтверждение учетной записи", "Подтвердите вашу учетную запись, щелкнув эту ссылку");
-
-                        return RedirectToLocal(returnUrl);
-                    }
-                }
-                AddErrors(result);
-            }
-
-            ViewBag.ReturnUrl = returnUrl;
-            return View(model);
-        }
-
-        //
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -491,14 +242,6 @@ namespace TalismanSqlForum.Controllers
             return RedirectToAction("Index", "ForumList");
         }
 
-        //
-        // GET: /Account/ExternalLoginFailure
-        [AllowAnonymous]
-        public ActionResult ExternalLoginFailure()
-        {
-            return View();
-        }
-
         [ChildActionOnly]
         public ActionResult RemoveAccountList()
         {
@@ -506,19 +249,22 @@ namespace TalismanSqlForum.Controllers
             ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
+
         public ActionResult ManageUser()
         {
             ViewData["userId"] = User.Identity.GetUserId();
-            var t = new RegisterViewModel();
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext())
             {
                 var u = db.Users.Find(ViewData["userId"]);
-                t.Adres = u.Adres;
-                t.Inn = u.Inn;
-                t.Mnemo_Org = u.Mnemo_Org;
-                t.Name_Org = u.Name_Org;
-                t.NickName = u.NickName;
-                t.PhoneNumber = u.PhoneNumber;
+                var t = new RegisterViewModel
+                {
+                    Adres = u.Adres,
+                    Inn = u.Inn,
+                    Mnemo_Org = u.Mnemo_Org,
+                    Name_Org = u.Name_Org,
+                    NickName = u.NickName,
+                    PhoneNumber = u.PhoneNumber
+                };
                 db.Dispose();
                 return View(t);
             }
@@ -526,7 +272,7 @@ namespace TalismanSqlForum.Controllers
         [HttpPost]
         public ActionResult ManageUser(string id, RegisterViewModel model)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext())
             {
                 var t = db.Users.Find(id);
                 if (t == null)
@@ -630,9 +376,9 @@ namespace TalismanSqlForum.Controllers
                 UserId = userId;
             }
 
-            public string LoginProvider { get; set; }
-            public string RedirectUri { get; set; }
-            public string UserId { get; set; }
+            private string LoginProvider { get; set; }
+            private string RedirectUri { get; set; }
+            private string UserId { get; set; }
 
             public override void ExecuteResult(ControllerContext context)
             {

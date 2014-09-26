@@ -3,51 +3,49 @@
     Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
 }
 <div class="row">
-    @Html.ActionLink("Сооздать", "Create", "AdminForum", null, new {@class ="button icon-plus-2" })
+    @Html.ActionLink("Сооздать", "Create", "AdminForum", null, new { @class = "button icon-plus-2" })
 </div>
 @{
     var t = (IEnumerable<TalismanSqlForum.Models.Forum.tForumList>)ViewData["tForumList"];
-    <table class="table striped bordered hovered">
-        <thead>
-            <tr>
-                <th class="text-left"></th>
-                <th class="text-left">Скрыт</th>
-                <th class="text-left"></th>
-                <th class="text-left">Название</th>
-                <th class="text-left">Описание</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in t)
-            {
-                <tr>
-                    <td>
-                        <a href="@Url.Action("Edit", "AdminForum", new { id = item.Id})" class="icon-pencil"></a>
-                    </td>
-                    <td>
-                        <div class="input-control switch" data-role="input-control">
-                            <label class="inline-block" style="margin-right: 20px;">
-                                @switch (item.tForumList_hide)
-                                {
-                                    case true:
-                                        <input type="checkbox" checked="" data-url="@Url.Action("Hide", "AdminForum", new {id = item.Id })">
-                                        break;
-                                    default:
-                                    <input type="checkbox" data-url="@Url.Action("Hide", "AdminForum", new {id = item.Id })">
-                                        break;
-                                }
-                                <span class="check"></span>
-                            </label>
-                        </div>
-                    </td>
-                    <td><i class="@item.tForumList_icon"></i></td>
-                    <td>@item.tForumList_name</td>
-                    <td>@item.tForumList_description</td>
-                </tr>
-            }
-        </tbody>
-    </table>
 }
+<table class="table striped bordered hovered">
+    <thead>
+        <tr>
+            <th class="text-left"></th>
+            <th class="text-left">Скрыт</th>
+            <th class="text-left"></th>
+            <th class="text-left">Название</th>
+            <th class="text-left">Описание</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in t)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Edit", "AdminForum", new { id = item.Id})" class="icon-pencil"></a>
+                </td>
+                <td>
+                    <div class="input-control switch" data-role="input-control">
+                        <label class="inline-block" style="margin-right: 20px;">
+                            @if (item.tForumList_hide)
+                                <input type="checkbox" checked="" data-url="@Url.Action("Hide", "AdminForum", new {id = item.Id })">
+                            else
+                            <input type="checkbox" data-url="@Url.Action("Hide", "AdminForum", new {id = item.Id })">
+                            <span class="check"></span>
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    <i class="@item.tForumList_icon"></i>
+                </td>
+                <td>@item.tForumList_name</td>
+                <td>@item.tForumList_description</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 <script>
     $(function () {
         $('input:checkbox').change(function () {
@@ -59,7 +57,7 @@
                 type: 'POST',
                 data: data,
                 success: function (result) {
-                    // TODO: do something with the result    
+                    // TODO: do something with the result
                 }
             });
         });
