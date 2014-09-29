@@ -1,4 +1,5 @@
-﻿@{
+﻿@using TalismanSqlForum.Models.Forum
+@{
     ViewBag.Title = "Index";
 }
 <div class="panel">
@@ -62,50 +63,53 @@
     </div>
     <div class="panel-content bg-white" style="margin-top:-5px;">
         <div class="row bg-white" style="
-                                border-bottom-color: gray;
-                                border-bottom-width: 1px;
-                                border-bottom-style: solid;
-                                    ">            
+                                                                                                                       border-bottom-color: gray;
+                                                                                                                       border-bottom-width: 1px;
+                                                                                                                       border-bottom-style: solid;
+                                                                                                                   ">            
             <div class="button bg-transparent fg-gray place-right">
                 <i class="icon-calendar on-left"></i>
                 @ViewData["ForumThemes_DateTime"]
             </div>
-            <div style="margin-left:10px;">
+            <div class="fg-gray" style="margin-left:10px;">
                 @ViewData["tUsers_Org"]
             </div>
         </div>
-        <div class="tile half" style="margin:10px;">
-            <div class="tile-content icon">
-                @{
-                    foreach (var r in (IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>)ViewData["roles"])
-                    {
-                        var u = (TalismanSqlForum.Models.ApplicationUser)ViewData["tUsers"];
-                        if (u.Roles.Where(a => a.RoleId == r.Id).Count() > 0)
-                        {
-                            switch (r.Name)
+        <table>
+            <tr>
+                <td style="vertical-align: top;text-align: center;width: 10%;border-right:1px dotted lightgray">
+                    <span class="tile-status">
+                        @ViewData["tUsers_NickName"]
+                    </span>
+                    <div class="tile half" style="margin:10px;left:20%">
+                        <div class="tile-content icon">
+                            @foreach (var r in from r in (IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>)ViewData["roles"] let u = (TalismanSqlForum.Models.ApplicationUser)ViewData["tUsers"] where u.Roles.Any(a => a.RoleId == r.Id) select r)
                             {
-                                case "admin":
-                                    <i class="icon-user fg-darkRed"></i>
-                                    break;
-                                case "moderator":
-                                <i class="icon-user fg-darkGreen"></i>
-                                    break;
-                                default:
-                                <i class="icon-user fg-gray"></i>
-                                    break;
+                                switch (r.Name)
+                                {
+                                    case "admin":
+                                        <i class="icon-user fg-darkRed"></i>
+                                        break;
+                                    case "moderator":
+                                        <i class="icon-user fg-darkGreen"></i>
+                                        break;
+                                    default:
+                                        <i class="icon-user fg-gray"></i>
+                                        break;
 
+                                }
                             }
-                        }
-                    }
-                }
-            </div>
-            <span class="tile-status" style="margin:0px 10px -10px 0;">
-                @ViewData["tUsers_NickName"]
-            </span>
-        </div>
-        <div class="row bg-white offset1" style="margin-left:65px;">
-            @Html.Raw(ViewData["ForumThemes_Desc"])
-        </div>
+
+                        </div>
+                    </div>                    
+                </td>
+                <td>
+                    <div class="row bg-white padding5">
+                        @Html.Raw(ViewData["ForumThemes_Desc"])
+                    </div>
+                </td>
+            </tr>
+        </table>               
         @{
             var v = (List<int>)ViewData["tForumThemes_docnumber"];
             if (v.Count != 0)
@@ -159,43 +163,46 @@
                 <i class="icon-calendar on-left"></i>
                 @item.tForumMessages_datetime
             </a>
-            <div style="margin-left:10px;">
+            <div class="fg-gray" style="margin-left:10px;">
                 @item.tUsers.Name_Org
             </div>
         </div>
-
-        <div class="tile half" style="margin:10px;">
-            <div class="tile-content icon">
-                @{
-    foreach (var r in (IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>)ViewData["roles"])
-    {
-        if (item.tUsers.Roles.Where(a => a.RoleId == r.Id).Count() > 0)
-        {
-            switch (r.Name)
-            {
-                case "admin":
-                    <i class="icon-user fg-darkRed"></i>
-                    break;
-                case "moderator":
-                <i class="icon-user fg-darkGreen"></i>
-                    break;
-                default:
-                <i class="icon-user fg-gray"></i>
-                    break;
-
-            }
-        }
-    }
-                }
-            </div>
-            <span class="tile-status" style="margin:0px 10px -10px 0;">
-                @item.tUsers.NickName
-            </span>
-        </div>
-
-        <div class="row offset1" style="margin-left:65px;">
-            @Html.Raw(item.tForumMessages_messages)
-        </div>
+        <table>
+            <tr>
+                <td style="vertical-align:top;text-align: center;width: 10%;border-right:1px dotted lightgray">
+                    <span class="tile-status">
+                        @item.tUsers.NickName
+                    </span>
+                    <div class="tile half" style="margin:10px; left:20%">
+                        <div class="tile-content icon">
+                            @{
+                                var item1 = item;
+                            }
+                            @foreach (var r in ((IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>)ViewData["roles"]).Where(r => item1.tUsers.Roles.Any(a => a.RoleId == r.Id)))
+                            {
+                                switch (r.Name)
+                                {
+                                    case "admin":
+                                        <i class="icon-user fg-darkRed"></i>
+                                        break;
+                                    case "moderator":
+                                        <i class="icon-user fg-darkGreen"></i>
+                                        break;
+                                    default:
+                                        <i class="icon-user fg-gray"></i>
+                                        break;
+                                }
+                            }
+                        </div>
+                    </div>                    
+                </td>
+                <td>
+                    <div class="row padding5">
+                        @Html.Raw(item.tForumMessages_messages)
+                    </div>
+                </td>
+            </tr>
+        </table>               
         @if(item.tUsers_Edit_name != null)
         {
             <div class="row bg-white">

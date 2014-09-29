@@ -33,8 +33,9 @@ namespace TalismanSqlForum.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            var t = new LoginViewModel();
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View(t);
         }
 
         //

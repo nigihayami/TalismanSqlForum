@@ -36,25 +36,18 @@ namespace TalismanSqlForum.Models
 
     public class LoginViewModel
     {
-        public LoginViewModel(string email, string password, bool rememberMe)
-        {
-            RememberMe = rememberMe;
-            Password = password;
-            Email = email;
-        }
-
         [Required(ErrorMessage = "Требуется поле Адрес электронной почты")]
         [EmailAddress(ErrorMessage = "Неверный формат адреса электронной почты")]
         [Display(Name = "Адрес электронной почты")]
-        public string Email { get; private set; }
+        public string Email { get; set; }
 
         [Required(ErrorMessage="Требуется поле Пароль")]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
-        public string Password { get; private set; }
+        public string Password { get; set; }
 
         [Display(Name = "Запомнить меня")]
-        public bool RememberMe { get; private set; }
+        public bool RememberMe { get; set; }
     }
 
     public class RegisterViewModel

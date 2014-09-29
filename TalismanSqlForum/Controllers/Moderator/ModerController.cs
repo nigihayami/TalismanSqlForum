@@ -136,8 +136,8 @@ namespace TalismanSqlForum.Controllers.Moderator
                 toffer.tforumthemes = t;
                 _db.tOffer.Add(toffer);
                 _db.SaveChanges();
-                returnUrl = Url.Action("Index", "ForumThemes", new { id = t.tForumList.Id });
-                href = Url.Action("Index", "ForumThemes", new { id = t.tForumList.Id }, val);
+                returnUrl = Url.Action("Index", "ForumMessages", new { id = t.Id, id_list = t.tForumList.Id });
+                href = Url.Action("Index", "ForumMessages", new { id = t.Id, id_list = t.tForumList.Id }, val);
             }
             //и теперь мы создаем замечание - выделим отдельно, так как там много кода
             toffer.tOffer_docnumber =  create(toffer.Id,User.Identity.Name,href);
@@ -270,7 +270,7 @@ namespace TalismanSqlForum.Controllers.Moderator
                                 {                                    
                                     fcon.Parameters.AddWithValue("@comment", t.tforummessages.tForumThemes.tForumThemes_name);
                                     fcon.Parameters.AddWithValue("@DETAIL_COMMENT",
-                                        "<em><a href ='" + href + "'> " +
+                                        "ФОРУМ<hr/><em><a href ='" + href + "'> " +
                                        href +
                                        "</a></em>" +
                                         "<p>" + t.tforummessages.tForumMessages_messages + "</p>");
@@ -279,7 +279,7 @@ namespace TalismanSqlForum.Controllers.Moderator
                                 {
                                     fcon.Parameters.AddWithValue("@comment", t.tforumthemes.tForumThemes_name);
                                     fcon.Parameters.AddWithValue("@DETAIL_COMMENT",
-                                        "<em><a href ='" +
+                                        "ФОРУМ<hr/><em><a href ='" +
                                         href + 
                                         "'> " +
                                         href + 
