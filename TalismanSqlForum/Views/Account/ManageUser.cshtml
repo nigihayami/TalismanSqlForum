@@ -1,4 +1,4 @@
-﻿@model TalismanSqlForum.Models.RegisterViewModel
+﻿@model TalismanSqlForum.Models.ManageUserView
 @{
     ViewBag.Title = "Редактирование профиля";
 }
@@ -21,6 +21,10 @@
                         <label class="margin10">
                             <font class="fg-red">*</font> - <i class="fg-grayLight">Поля, обязательные для заполнения</i>
                         </label>                        
+                        @Html.LabelFor(m => m.Email, new { @class = "label_req" })
+                        <div class="input-control text">
+                            @Html.TextBoxFor(m => m.Email)
+                        </div>  
                         @Html.LabelFor(m => m.NickName, new { @class = "label_req" })
                         <div class="input-control text">
                             @Html.TextBoxFor(m => m.NickName)

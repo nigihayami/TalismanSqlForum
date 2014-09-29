@@ -92,4 +92,37 @@ namespace TalismanSqlForum.Models
         #endregion
 
     }
+    public class ManageUserView
+    {
+        #region Основная информация
+        [Required(ErrorMessage = "Требуется поле Адрес электронной почты")]
+        [EmailAddress(ErrorMessage = "Неверный формат адреса электронной почты")]
+        [Display(Name = "Адрес электронной почты")]
+        public string Email { get; set; }
+        [Required(ErrorMessage = "Требуется поле Имя пользователя")]
+        [Display(Name = "Имя пользователя")]
+        public string NickName { get; set; }
+        #endregion
+        #region Доп информация
+        [Required(ErrorMessage = "Требуется поле Полное наименование учреждения")]
+        [Display(Name = "Полное наименование учреждения")]
+        public string Name_Org { get; set; }
+        [Required(ErrorMessage = "Требуется поле Краткое наименование учреждения")]
+        [Display(Name = "Краткое наименование учреждения")]
+        public string Mnemo_Org { get; set; }
+        [Required(ErrorMessage = "Требуется поле ИНН")]
+        [Display(Name = "ИНН")]
+        [StringLength(12, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 10)]
+        public string Inn { get; set; }
+        [Required(ErrorMessage = "Требуется поле Адрес")]
+        [Display(Name = "Адрес")]
+        public string Adres { get; set; }
+        [Display(Name = "Контактное лицо")]
+        public string Contact_Name { get; set; }
+        [Display(Name = "Телефон")]
+        public string PhoneNumber { get; set; }
+
+        #endregion
+
+    }
 }

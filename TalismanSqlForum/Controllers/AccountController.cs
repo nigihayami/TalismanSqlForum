@@ -257,28 +257,39 @@ namespace TalismanSqlForum.Controllers
             using (var db = new ApplicationDbContext())
             {
                 var u = db.Users.Find(ViewData["userId"]);
-                var t = new RegisterViewModel
+                var t = new ManageUserView
                 {
                     Adres = u.Adres,
                     Inn = u.Inn,
                     Mnemo_Org = u.Mnemo_Org,
                     Name_Org = u.Name_Org,
                     NickName = u.NickName,
-                    PhoneNumber = u.PhoneNumber
+                    PhoneNumber = u.PhoneNumber,
+                    Email = u.Email
                 };
                 db.Dispose();
                 return View(t);
             }
         }
         [HttpPost]
-        public ActionResult ManageUser(string id, RegisterViewModel model)
+        public ActionResult ManageUser(string id, ManageUserView model)
         {
             using (var db = new ApplicationDbContext())
             {
                 var t = db.Users.Find(id);
                 if (t == null)
-                {
                     return HttpNotFound();
+                if (t.Email != model.Email)
+                {
+                    if (db.Users.Any(a => a.Email == model.Email))
+                    {
+                        ModelState.AddModelError("Email", "Данный Email уже используется");
+                    }
+                    else
+                    {
+                        t.Email = model.Email;
+                        t.UserName = model.Email;
+                    }
                 }
                 t.Adres = model.Adres;
                 t.Inn = model.Inn;
@@ -286,11 +297,16 @@ namespace TalismanSqlForum.Controllers
                 t.Name_Org = model.Name_Org;
                 t.NickName = model.NickName;
                 t.PhoneNumber = model.PhoneNumber;
-                db.Entry(t).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                if (ModelState.IsValid)
+                {
+                    db.Entry(t).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    db.Dispose();
+                    return RedirectToAction("Index", "ForumList");
+                }
                 db.Dispose();
+                return View(model);
             }
-            return RedirectToAction("Index", "ForumList");
         }
         protected override void Dispose(bool disposing)
         {
