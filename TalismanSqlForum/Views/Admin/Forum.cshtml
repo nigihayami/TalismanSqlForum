@@ -26,16 +26,31 @@
                     <a href="@Url.Action("Edit", "AdminForum", new { id = item.Id})" class="icon-pencil"></a>
                 </td>
                 <td>
-                    <div class="input-control switch" data-role="input-control">
-                        <label class="inline-block" style="margin-right: 20px;">
-                            @if (item.tForumList_hide)
-                                <input type="checkbox" checked="" data-url="@Url.Action("Hide", "AdminForum", new {id = item.Id })">
-                            else
-                            <input type="checkbox" data-url="@Url.Action("Hide", "AdminForum", new {id = item.Id })">
-                            <span class="check"></span>
-                        </label>
-                    </div>
+                    @{
+                        switch (item.tForumList_hide)
+                        {
+                            case true:
+                                <div class="input-control switch" data-role="input-control">
+                                    <label class="inline-block" style="margin-right: 20px;">
+                                        <input type="checkbox" checked="" data-url="@Url.Action("Hide", "AdminForum", new {id = item.Id })">
+                                        <span class="check"></span>
+                                    </label>
+                                </div>
+                                break;
+                            default:
+                            <div class="input-control switch" data-role="input-control">
+                                <label class="inline-block" style="margin-right: 20px;">
+                                    <input type="checkbox" data-url="@Url.Action("Hide", "AdminForum", new {id = item.Id })">
+                                    <span class="check"></span>
+                                </label>
+                            </div>
+                                break;
+                        }
+                    }
                 </td>
+
+
+
                 <td>
                     <i class="@item.tForumList_icon"></i>
                 </td>

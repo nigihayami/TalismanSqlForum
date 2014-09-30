@@ -8,48 +8,51 @@
                 @ViewData["ForumThemes_Name"]
                 @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator")))
                 {
-                    <a href="@Url.Action("Top", "ForumThemes", new { id = ViewData["ForumThemes_Id"] })" class="place-right fg-white">
-                        @if ((bool)ViewData["tForumThemes_top"])
-                        {
-                            <i class="icon-link-2"
-                               data-hint="Открепить"
+                    if ((bool)ViewData["ForumThemes_Is_Edit"])
+                    {
+                        <a href="@Url.Action("Top", "ForumThemes", new {id = ViewData["ForumThemes_Id"]})" class="place-right fg-white">
+                            @if ((bool) ViewData["tForumThemes_top"])
+                            {
+                                <i class="icon-link-2"
+                                   data-hint="Открепить"
+                                   data-hint-position="top">
+                                </i>
+                            }
+                            else
+                            {
+                                <i class="icon-link"
+                                   data-hint="Закрепить"
+                                   data-hint-position="top"></i>
+                            }
+                        </a>
+                        <a href="@Url.Action("Close", "ForumThemes", new {id = ViewData["ForumThemes_Id"]})" class="place-right fg-white">
+                            @if ((bool) ViewData["tForumThemes_close"])
+                            {
+                                <i class="icon-unlocked"
+                                   data-hint="Открыть тему"
+                                   data-hint-position="top">
+                                </i>
+                            }
+                            else
+                            {
+                                <i class="icon-locked-2"
+                                   data-hint="Закрыть"
+                                   data-hint-position="top"></i>
+                            }
+                        </a>
+                        <a href="@Url.Action("Transfer", "ForumThemes", new {id = ViewData["ForumThemes_Id"]})" class="place-right fg-white">
+                            <i class="icon-tab"
+                               data-hint="Перенести"
                                data-hint-position="top">
                             </i>
-                        }
-                        else
-                        {
-                            <i class="icon-link"
-                               data-hint="Закрепить"
-                               data-hint-position="top"></i>
-                        }
-                    </a>
-                    <a href="@Url.Action("Close", "ForumThemes", new { id = ViewData["ForumThemes_Id"] })" class="place-right fg-white">
-                        @if ((bool)ViewData["tForumThemes_close"])
-                        {
-                            <i class="icon-unlocked"
-                               data-hint="Открыть тему"
+                        </a>
+                        <a href="@Url.Action("Hide", "ForumThemes", new {id = ViewData["ForumThemes_Id"]})" class="place-right fg-red">
+                            <i class="icon-remove fg-red"
+                               data-hint="Скрыть"
                                data-hint-position="top">
                             </i>
-                        }
-                        else
-                        {
-                            <i class="icon-locked-2"
-                               data-hint="Закрыть"
-                               data-hint-position="top"></i>
-                        }
-                    </a>
-                    <a href="@Url.Action("Transfer","ForumThemes",new{id = ViewData["ForumThemes_Id"]})" class="place-right fg-white">
-                        <i class="icon-tab"
-                           data-hint="Перенести"
-                           data-hint-position="top">
-                        </i>
-                    </a>
-                    <a href="@Url.Action("Hide","ForumThemes",new{id = ViewData["ForumThemes_Id"]})" class="place-right fg-red">
-                        <i class="icon-remove fg-red"
-                           data-hint="Скрыть"
-                           data-hint-position="top">
-                        </i>
-                    </a>
+                        </a>
+                    }
                 }
                 @if ((bool)ViewData["tForumThemes_top"])
                 {

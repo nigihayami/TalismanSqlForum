@@ -48,13 +48,6 @@ namespace TalismanSqlForum.Code
                     db.tNotification.Add(t);
                     db.SaveChanges();
                 }
-                //Отсылаем администраторам.. Только я конечо я незнаю зачем все это?????!!!!!!
-                foreach (var item2 in db.Roles.Where(a => a.Name == "admin").SelectMany(item => item.Users.Where(a => a.UserId != userId)))
-                {
-                    t.tUsers = db.Users.Find(item2.UserId);
-                    db.tNotification.Add(t);
-                    db.SaveChanges();
-                }
                 db.Dispose();
             }
         }
@@ -75,13 +68,6 @@ namespace TalismanSqlForum.Code
                 };
                 //Отсылаем модераторам
                 foreach (var item2 in db.Roles.Where(a => a.Name == "moderator").SelectMany(item => item.Users.Where(a => a.UserId != userId)))
-                {
-                    t.tUsers = db.Users.Find(item2.UserId);
-                    db.tNotification.Add(t);
-                    db.SaveChanges();
-                }
-                //Отсылаем администраторам
-                foreach (var item2 in db.Roles.Where(a => a.Name == "admin").SelectMany(item => item.Users.Where(a => a.UserId != userId)))
                 {
                     t.tUsers = db.Users.Find(item2.UserId);
                     db.tNotification.Add(t);

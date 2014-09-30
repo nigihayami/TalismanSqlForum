@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Data;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
-using System.Web;
 using System.Web.Mvc;
 using TalismanSqlForum.Models;
 
@@ -22,16 +21,25 @@ namespace TalismanSqlForum.Controllers.Admin
             var uo = new List<ApplicationUser>();
             if (!string.IsNullOrEmpty(val))
             {
-                var _val = val;
-                um.AddRange(from item in _db.Roles.Where(a => a.Name == "moderator") from item2 in item.Users where _db.Users.Find(item2.UserId).Email.Contains(_val) || _db.Users.Find(item2.UserId).NickName.Contains(_val) select _db.Users.Find(item2.UserId));
-                uo.AddRange(from item in _db.Roles.Where(a => a.Name == "user") from item2 in item.Users where _db.Users.Find(item2.UserId).Email.Contains(_val) || _db.Users.Find(item2.UserId).NickName.Contains(_val) select _db.Users.Find(item2.UserId));
+                foreach (var item in _db.Roles.Where(a => a.Name == "moderator"))
+                {
+                    um.AddRange(_db.Users.Where(a => a.UserName == val).Where(a => a.Roles.Count(b => b.RoleId == item.Id) > 0));
+                }
+                foreach (var item in _db.Roles.Where(a => a.Name == "user"))
+                {
+                    uo.AddRange(_db.Users.Where(a=> a.UserName == val).Where(a => a.Roles.Count(b => b.RoleId == item.Id) > 0));
+                }
             }
             else
             {
-                //moderator
-                um.AddRange(from item in _db.Roles.Where(a => a.Name == "moderator") from item2 in item.Users select _db.Users.Find(item2.UserId));
-                //user
-                uo.AddRange(from item in _db.Roles.Where(a => a.Name == "user") from item2 in item.Users select _db.Users.Find(item2.UserId));
+                foreach (var item in _db.Roles.Where(a => a.Name == "moderator"))
+                {
+                    um.AddRange(_db.Users.Where(a => a.Roles.Count(b => b.RoleId == item.Id) > 0));
+                }
+                foreach (var item in _db.Roles.Where(a => a.Name == "user"))
+                {
+                    uo.AddRange(_db.Users.Where(a => a.Roles.Count(b => b.RoleId == item.Id) > 0));
+                }
             }
 
 

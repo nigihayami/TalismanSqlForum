@@ -41,10 +41,19 @@ namespace TalismanSqlForum.Controllers
 
             if (!User.Identity.IsAuthenticated) return View();
 
-            if (User.IsInRole("admin") || User.IsInRole("moderator"))
+            if (User.IsInRole("admin"))
             {
                 //admin GRANT
                 ViewData["ForumThemes_Is_Edit"] = true;
+            }
+            else if( User.IsInRole("moderator"))
+            {
+                //Проверим, чтобы тема не была создана администратором
+                var roleid = _db.Roles.First(a => a.Name == "admin");
+                if (t.tUsers.Roles.All(a => a.RoleId != roleid.Id))
+                {
+                    ViewData["ForumThemes_Is_Edit"] = true;
+                }
             }
 
 
