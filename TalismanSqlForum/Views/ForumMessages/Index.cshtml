@@ -112,20 +112,7 @@
                     </div>
                 </td>
             </tr>
-        </table>               
-        @{
-            var v = (List<int>)ViewData["tForumThemes_docnumber"];
-            if (v.Count != 0)
-            {
-                <div class="row bg-white">
-                    Поставлено замечание №
-                    @foreach(var i in v)
-                    {
-                        <em>@i;</em>
-                    }
-                </div>                
-            }
-        }
+        </table>                       
         @if (User.Identity.IsAuthenticated && (bool)ViewData["ForumThemes_Is_Edit"] && (User.IsInRole("admin") || User.IsInRole("moderator")))
         {
             <div class="row bg-white">
@@ -212,20 +199,7 @@
                 <em class="small">Отредактировано @item.tUsers_Edit_name.NickName - @item.tUsers_Edit_datetime</em>
             </div>
         }
-        @{
-        var vm = item.toffer;
-        if (vm.Count != 0)
-        {
-            <div class="row bg-white">
-                Поставлено замечание №
-                @foreach (var i in vm)
-                {
-                    <em>@i.tOffer_docnumber;</em>
-                }
-            </div>
-        }
-        }
-        @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator")))
+       @if (User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("moderator")))
         {
             <div class="row bg-white">
                 <a href="@Url.Action("CreateOffer", "Moder", new { id_mess = item.Id, id_theme = 0})"

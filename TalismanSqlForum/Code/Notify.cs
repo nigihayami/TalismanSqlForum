@@ -1,4 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mail;
+using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json.Schema;
+using ServiceStack.Text;
 using TalismanSqlForum.Models;
 using TalismanSqlForum.Models.Notification;
 
@@ -79,6 +84,31 @@ namespace TalismanSqlForum.Code
                     t.tUsers = db.Users.Find(item.Id);
                     db.tNotification.Add(t);
                     db.SaveChanges();
+                }
+                //а теперь отошлем email
+                var emList = new List<string>();
+                var emailList = ft.tForumThemes.tForumMessages;
+                var roleId = db.Roles.First(a => a.Name == "user").Id;
+                foreach (var item in emailList.Where(a => a.tUsers.Roles.Any(b=> b.RoleId == roleId)))
+                {
+                    emList.AddIfNotExists(item.tUsers.Email);
+                }
+                if (emList.Count() != 0)
+                {
+                    var mm = new MailMessage
+                    {
+                        IsBodyHtml = true,
+                        Body =
+                            "<h4>Форум Талисман-SQL</h4>" + "Появилось новоое сообщение на форуме " +
+                            ft.tForumThemes.tForumList.tForumList_name + " в разделе " +
+                            ft.tForumThemes.tForumThemes_name + "<p>" + href + "</p>",
+                        Subject = "Новое сообщение на форуме Talisman-SQL"
+                    };
+                    foreach (var item in emList)
+                    {
+                        mm.To.Add(item);
+                    }
+                    Code.Mail.SendEmail(mm);
                 }
                 db.Dispose();
             }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TalismanSqlForum.Models;
+using TalismanSqlForum.Models.Forum;
 using TalismanSqlForum.Models.Moderator;
 using TalismanSqlForum.Models.Offer;
 
@@ -140,10 +141,23 @@ namespace TalismanSqlForum.Controllers.Moderator
                 href = Url.Action("Index", "ForumMessages", new { id = t.Id, id_list = t.tForumList.Id }, val);
             }
             //и теперь мы создаем замечание - выделим отдельно, так как там много кода
-            toffer.tOffer_docnumber =  create(toffer.Id,User.Identity.Name,href);
+            toffer.tOffer_docnumber =  Create(toffer.Id,User.Identity.Name,href);
             _db.Entry(toffer).State = EntityState.Modified;
             _db.SaveChanges();
-            
+            //а теперь допишем сообщение в форум
+            var m = new tForumMessages
+            {
+                tUsers = _db.Users.First(a => a.UserName == User.Identity.Name),
+                tForumMessages_datetime = System.DateTime.Now,
+                tForumMessages_hide = false,
+                tForumMessages_messages =
+                    "<p>Создано замечание №" + toffer.tOffer_docnumber + "</p>",
+                tForumThemes = id_mess != 0 ? toffer.tforummessages.tForumThemes : toffer.tforumthemes
+            };
+
+            _db.tForumMessages.Add(m);
+            _db.SaveChanges();
+
             return RedirectToLocal(returnUrl);
         }
 
@@ -209,47 +223,49 @@ namespace TalismanSqlForum.Controllers.Moderator
             }
         }
 
-        static int create(int id, string username, string href)
+        static int Create(int id, string username, string href)
         {
-            int doc_number = 0;
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            var docNumber = 0;
+            using (var db = new ApplicationDbContext())
             {
                 var t = db.tOffer.Find(id);
-                var m = db.tModerator.Where(a => a.tUsers.UserName == username).First();
-                var fc = new FbConnectionStringBuilder();
-                fc.UserID = m.tModerator_userId;
-                fc.Password = m.tModerator_password;
-                fc.Database = m.tModerator_database;
-                fc.Charset = "win1251";
-                fc.Pooling = false;
-                fc.Role = "R_ADMIN";
-                
-                using (FbConnection fb = new FbConnection(fc.ConnectionString))
+                var m = db.tModerator.First(a => a.tUsers.UserName == username);
+                var fc = new FbConnectionStringBuilder
+                {
+                    UserID = m.tModerator_userId,
+                    Password = m.tModerator_password,
+                    Database = m.tModerator_database,
+                    Charset = "win1251",
+                    Pooling = false,
+                    Role = "R_ADMIN"
+                };
+
+                using (var fb = new FbConnection(fc.ConnectionString))
                 {
                     try
                     {
                         fb.Open();
-                        using (FbTransaction ft = fb.BeginTransaction())
+                        using (var ft = fb.BeginTransaction())
                         {
-                            using (FbCommand fcon = new FbCommand("select G.NUM " +
+                            using (var fcon = new FbCommand("select G.NUM " +
         "from GET_DC_DOCUMENT_NUMBER(85) G", fb, ft))
                             {
-                                using (FbDataReader fr = fcon.ExecuteReader())
+                                using (var fr = fcon.ExecuteReader())
                                 {
                                     while (fr.Read())
                                     {
-                                        doc_number = (int)fr[0];
+                                        docNumber = (int)fr[0];
                                     }
                                     fr.Dispose();
                                 }
                                 fcon.Dispose();
                             }
 
-                            var _com = "execute procedure IUD_BUGS('I', null, @IS_ERROR, @LOCATION, @ID_RELEASE_PROJECTS, @ID_RELEASE_PROJECTS_EXEC," +
-                            " null, null, @ID_SUBSYSTEM," +
-                            "@ID_BRANCH, null, 85, 1, (select list_id from sel_filter_budg(2)),@DOC_NUMBER, 'NOW'," +
-                            "null, @comment, null, @DETAIL_COMMENT, 1, @ID_PROJECTS, null,null) ";
-                            using (FbCommand fcon = new FbCommand(_com, fb, ft))
+                            const string com = "execute procedure IUD_BUGS('I', null, @IS_ERROR, @LOCATION, @ID_RELEASE_PROJECTS, @ID_RELEASE_PROJECTS_EXEC," +
+                                                " null, null, @ID_SUBSYSTEM," +
+                                                "@ID_BRANCH, null, 85, 1, (select list_id from sel_filter_budg(2)),@DOC_NUMBER, 'NOW'," +
+                                                "null, @comment, null, @DETAIL_COMMENT, 1, @ID_PROJECTS, null,null) ";
+                            using (var fcon = new FbCommand(com, fb, ft))
                             {
 
                                 switch (t.tOffer_error)
@@ -289,7 +305,7 @@ namespace TalismanSqlForum.Controllers.Moderator
 
                                 fcon.Parameters.AddWithValue("@ID_PROJECTS", t.tOffer_tProject_id);
 
-                                fcon.Parameters.AddWithValue("@DOC_NUMBER", doc_number);
+                                fcon.Parameters.AddWithValue("@DOC_NUMBER", docNumber);
                                 try
                                 {
                                     fcon.ExecuteNonQuery();
@@ -316,7 +332,7 @@ namespace TalismanSqlForum.Controllers.Moderator
                 }
                 db.Dispose();
             }
-            return doc_number;
+            return docNumber;
         }
         protected override void Dispose(bool disposing)
         {

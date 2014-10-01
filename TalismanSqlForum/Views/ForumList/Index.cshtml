@@ -10,7 +10,7 @@
         </h4>
     </div>
     <div class="panel-content bg-white">
-        <div class="listview-outlook">
+        <div class="listview-outlook" id="listView">
             @foreach (var item in (IEnumerable<TalismanSqlForum.Models.Forum.tForumList>)ViewData["tForumList"])
             {
                 <a href="@Url.Action("Index", "ForumThemes", new {id = item.Id})" class="list">
@@ -18,20 +18,20 @@
                         <div class="tile half bg-white">
                             <div class="tile-content icon">
                                 @{
-                                    var t = 0;
-                                    if (User.Identity.IsAuthenticated)
-                                    {
-                                        t = TalismanSqlForum.Code.Stat.count_theme(username: User.Identity.Name, id: item.Id);
-                                    }
-                                    if (User.Identity.IsAuthenticated && t > 0)
-                                    {
-                                        <i class="@item.tForumList_icon fg-orange"></i>
-                                    }
-                                    else
-                                    {
-                                        <i class="@item.tForumList_icon fg-gray"></i>
-                                    }
-}
+                var t = 0;
+                if (User.Identity.IsAuthenticated)
+                {
+                    t = TalismanSqlForum.Code.Stat.count_theme(username: User.Identity.Name, id: item.Id);
+                }
+                if (User.Identity.IsAuthenticated && t > 0)
+                {
+                    <i class="@item.tForumList_icon fg-orange"></i>
+                }
+                else
+                {
+                    <i class="@item.tForumList_icon fg-gray"></i>
+                }
+                                }
                             </div>
                             <div class="tile-status">
                                 @if (User.Identity.IsAuthenticated)
@@ -49,6 +49,7 @@
                 </a>
             }
         </div>
+
     </div>
 </div>
 <div class="row" style="bottom:20px">
