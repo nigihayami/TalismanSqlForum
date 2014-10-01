@@ -41,17 +41,17 @@ namespace TalismanSqlForum.Controllers
            
             if (!string.IsNullOrEmpty(_searchUser))
             {
-                if (_db.Users.Any(a => String.Equals(a.Name_Org, _searchUser, StringComparison.CurrentCultureIgnoreCase)))
+                if (_db.Users.Any(a => String.Equals(a.Name_Org, _searchUser)))
                 {
-                    t1 = t1.Where(a => String.Equals(a.tUsers.Name_Org, _searchUser, StringComparison.CurrentCultureIgnoreCase));
-                    t2 = t2.Where(a => String.Equals(a.tUsers.Name_Org, _searchUser, StringComparison.CurrentCultureIgnoreCase));
-                    t3 = t3.Where(a => String.Equals(a.tUsers.Name_Org, _searchUser, StringComparison.CurrentCultureIgnoreCase));
+                    t1 = t1.Where(a => String.Equals(a.tUsers.Name_Org, _searchUser));
+                    t2 = t2.Where(a => String.Equals(a.tUsers.Name_Org, _searchUser));
+                    t3 = t3.Where(a => String.Equals(a.tUsers.Name_Org, _searchUser));
                 }
                 else
                 {
-                    t1 = t1.Where(a => String.Equals(a.tUsers.NickName, _searchUser, StringComparison.CurrentCultureIgnoreCase));
-                    t2 = t2.Where(a => String.Equals(a.tUsers.NickName, _searchUser, StringComparison.CurrentCultureIgnoreCase));
-                    t3 = t3.Where(a => String.Equals(a.tUsers.NickName, _searchUser, StringComparison.CurrentCultureIgnoreCase));
+                    t1 = t1.Where(a => String.Equals(a.tUsers.NickName, _searchUser));
+                    t2 = t2.Where(a => String.Equals(a.tUsers.NickName, _searchUser));
+                    t3 = t3.Where(a => String.Equals(a.tUsers.NickName, _searchUser));
                 }
             }
             switch (_searchPlace)
