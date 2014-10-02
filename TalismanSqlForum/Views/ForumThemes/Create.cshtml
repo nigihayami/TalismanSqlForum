@@ -39,6 +39,11 @@
 <script type="text/javascript">
     CKEDITOR.replace('tForumThemes_desc', {
         filebrowserImageUploadUrl: '@Url.Action("UploadImage","Upload")'
+        @if (User.IsInRole("admin") || User.IsInRole("moderator"))
+        {
+            <text>,
+            extraPlugins : "strinsert"</text>
+        }
     });
 </script>
 @section Scripts {
