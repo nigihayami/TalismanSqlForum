@@ -55,24 +55,29 @@
                 @Html.LabelFor(model => model.tOffer_tBranch_id)
                 <div class="input-control select">
                     @Html.DropDownListFor(model => model.tOffer_tBranch_id, s_branch)
+                    @Html.ValidationMessageFor(model => model.tOffer_tBranch_id)
                 </div>
                 @Html.LabelFor(model => model.tOffer_tProject_id)
                 <div class="input-control select">
                     @Html.DropDownListFor(model => model.tOffer_tProject_id, s_projects)
+                    @Html.ValidationMessageFor(model => model.tOffer_tProject_id)
                 </div>
                 @Html.LabelFor(model => model.tOffer_tReleaseProject_id)
                 <div class="input-control select">
                     <select id="tOffer_tReleaseProject_id" name="tOffer_tReleaseProject_id"></select>
+                    @Html.ValidationMessageFor(model => model.tOffer_tReleaseProject_id)
                 </div>
                 @Html.LabelFor(model => model.tOffer_tReleaseProject_exec_id)
                 <div class="input-control select">
                     <select id="tOffer_tReleaseProject_exec_id" name="tOffer_tReleaseProject_exec_id" class="form-control"></select>
+                    @Html.ValidationMessageFor(model => model.tOffer_tReleaseProject_exec_id)
                 </div>
                 @Html.LabelFor(model => model.tOffer_tSubsystem_id)
                 <div class="input-control select">
                     <select id="tOffer_tSubsystem_id" name="tOffer_tSubsystem_id" class="form-control">
                         <option>1</option>
                     </select>
+                    @Html.ValidationMessageFor(model => model.tOffer_tSubsystem_id)
                 </div>
                 <button class="element button_reg gradient_header fg-white" type="submit" style="margin-top:10px; border-radius:7px;">
                     Создать

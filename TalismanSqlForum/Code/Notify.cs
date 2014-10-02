@@ -89,7 +89,7 @@ namespace TalismanSqlForum.Code
                 var emList = new List<string>();
                 var emailList = ft.tForumThemes.tForumMessages;
                 var roleId = db.Roles.First(a => a.Name == "user").Id;
-                foreach (var item in emailList.Where(a => a.tUsers.Roles.Any(b=> b.RoleId == roleId)))
+                foreach (var item in emailList.Where(a => a.tUsers.Id != userId).Where(a => a.tUsers.Roles.Any(b=> b.RoleId == roleId)))
                 {
                     emList.AddIfNotExists(item.tUsers.Email);
                 }

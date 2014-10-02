@@ -122,10 +122,29 @@ namespace TalismanSqlForum.Controllers.Moderator
             var val = Url.RequestContext.HttpContext.Request.Url.Scheme;
             var returnUrl = "";
             var href = "";
+            if (toffer.tOffer_tReleaseProject_exec_id == 0)
+            {
+                ModelState.AddModelError("tOffer_tReleaseProject_exec_id", "Укажите версию реализации");
+            }
+            if (toffer.tOffer_tReleaseProject_id == 0)
+            {
+                ModelState.AddModelError("tOffer_tReleaseProject_id", "Укажите версию обнаружения");
+            }
             if (id_mess != 0)
             {
                 var t = _db.tForumMessages.Find(id_mess);
                 toffer.tforummessages = t;
+                if (!ModelState.IsValid)
+                {
+                    ViewData["tBranch"] = _db.tBranch.ToList();
+                    ViewData["tProject"] = _db.tProject.ToList();
+                    ViewData["tReleaseProject"] = _db.tReleaseProject.ToList();
+                    ViewData["tReleaseProject_exec"] = _db.tReleaseProject.ToList();
+                    ViewData["tSubsystem"] = _db.tSubsystem.ToList();
+                    ViewData["id_mess"] = id_mess;
+                    ViewData["id_theme"] = id_theme;
+                    return View(toffer);
+                }
                 _db.tOffer.Add(toffer);
                 _db.SaveChanges();
                 returnUrl = Url.Action("Index", "ForumMessages", new { id = t.tForumThemes.Id, id_list = t.tForumThemes.tForumList.Id });
@@ -135,6 +154,17 @@ namespace TalismanSqlForum.Controllers.Moderator
             {
                 var t = _db.tForumThemes.Find(id_theme);
                 toffer.tforumthemes = t;
+                if (!ModelState.IsValid)
+                {
+                    ViewData["tBranch"] = _db.tBranch.ToList();
+                    ViewData["tProject"] = _db.tProject.ToList();
+                    ViewData["tReleaseProject"] = _db.tReleaseProject.ToList();
+                    ViewData["tReleaseProject_exec"] = _db.tReleaseProject.ToList();
+                    ViewData["tSubsystem"] = _db.tSubsystem.ToList();
+                    ViewData["id_mess"] = id_mess;
+                    ViewData["id_theme"] = id_theme;
+                    return View(toffer);
+                }
                 _db.tOffer.Add(toffer);
                 _db.SaveChanges();
                 returnUrl = Url.Action("Index", "ForumMessages", new { id = t.Id, id_list = t.tForumList.Id });

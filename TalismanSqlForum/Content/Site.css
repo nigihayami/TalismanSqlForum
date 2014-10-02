@@ -178,3 +178,10 @@
     background: darkgray;
     color: #fff;
 }
+ .metro .input-control.text input.input-validation-error
+ {
+    border-color: #fa6800;
+}
+ .field-validation-error {
+     color: red;
+ }
