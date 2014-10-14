@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using TalismanSqlForum.Models.Stat;
 
 namespace TalismanSqlForum.Models.Forum
 {
@@ -8,6 +9,7 @@ namespace TalismanSqlForum.Models.Forum
         public tForumList()
         {
             this.tForumThemes = new HashSet<tForumThemes>();
+            this.StatForumLists = new HashSet<StatForumList>();
         }
         public int Id { get; set; }
         [Required]
@@ -21,5 +23,6 @@ namespace TalismanSqlForum.Models.Forum
         [Display(Name = "Иконка форума ")]
         public string tForumList_icon { get; set; }
         public virtual ICollection<tForumThemes> tForumThemes { get; set; }
+        public virtual ICollection<StatForumList> StatForumLists { get; set; }
     }
 }

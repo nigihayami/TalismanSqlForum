@@ -18,6 +18,11 @@ namespace TalismanSqlForum.Controllers
         [AllowAnonymous]
         public ActionResult Index(int? id)
         {
+            if (id != null)
+            {
+                Code.Stat.SetView(Request.UserHostAddress);
+                Code.Stat.SetViewList(Request.UserHostAddress, id.Value);
+            }
             var t = _db.tForumLists.Find(id);
             if (t == null) return HttpNotFound();
             ViewBag.Title = t.tForumList_name;
@@ -42,7 +47,7 @@ namespace TalismanSqlForum.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,tForumThemes_name,tForumThemes_datetime,tForumThemes_desc,tForumThemes_top,tForumThemes_close")] int? id, tForumThemes tForumThemes)
-        {           
+        {
             tForumThemes.tForumList = _db.tForumLists.Find(id);
             tForumThemes.tForumThemes_datetime = DateTime.Now;
             tForumThemes.tUsers = _db.Users.First(a => a.UserName == User.Identity.Name);
@@ -62,7 +67,7 @@ namespace TalismanSqlForum.Controllers
                 tForumThemes.tForumThemes_close = false;
             }
             _db.tForumThemes.Add(tForumThemes);
-            _db.SaveChanges();                
+            _db.SaveChanges();
             var r = _db.Roles.ToList();
             foreach (var item in r)
             {
@@ -73,7 +78,7 @@ namespace TalismanSqlForum.Controllers
                     if (
                         _db.tUserNewThemes.Where(a => a.tUsers.Id == item2.Id)
                             .Any(b => b.tForumThemes.Id == tForumThemes.Id)) continue;
-                    var n = new tUserNewThemes {tForumThemes = tForumThemes, tUsers = item2};
+                    var n = new tUserNewThemes { tForumThemes = tForumThemes, tUsers = item2 };
                     _db.tUserNewThemes.Add(n);
                     _db.SaveChanges();
                 }
@@ -82,12 +87,12 @@ namespace TalismanSqlForum.Controllers
             var val = Url.RequestContext.HttpContext.Request.Url.Scheme;
             var href = Url.Action("Index", "ForumMessages", new { id = tForumThemes.Id, id_list = tForumThemes.tForumList.Id }, val);
             Code.Notify.NewThemes(tForumThemes.Id, href, userId);
-                
-                
-            return RedirectToAction("Index","ForumMessages", new { id = tForumThemes.Id });
+
+
+            return RedirectToAction("Index", "ForumMessages", new { id = tForumThemes.Id });
         }
 
-        [Authorize(Roles="admin,moderator")]
+        [Authorize(Roles = "admin,moderator")]
         public ActionResult Edit(int? id)
         {
             var t = _db.tForumThemes.Find(id);
@@ -135,7 +140,7 @@ namespace TalismanSqlForum.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index", "ForumMessages", new { id = id });
         }
-        [Authorize(Roles="admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult Hide(int? id)
         {
             var t = _db.tForumThemes.Find(id);
@@ -163,7 +168,7 @@ namespace TalismanSqlForum.Controllers
             t.tForumList = _db.tForumLists.Find(id_list);
             _db.Entry(t).State = EntityState.Modified;
             _db.SaveChanges();
-            return RedirectToAction("Index", new {id = id_list });
+            return RedirectToAction("Index", new { id = id_list });
         }
         #endregion
 

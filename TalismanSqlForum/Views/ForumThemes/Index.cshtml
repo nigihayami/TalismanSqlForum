@@ -31,9 +31,9 @@
         </div>
         <div class="panel-content bg-white">
             @{
-                var tForumThemes_top = (IEnumerable<TalismanSqlForum.Models.Forum.tForumThemes>)ViewData["tForumThemes_top"];
+                var tForumThemesTop = (IEnumerable<TalismanSqlForum.Models.Forum.tForumThemes>)ViewData["tForumThemes_top"];
                 var tForumThemes = (IEnumerable<TalismanSqlForum.Models.Forum.tForumThemes>)ViewData["tForumThemes"];
-                if (tForumThemes_top.Count() == 0 && tForumThemes.Count() == 0)
+                if (!tForumThemesTop.Any() && !tForumThemes.Any())
                 {
                     <div class="list-content padding20" style="text-align: center;">
                         <h4 class="fg-grayDark">На форуме нет сообщений</h4>
@@ -41,10 +41,10 @@
                 }
                 else
                 {
-                    if (tForumThemes_top.Count() > 0)
+                    if (tForumThemesTop.Count() > 0)
                     {
                         <div class="listview-outlook">
-                            @foreach (var item in tForumThemes_top)
+                            @foreach (var item in tForumThemesTop)
                         {
                         <div class="list">
                                 <a href="@Url.Action("Index", "ForumMessages", new {id = item.Id, id_list = item.tForumList.Id})">

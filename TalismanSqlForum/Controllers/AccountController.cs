@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TalismanSqlForum.Models;
 using System.Net.Mail;
+using System.Collections.Generic;
 
 namespace TalismanSqlForum.Controllers
 {
@@ -60,6 +61,23 @@ namespace TalismanSqlForum.Controllers
                         db.SaveChanges();
                     }
                     db.Dispose();
+                }
+                if (HttpRuntime.Cache["LoggedInUsers"] != null) //if the list exists, add this user to it
+                {
+                    //get the list of logged in users from the cache
+                    var loggedInUsers = (List<string>)HttpRuntime.Cache["LoggedInUsers"];
+                    //add this user to the list
+                    loggedInUsers.Add(model.Email);
+                    //add the list back into the cache
+                    HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
+                }
+                else //the list does not exist so create it
+                {
+                    //create a new list
+                    var loggedInUsers = new List<string> {model.Email};
+                    //add this user to the list
+                    //add the list into the cache
+                    HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
                 }
                 return RedirectToLocal(returnUrl);
             }
@@ -239,6 +257,18 @@ namespace TalismanSqlForum.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            var username = User.Identity.Name; //get the users username who is logged in
+            if (HttpRuntime.Cache["LoggedInUsers"] != null)//check if the list has been created
+            {
+                //the list is not null so we retrieve it from the cache
+                var loggedInUsers = (List<string>)HttpRuntime.Cache["LoggedInUsers"];
+                if (loggedInUsers.Contains(username))//if the user is in the list
+                {
+                    //then remove them
+                    loggedInUsers.Remove(username);
+                }
+                // else do nothing
+            }
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "ForumList");
         }

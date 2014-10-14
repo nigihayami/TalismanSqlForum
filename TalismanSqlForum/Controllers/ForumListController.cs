@@ -12,6 +12,7 @@ namespace TalismanSqlForum.Controllers
         // GET: ForumList
         public ActionResult Index()
         {
+            TalismanSqlForum.Code.Stat.SetView(Request.UserHostAddress);
             ViewData["tForumList"] = _db.tForumLists.Where(a=> !a.tForumList_hide).OrderBy(a => a.tForumList_name).ToList();
             return View();
         }

@@ -10,6 +10,7 @@ using TalismanSqlForum.Models.Users;
 using TalismanSqlForum.Models.Admin;
 using TalismanSqlForum.Models.Notification;
 using TalismanSqlForum.Models.Offer;
+using TalismanSqlForum.Models.Stat;
 
 namespace TalismanSqlForum.Models
 {
@@ -145,5 +146,7 @@ namespace TalismanSqlForum.Models
         public System.Data.Entity.DbSet<tSubsystem> tSubsystem { get; set; }
 
         public System.Data.Entity.DbSet<tUserNewMessages> tUserNewMessages { get; set; }
+        public System.Data.Entity.DbSet<StatForum> StatForum { get; set; }
+        public System.Data.Entity.DbSet<StatForumList> StatForumList { get; set; }
     }
 }
